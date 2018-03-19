@@ -1,0 +1,4 @@
+PWD D:/repos/ufl_dissertation/chapter_3
+INPUT d:/texlive/2017/texmf-var/web2c/xetex/xelatex.fmt
+INPUT ./body.tex
+OUTPUT body.log

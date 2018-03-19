@@ -1,0 +1,97 @@
+\chapter{GENERALIZED SCALAR APPROACH TO EMPIRICAL POTENTIAL PARAMETERIZATION}
+
+This chapter reviews typical approaches to fitting empirical potentials.
+\section{Theoretical Background on Potentials}
+
+The justification for the use of classical empirical potentials can be demonstrated from the Born-Oppenheimer approximation\cite{born1927_bo}.  The Hamiltonian for a real material is defined by the presence of interacting nuclei and electrons:
+\begin{equation}
+	H = \sum_i \frac{P_i}{2M_i}
+	    + \sum_\alpha \frac{p_\alpha}{2m}
+	    + \frac{1}{2} \sum_{ij} \frac{Z_i Z_j e^2}{r_{ij}}
+	    + \frac{1}{2} \sum_{\alpha\beta} \frac{e^2}{r_{\alpha\beta}}
+	    - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
+\end{equation}
+The first terms are kinetic energy terms, the latter terms are the nuclei-nuclei, electron-electron, and nuclei-electron interactions.  Ideally, the solution of Schr\"{o}dinger's equation, $H\Psi=E\Psi$ could be solved providing the total wavefunction $\Psi(\bm{r}_i,\bm{r_\alpha})$.  Except for the simplest of systems, this approach is impossible computationally.
+The Born-Oppenheimer approximation \cite{born1927_bo} is ubiquitous in \emph{ab initio} calculations, and forms the justification for classical empirical potentials.  The kinetic energy is ignored since the heavy nulclei move more slowly than electrons.  For the remaining interaction terms of the Hamiltonian, the nuclear positions are clamped at certain positions in space, the electron-nuclei interactions are not removed, since the electrons are still influenced by the Coulomb potential of the nuclei.  This allows us to factor the wavefunction as
+\begin{equation}
+	\Psi(\bm{R}_i,\bm{r}_\alpha) = \Xi(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i)
+\end{equation},
+where $\Xi(\bm{R}_i)$ describes the nuclei, and $\Phi(\bm{r}_\alpha;\bm{R}_i)$ describes the electrons parameterized by the clamped position of $\bm{R}_i$.  In turn, the Hamiltonian is solve able as two Schr\"{o}dinger's equations.  The first equation contains the electronic degrees of freedom.
+\begin{equation}
+\label{eq:BO_electronic}
+     H_{e}\Phi(\bm{r}_\alpha;\bm{R}_i)=U(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i)
+\end{equation}
+where
+\begin{equation}
+	H_e = \sum_\alpha \frac{p_\alpha}{2m}
+	      + \frac{1}{2} \sum_{ij} \frac{Z_i Z_j e^2}{r_{ij}}
+	      + \frac{1}{2} \sum_{\alpha\beta} \frac{e^2}{r_{\alpha\beta}}
+	      - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
+\end{equation}
+Eqn. \ref{eq:BO_electronic} gives the energy $U(\bm{R}_i)$ which depends on the clamped coodinates of $\bm{R}_i$.  The electronic effects are contained in $U(\bm{R}_i)$ and is incorporated into the second equation which the motion of the nuclei
+\begin{equation}
+\label{eq:BO_nuclei}
+    H_n\Xi(\bm{R}_i)=E\Xi(\bm{R}_i)
+\end{equation}
+where
+\begin{equation}
+\label{eq:H_n}
+    H_n = \sum_i \frac{P_i}{2m_i} + U(\bm{R_i})
+\end{equation}
+This later equation does not contain any electronic degrees of freedom, because all electronic effects are incorporated into $U(\bm{R}_i)$ which is the interatomic potential.  For molecular dynamics, Schr\"{o}dinger's equation is replaced with Newton's equation of motion.
+\section{Empirical Interatomic Potentials}
+The interatomic potential $U(\bm{R}_i)$ derived from the Born-Oppenheimer approximation is derived from a quantum-mechanical perspective.  The computational cost of \emph{ab initio} such as density-functional theory (DFT) can provide accurate structural energies and forces, but their computational cost limits approaches to compute $U(\bm{R}_i)$ makes the scientific inquiry of systems requiring longer simulation times or larger number of atoms to captures relevant feature sizes unreasonable.
+
+An empirical interatomic potential $V(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $U(\bm{R}_i)$.  The total energy of a potential of $N$ atoms with an interaction described by the empirical potential, $V$, can be expanded in a many body expansion.
+\begin{equation}
+	V(\bm{r}_1,...,\bm{r}_N)= \sum_i V_1(\bm{r}_i)
+	                          + \sum_i \sum_{i<j} V_2(\bm{r}_i,\bm{r}_j)
+				  + \sum_i \sum_{i<j} \sum_{j<k} V_3(\bm{r}_i,\bm{r}_j,\bm{r}_k) + ...
+\end{equation}
+The first term $V_1$ is the one body term, due to an external field or boundary conditions, which is typically ignored in classical potentials.  The second term $V_2$ is the pair potential, the interaction of the term is dependent upon the distance between $\bm{r}_i$ and $\bm{r}_j$.  The three-body term potential $V_3$ arises when the interaction interaction of a pair of atoms is modified by the presence of a third.  Based upon this expansion, we can classify certain potentials into two classes: pair potentials when only $V_2$ is present and many-body potentials when $V_3$ and higher order terms are included.
+\subsection{Fitting Database}
+A fitting database is a collection of structure property functions $q_i$ with an associated structures $S_j$.  The notation of $q$ comes from verification, validation, and uncertainty quantification literature where the term quantity of interest (QOI)
+
+Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.  In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.
+
+The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
+
+\subsection{Prediction Error function}
+In order to assess the prediction errors of the structure property functions, we denote the
+      $\hat{\bm{q}}(\bm{\theta})=(
+          \hat{q}_1(\bm{\theta}),
+          \hat{q}_2(\bm{\theta}),
+          ...,
+          \hat{q}_N(\bm{\theta}))$
+    as the predicted material properties
+
+The difference between the prediction values and target values of the QOIs produces a vector of error functions, $\bm{\epsilon}(\bm{\theta})=(
+        \hat{q}_1(\bm{\theta})-q_1,
+        \hat{q}_2(\bm{\theta})-q_2,
+        ...,
+        \hat{q}_N(\bm{\theta})-q_N)$,
+
+\subsection{Cost Function}
+
+\begin{equation}
+  C(\bm{\theta})=\sum w_i (\hat{q}_i(\bm{\theta})-q_i)^2
+\end{equation}
+
+\section{Notation}
+\subsection{Simulation Cell}
+A simulation cell is defined by the lattice basis and the atomic basis.  The lattice vectors which describes the periodic boundary conditions three lattice vectors $\bm{a},\bm{b},\bm{c}$Euclidean space which forms the basis for the crystallographic system when periodic boundary conditions are applied.  The translational properties of a crystal allows the simulation of an infinite bulk material from a fixed volume.  In traditional crystallography, the boundaries of the unit cell were defined as $a,b,c$ corresponding to the length of each lattice vector and the angles $\alpha,\beta,\gamma$.  In computatonal materials, a more convenient representation
+
+\subsection{}
+Let $V$ be an empirical potential parameterized by $P$ number of parameters $\bm{\theta}=[\theta_1,\theta_2,...\theta_P]$.
+DEFINITION OF CONFIGURATION SPACE
+
+The incorporation of first-principles data in the fitting database significantly improves the reliability of semi-empirical potentials by sampling a larger area of configuration space[21-28]
+
+Ercolessi F, Adams JB. Europhys Lett 1994;26:583.
+Mishin Y, Farkas D, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 1999;59:3393
+Baskes MI, Asta M, Srinivasan SG. Philos Mag A 2001;81:991
+Mishin Y, Mehl MJ, Papaconstantopoulos DA, Voter AF, Kress JD. Phys Rev B 2001;63:224106
+Mishin Y, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 2002;65:224114
+Li Y, Siegel DJ, Adams JB, Liu XY. Phys Rev B 2003;67:125101
+Zope RR, Mishin Y. Phys Rev B 2003;68:024102
+Mishin Y. Acta Mater 2004;52:1451

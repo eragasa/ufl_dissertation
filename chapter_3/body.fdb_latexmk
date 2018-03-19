@@ -1,0 +1,12 @@
+# Fdb version 3
+["xdvipdfmx"] 0 "body.xdv" "body.pdf" "body" 0
+  "body.xdv" 0 -1 0 "xelatex"
+  (generated)
+  "body.pdf"
+["xelatex"] 1521360666 "body.tex" "body.xdv" "body" 1521360666
+  "body.aux" 1521353513 2296 f1c581f3e741efbd90fe924c8eb0b2cd ""
+  "body.tex" 1521360648 4100 b419c9b32163d52b47172890f195267b ""
+  "d:/texlive/2017/texmf-var/web2c/xetex/xelatex.fmt" 1521239327 3705169 456df875e0cf4e711c5b780c3a10af5c ""
+  (generated)
+  "body.xdv"
+  "body.log"

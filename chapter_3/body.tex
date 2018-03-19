@@ -1,0 +1,46 @@
+\chapter{PROBABILITY METHODS} \label{materials}
+
+\section{Probability}
+A random variable $X$ is a variable whose possible values are outcomes of a random phenemon.  As a function, a random variable is required to be measurable, which rules out pathological issues.
+
+The underlying foundation of any probability  distribution is the sample space, which is the set of all probable outcomes denoted as $\Omega$.  The realization of an outcome is denoted $\omega \in \Omega$.
+
+The events for the measure space are defined in such a way that a probability measure can be assigned.  This allows to assign probability measures on complex events to characterize groups of outcomes.  The collection of all such events is a $\sigma$-algebra $\mathcal{F}$ of subsets of $\Omega$.  Not every subset of the sample space $\Omega$ must be considered an event, the $\sigma$-algebra restricts $\mathcal{F}$ to subsets of $\Omega$ for which $\mathbb{P}$ can be asssigned.
+
+The probability measure, $\mathbb{P}$, a function which maps $\mathbb{P}:\mathcal{F}\rightarrow[0,1]$.  A probability is a real number between zero and one.  Within this work we do not disguish the difference between impossible events which have probability zero, and probability-zero events which are not necessarily impossible.  Events of probability one is an event that happens almost surely, with almost total certainty.
+
+The triplet $(\Omega,\mathcal{F},\mathbb{P})$ is the probability measure space.
+
+\section{Random Variable}
+A random variable has a probability distribution, which specificies the probability falls in.  Specifically, $X:\Omega\rightarrow\mathbb{R}$.  If a random variable $X:\Omega \rightarrow \mathbb{R}$ is defined on the probability space $(\Omega,\mathcal{F},\mathbb{P})$.  Then the probability of an event $A$ occuring is $\{\omega:X(\omega)=A\}$ which is denoted as $\mathbb{P}(X=A)$.
+
+A probability density function for a random variable $X$ has a density $f_X$, where $f_X$ is a non-negative function:
+\begin{equation}
+  \mathbb{P}[a \leq X \leq b]=\int_{a}^{b}f_{X}(x)dx
+\end{equation}
+
+\subsection{Expectation}
+If $X$ is a random variable with a finite number of outcomes, $\{x_1,x_2,...,x_k\}$ occurs with the probabilities $\{p_1,p_2,...p_k\}$.  Then the expectation of $X$ is defined as
+\begin{equation}
+  \mathbb{E}[X]=\sum_{i=1}^{k}x_i p_i
+\end{equation}
+If $X$ is a continuous random variable, then
+\begin{equation}
+  \mathbb{E}[X]=\int_{\Omega} X(\omega) d\mathbb{P}(\omega)
+\end{equation}
+If $X$ admits a density $f(x)$, then the expected value is defined as
+\begin{equation}
+  \mathbb{E}[X]=\int_{\mathbb{R}}x f_{X}(x) dx
+\end{equation}
+
+
+\section{Parametric Estimation}
+
+\section{Non-parametric Estimation}
+ Fusce eget tempus lectus, non porttitor tellus. Aliquam molestie sed urna quis convallis. Aenean nibh eros, aliquam non eros in, tempus lacinia justo. In magna sapien, blandit a faucibus ac, scelerisque nec purus. Praesent fermentum felis nec massa interdum, vel dapibus mi luctus. Cras id fringilla mauris. Ut molestie eros mi, ut hendrerit nulla tempor et. Pellentesque tortor quam, mattis a scelerisque nec, euismod et odio. Mauris rhoncus metus sit amet risus mattis, eu mattis sem interdum.
+
+\subsection{This Is an Isolated Heading}
+Either promote this to a section heading, add another subsection heading, or delete this heading.
+
+\section{Augue sapien mattis leo}
+Nec accumsan turpis quam at neque. Ut pellentesque velit sed placerat cursus. Integer congue urna non massa dictum, a pellentesque arcu accumsan. Nulla posuere, elit accumsan eleifend elementum, ipsum massa tristique metus, in ornare neque nisl sed odio. Nullam eget elementum nisi. Duis a consectetur erat, sit amet malesuada sapien. Aliquam nec sapien et leo sagittis porttitor at ut lacus. Vivamus vulputate elit vitae libero condimentum dictum. Nulla facilisi. Quisque non nibh et massa ullamcorper iaculis.

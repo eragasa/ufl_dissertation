@@ -1,0 +1,138 @@
+\chapter{A PARETO APPROACH TO PARAMETER OPTIMIZATION}
+
+Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.  In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).
+
+Here the set of feasible solutons is not known in advance, but is restricted by constraint functions.  We concentrate on nonlinear multiobjective optimization and ignore approaches designed for multiobjective linear programming.
+
+Additionally, the approach described within this chapter is described briefly and is followed on by more detailed discussions and application in following chapters and appendices.
+
+The emphasis of the development of this methdology will be on the mathematical aspects of the subject and it's applications to the development of classical empirical potentials.  The intent is to provide tools for a decision maker, rather than to convince which particular optimization to use.
+
+Secondly, another purpose of the development of this methdology is the development of parameterizations which can be expressed as an ensemble of potentials described as a probability distribution function which can be used in UQ propogation.
+
+\section{Multiobjective optimization}
+
+The general multi-objection optimization problem using the notation of Marler and Arora\cite{Marler2004_moo_survey}:
+\begin{equation}
+  \begin{align}
+  & \underset{\bm{x}}{\text{minimize}}
+        &\bm{F}(\bm{x}) = [
+                            F_1(\bm{x}),
+                            F_2(\bm{x}),
+                            ...,
+                            F_k(\bm{x})]^T\\
+  & \text{subject to}
+        &g_j(\bm{x}) \leq 0, j=1,2,...,m \\
+  & &h_l(\bm{x}) = 0, l=,1,2,...,e \\
+  & &\bm{x} \in \bm{X}
+  \end{align}
+\end{equation}
+where $k$ is the number of objective functions, $m$ is the number of inequality constraints, and $e$ is the number of equality constraints.  The vector $\bm{x} \in \bm{X} \subseteq \mathbb{R}^n$ is a vector design variables $x_i$, and $X$ is feasible design space.  $\bm{F}(\bm{x}) \in \mathbb{R}^k$ are called objectives, cost functions, or criteria.  The feasible critereon space $Z$ is defined as $\{\bm{F}(\bm{x})|\bm{x}\in\bm{X}\}$.
+
+\subsection{Pareto optimality}
+
+Pareto 1906
+
+
+\section{Pareto Front}
+
+In multiobjective optimization problems, it is characteristic that no unique solution exists, but a set of mathematically equally good solutions can be identified.  These solutions are known as nondominated, efficient, noninferior or Pareto optimal solutions.  In MCDM literature, these terms are synomous.
+
+In MCDM literature, the idea of solving a multiobjective optimization problem is understood as helping a human decision maker (DM) in understanding the multiple objectives simultaneously and finding a Pareto optimal solution.  Thus, the solution process requires some interaction with the DM in the form of specifying preference information and the final solution is determined by these preferences.
+
+In potential development, the preferences of potential developer likewise influences are particular parameterization, which has results in the development of empirical potentials as somewhat of a black art.  In the end, empirical potentials are simplified models which predict structure property relationships.
+
+In classical potential optimization, the identification of an optimal parameterization is determined by the minimization of a cost function which couples multiple objective functions, usually a weighted sum of squares, and different weights are used in an interactive fashion until an acceptable parameterization is determined.
+\section{Surveys of Methods}
+Chankong and Haimes 1983
+Hwang and Masud 1979
+Marler and Arora 2004
+Miettinen 1999
+Sawaragi et al 1985
+Steuer 1987
+Vincke 1992
+
+We start our review of methods using Hwang and Masud 1979 and Miettinen 199, to classify the different classes of approaches by methological approach rather than technical techniques.
+\subsection{no preference methods}
+The task is to find some neutral compromise solution without any additional information.  This means instead of asking the DM for preference information, some assumption are made about what a reasonable compromise could be like.
+\subsection{\emph{a priori} methods}
+In \emph{a priori}, the DM first articulates preference information and the solution tries to find a Pareto optimal solution satisfying them as well as possible.
+
+\subsection{\emph{a posteriori} methods}
+A representation of a set of Pareto optimal solution is first generated and then the DM is supposed to select the most preferred one among them.  This approach gives the DM an overview of different solutions available but if there are more than two objectives in the problem, it may be difficult for the DM to analyze the large amount of information.
+
+\subsection{Interactive methods}
+After each iteration, some information is provided to the DM in order to specify preference information.  What is noteworthy is that the DM can specify and adjust one's preferences between each iteration and at the same time learn about interdepencies between each iteration and at the same time learn about interdependencies in the problem as well as one's own preferences.
+
+
+\section{Solution Methods}
+MOO solution methods fall under the category of scalarization or non-scalarization methods.  Scalarization is the primary method for MOO problems [Miettinen 1999].  Scalarization converts the MOO problem into a paramterized single-objective problem which can be solved using using well-established single-objective optimization methods.
+\subsection{Scalarization Methods}
+\subsubsection{Weighting Method}
+Gass and Saaty 1955
+Zadeh 1963
+
+For a interatomic potential being fit with respect to $k$ quantities of interest,
+\begin{equation}
+  \begin{aligned}
+  & \underset{\bm{\theta}}{\text{minimize}}
+        & & \sum_{i=1}^{k}w_{i} \varepsilon_i^2(\bm{\theta}) \\
+  & \text{subject to}
+        & & \bm{\theta} \in \bm{\Theta}
+  \end{aligned}
+\end{equation}
+where $w_i \geq 0$ for $i=1,...,k$
+Weakly Pareto optimal.
+
+  In the development of interatomic potentials, the DM is asked to specify weights in which case the method is used as an \emph{a priori} method.
+
+Algorithms for multiobjective optimization should produce Pareto optimal solutions, and that any Pareto optimal solution can be found.  Censor1977 discusses the conditions which the whole Pareto set can be generated by the weighting metho when positive weights are presented.  In this respect, the weighting method has a serious shortcoming.  Any Pareto optimal solution can be found by altering weights only if the problem is convex.  Some Pareto optimal solutions of nonconvex problems cannot be found regardless of how the weights are selected.
+
+The problems of the weighting schemes have ben explored by the classical potential development community.  The method may jump from one vertex to anohter vertex leaving intermediate solutions undetected with relatively small changes in the weighting schemes.
+
+Scaling of the objective functions.
+
+The weighting method can be used as an \emph{a posteriori} method where different weight can be used to generate different Pareto optimal solutions, and then the DM selects the most satisfactory solution.  Systemic methods of perturbing the weights to obatain different Pareto optimal solutions are suggested (Chankong and Haimes 1983), but Das and Dennis 1997 illustrates that an evenly distributed set of weights does not necessarily produce an evenly distributed representation of the Pareto optimal set, even when the problem is convex.
+
+When the weighting scheme is used as an \emph{a priori} method, the DM is expected to represent his/her preferences in the form of weights.  Roy and Mousseau (1996) suggests that the role of weights in expressing preferences maybe mis leading.  Although the relative importance of weights show the relative importance of the objective functions it is not clear what underlies this notion.  The relative importance of objective functions is usually understood globally, for the entire decision problem, while many practical applications show that the importannce typically varies for different objective function values, that is, the concept is only meaningful locally. (Podinovsky 1994).
+
+Weights that produce a certain Pareto optimal solution are not necessarily unique, and different weights may produce similar solutions.  On the other hand, a small change in weights may cause big differences in the objective function.  It is not easy for the potential developer to control the solution process because weights behave in an indirect way.  The solution process then becomes an interactive one where the DM trues to guess such weights that would produce a satisfactory solution, and this is not desirable because the DM cannot be properly suppported which leads to frustation complications in potential development.  Instead, in such cases it is advisable to use real interactive methods where the DM can better control the solution process with more intuitive preference information.
+
+The weighting method is also difficult
+https://books.google.com/books?id=NHZqCQAAQBAJ&pg=PA1&source=gbs_toc_r&cad=4#v=onepage&q&f=false
+
+\section{Optimization Methods}
+
+\begin{equation}
+  \begin{aligned}
+  & \underset{\bm{x}}{\text{minimize}}
+        & &  f(x)\\
+  & \text{subject to}
+        & & g_i(x) \leq 0
+        & & h_j(x) = 0
+        & & x \in X
+  \end{aligned}
+\end{equation}
+here $x$ is the optimization variable, $f$ is the objective function, $g_i$ are inequality constraints, and $h_j$ are equality constraint functions.
+
+\subsection{Convex Optimization}
+Numerical algorithms make heavy use of scalarization results, and most papers in the field of MOO and economics deal with non-linear programming problems, corresponding duality theorems, and the repeated application of the simplex method.
+
+However, within the literature of potential development approaches focus upon local minimization techniques and global optimization techniques.
+
+objective function is concave.  constraint set is convex.  KKT requirements for uniqueness.
+
+\subsection{}
+\section{Visualization}
+This problem is dealt with in discussions about visualization and and analysis of the large amounts of data generated from a posteriori approaches to solving these problems.
+Edgeworth 1881
+Koopmans 1951
+Kuhn Tucker 1951
+Pareto 1896, 1906
+\section{Treatment}
+
+Our treatment of the mapping of the empirical potential is treated as a bijective mapping into two measure spaces.
+
+Let us define parameter space with the probability measure space $(\Theta,\mathcal{F}(\Theta),\mathbb{P})$.
+
+Then we define the error space of the structure property relationships with the probability measure space $(\mathcal{E},\mathcal{F}(\mathcal{E})),\mathbb{Q})$.
