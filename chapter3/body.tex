@@ -1,12 +1,8 @@
 \chapter{A PARETO APPROACH TO PARAMETER OPTIMIZATION}
 
-Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.  In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).
+Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.  In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).  Here the set of feasible solutons is not known in advance, but is restricted by constraint functions.  We concentrate on nonlinear multiobjective optimization and ignore approaches designed for multiobjective linear programming.
 
-Here the set of feasible solutons is not known in advance, but is restricted by constraint functions.  We concentrate on nonlinear multiobjective optimization and ignore approaches designed for multiobjective linear programming.
-
-Additionally, the approach described within this chapter is described briefly and is followed on by more detailed discussions and application in following chapters and appendices.
-
-The emphasis of the development of this methdology will be on the mathematical aspects of the subject and it's applications to the development of classical empirical potentials.  The intent is to provide tools for a decision maker, rather than to convince which particular optimization to use.
+Additionally, the approach described within this chapter is described briefly and is followed on by more detailed discussions and application in following chapters and appendices.  The emphasis of the development of this methdology will be on the mathematical aspects of the subject and it's applications to the development of classical empirical potentials.  The intent is to provide tools for a decision maker, rather than to convince which particular optimization to use.
 
 Secondly, another purpose of the development of this methdology is the development of parameterizations which can be expressed as an ensemble of potentials described as a probability distribution function which can be used in UQ propogation.
 
@@ -38,7 +34,49 @@ For MOOs, the objectives are generally conflicting, preventing simultaneous opti
 
 If all functions are for minimization, a feasible solution $\bm{x}_1$ is said to dominate another feasible solution $\bm{x}_2$, denoted $\bm{F}(\bm{x}_1 \succ \bm{x}_2)$, if and only if $F_i(\bm{x}_1)\leq F_i(\bm{x}_2)$ for $i = 1,...,k$ and $F_j(\bm{x}_1)< F_j(\bm{x}_2$) for at least one objective function $j$.  A solution is said to be Pareto optimal if it is not dominated by any other solution in the solution space.  A Pareto optimal solution cannot be improved with respect to any objective without worsening at least one objective function.  The set of all feasible non-dominated solutions in $X$ is referred to as the Pareto optimal set, and for a given Pareto optimal set, the corresponding values in the objective space are called the Pareto Front.
 
+\section{Parameter Estimation as a Multiobjective Optimization Problem}
 
+It is rather trivial to state that parameter estimation is an MOO problem.  However,
+while this is often stated occasionally in potential development literature.  It is often stated within the context of the use of global optimization techniques.  The purpose of this section is to provide a clear methodological approach to determining optimal parameters within the context of MOO, and eludicate the problems often encountered in potential development, specifically to the choice of the optimization techniques often employed in potential optimization.
+
+\subsection{Parameters}
+Let $V$ be an empirical potential parameterized by $P$ number of parameters $\bm{\theta}=[\theta_1,\theta_2,...\theta_P]$.
+\subsection{Constraints on parameters}
+\subsection{Structure Property Relationships}
+\subsection{Constraints on structure property relationships}
+\subsection{Fitting Database}
+A fitting database is a collection of structure property functions $q_i$ with an associated structures $S_j$.  The notation of $q$ comes from verification, validation, and uncertainty quantification literature where the term quantity of interest (QOI)
+
+Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.  In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.
+
+The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
+\subsection{Prediction Error function}
+In order to assess the prediction errors of the structure property functions, we denote the
+      $\hat{\bm{q}}(\bm{\theta})=(
+          \hat{q}_1(\bm{\theta}),
+          \hat{q}_2(\bm{\theta}),
+          ...,
+          \hat{q}_N(\bm{\theta}))$
+    as the predicted material properties
+
+The difference between the prediction values and target values of the QOIs produces a vector of error functions, $\bm{\epsilon}(\bm{\theta})=(
+        \hat{q}_1(\bm{\theta})-q_1,
+        \hat{q}_2(\bm{\theta})-q_2,
+        ...,
+        \hat{q}_N(\bm{\theta})-q_N)$,
+\subsection{Parameter Optimization Problem as MOO formulation}
+DEFINITION OF CONFIGURATION SPACE
+
+The incorporation of first-principles data in the fitting database significantly improves the reliability of semi-empirical potentials by sampling a larger area of configuration space[21-28]
+
+Ercolessi F, Adams JB. Europhys Lett 1994;26:583.
+Mishin Y, Farkas D, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 1999;59:3393
+Baskes MI, Asta M, Srinivasan SG. Philos Mag A 2001;81:991
+Mishin Y, Mehl MJ, Papaconstantopoulos DA, Voter AF, Kress JD. Phys Rev B 2001;63:224106
+Mishin Y, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 2002;65:224114
+Li Y, Siegel DJ, Adams JB, Liu XY. Phys Rev B 2003;67:125101
+Zope RR, Mishin Y. Phys Rev B 2003;68:024102
+Mishin Y. Acta Mater 2004;52:1451
 
 \section{Pareto Front}
 
@@ -69,12 +107,15 @@ A representation of a set of Pareto optimal solution is first generated and then
 
 \subsection{Interactive methods}
 After each iteration, some information is provided to the DM in order to specify preference information.  What is noteworthy is that the DM can specify and adjust one's preferences between each iteration and at the same time learn about interdepencies between each iteration and at the same time learn about interdependencies in the problem as well as one's own preferences.
-
-
 \section{Solution Methods}
 MOO solution methods fall under the category of scalarization or non-scalarization methods.  Scalarization is the primary method for MOO problems [Miettinen 1999].  Scalarization converts the MOO problem into a paramterized single-objective problem which can be solved using using well-established single-objective optimization methods.
 \subsection{Scalarization Methods}
 \subsubsection{Weighting Method}
+\subsection{Cost Function}
+\begin{equation}
+  C(\bm{\theta})=\sum w_i (\hat{q}_i(\bm{\theta})-q_i)^2
+\end{equation}
+
 Gass and Saaty 1955
 Zadeh 1963
 
