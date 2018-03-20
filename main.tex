@@ -47,30 +47,21 @@
 %------------------------------------------%
 
 % Set your personal and paper information
-\SetFullName{James Booth}%
-\SetThesisType{Tutorial}%{Dissertation} %{Thesis}
-\SetDegreeType{Master of the Universe}% {Doctor of Philosophy} {Master of Science}
+\SetFullName{Eugene Ragasa}%
+\SetThesisType{Dissertation}%{Dissertation} %{Thesis}
+\SetDegreeType{Doctor of Philosophy}% {Doctor of Philosophy} {Master of Science}
 \SetGradMonth{May}%
 \SetGradYear{2016}%
-\SetDepartment{Electronic Thesis and Dissertations}%
-\SetChair{James B. Albury}%
+\SetDepartment{Materials Science and Engineering}%
+\SetChair{Simon Phillpot}%
 %\SetCochair{John W. Carver III}%uncomment this line and enter the name of your cochair inside the braces if you have one.
 %If you have a cochair there two places in the ufthesis.cls file that will need to be uncommented as well
 %In the "getting personal information" section about line 630
 %And the "Abstract" Section around line 556
 % Type your title here in all CAPS %
-\SetTitle{UF ETD \LaTeXe  THESIS AND DISSERTATION TEMPLATE TUTORIAL}
-
-
-
+\SetTitle{New Methods, Tools and Techniques for the Evolutionary Determination of Ensembles of Pareto Efficient Parameterizations of Classical Potentials with Applications}
 % Define student-specific info (self-explanatory) %
 %\include{userinfo}
-
-
-
-
-
-
 %------------------------------------------%
 
 % user defined commands in order to geC:\Program Files\MiKTeX 2.5\miktexnerate new commands, macros, and redefine default commands %
@@ -79,7 +70,6 @@
 %-------------------------------------------------------------------------------------------------------%
 
 % Begin Main Part of Document %
-
 \begin{document}
 
 
@@ -169,17 +159,19 @@
 \include{chapter2/body}
 \include{chapter3/body}
 \include{chapter4/body}
-\include{tex/chapter5}
+\include{chapter5/body} %
+\include{chapter6/body} % SOFTWARE DEVELOPMENT
+\include{chapter7/body}
+\include{chapter8/body}
+\include{chapter9/body}
+\include{chapter10/body}
 %\include{tex/chapter6}  %These chapters are not included in the template
 %\include{tex/chapter7}
 
 %-----------------------------------------------------------------------%
 
 % Use the appropriate file depending upon the number of appendices you have
-
-
-\include{tex/TwoOrMoreAppendices} %Use this file if you have two or more appendices
-
+%\include{tex/TwoOrMoreAppendices} %Use this file if you have two or more appendices
 %\include{tex/OneSingleAppendix} %Use this file if you have one and only one appendix
 
 %------------------------------------------%
@@ -193,8 +185,7 @@
 % The citation style differences are from the \citet{key} and \citep{key} commands
 % More options are available; see the Natbib documentation for details
 
-
-\bibliography {bib/sample,bib/example}
+\bibliography{chapter1/body,chapter2/body,chapter3/body,chapter4/body,chapter5/body,chapter6/body,chapter7/body,chapter8/body,chapter9/body,chapter10/body}
 % You can have more than one library of references - put the .bib file
 % in the bib folder and call it here
 %------------------------------------------%

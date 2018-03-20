@@ -1,0 +1,19 @@
+\chapter{POTENTIAL DEVELOPMENT SOFTWARE}
+
+This software is a collection of software libaries which can be scripted together to evaluate software.
+
+This project required the development of software for the development of Pareto frontier.
+
+In order to support the largest number of classical potentials, software was written in python using object oriented techniques so that new types of simulations, new potentials, new quantities of interest, and new simulation software.
+
+Evaluation of interatomic potentials.  This software subprocesses either serial version of LAMMPS or GULP to calculate properties of interest.  Parallelization is batched processed across iterations, which each processor rank being given a unique directory space to prevent IO conflicts.
+
+Supports Buckingham, Tersoff, and EAM potentials.  PYPOSPACK was largely developed to support LAMMPS simulations, but has limited support for GULP as well.
+
+Support for atomic strucutures.  PYPOSPACK defines structures in terms of the lattice basis of the simulation cell, and the atomic basis of the simulation cell.  Typically, the software uses the POSCAR format for atomic structures used in VASP software.  However, support for creating surfaces, interfaces, and other file formats from integration with the ASE toolkit.
+
+PyposmatEngine.  The purpose of this class is to evaluate a given parameterization for a QOI set by managing.  This class allows potential optimization to be done through any software framework where the algorithm provides a set of parameters to be evaluated, and can return the result of structure property estimation or their predictive errors with respect to a predefined training set.  Monitoring of spawned subprocesses and timeouts for poor parameterizations allows a rank to recover from structural minimization routines of unstable parameterizations.
+
+QoiManager
+
+TaskManager

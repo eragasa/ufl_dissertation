@@ -1,0 +1,31 @@
+\chapter{EVOLUTIONARY ALGORITHM FOR DETERMINING THE PARETO SET}
+
+Genetic algorithms are a popular meta-heuristic that is particularly well-suited for this class of problems.  Traditional GA are customized to accomodate multi-objective problems by using specialized fitness functions and introducing methods to promote solution diversity.
+
+We scale the objective function in
+
+The use of evolutionary algorithms in the development of classical potentials is not new, and numerous optimization approaches such as gradient-based approaches, genetic algorithms, and neural networks have been developed.
+
+However, in previous literature genetic algorithms are used to optimize potentials.
+
+Our algorthm has the following goals: (1) to identify the strengths and weaknesses of solution of the Pareto optimal solutions, (2) to generate estimates of the Pareto optimal front in a serious of iteratively better approximations, and (3) to describe the candidate parameterizations through the use of a distribution function and use MCMC sampling, but updating the distribution using culling of the Pareto distribution.
+
+\section{Genetic Algorithm}
+
+Step 1: Set $t=1$.  Randomly generate N soluitions to form the first population, $P_1$.  Evaluate the fitness of solutions in $P_1$
+
+Step 2: Crossover
+
+Step 3: Mutation
+
+Step 4: Fitness assessment
+
+Step 5: Selection.  Select $N$ solution from $Q_t$ based on their fitness and copy them to $P_{t+1}$
+
+Step 6: If the stopping criterion is satisfied, terminate the search and return to the current population, else set $t=t+1$ and go to step 2.
+
+In our case, the initial development of solutions requires
+
+Constraint handling.  Discard infeasible solutions ("death penalty") Coello.
+
+Elitism.  When an external list is used to store elist solutions, several issues must be addressed.  The first issue is which solutiojns are going to be stored in elitist list.  Most multi-objective GA store non-dominat4ed solutions identified in the search and the list is updated by removing elitist solutions dominated by a new solution or adding the new solution if it is not dominated by any existing elitist solution.

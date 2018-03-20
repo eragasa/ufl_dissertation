@@ -1,7 +1,9 @@
-\chapter{GENERALIZED SCALAR APPROACH TO EMPIRICAL POTENTIAL PARAMETERIZATION}
+\chapter{EMPIRICAL POTENTIAL DEVELOPMENT}
+
+\section{Density Functional Theory}
 
 This chapter reviews typical approaches to fitting empirical potentials.
-\section{Theoretical Background on Potentials}
+\section{Interatomic Potentials}
 
 The justification for the use of classical empirical potentials can be demonstrated from the Born-Oppenheimer approximation\cite{born1927_bo}.  The Hamiltonian for a real material is defined by the presence of interacting nuclei and electrons:
 \begin{equation}
@@ -49,12 +51,24 @@ An empirical interatomic potential $V(\bm{R}_i;\bm{\theta})$ is an analytical fu
 				  + \sum_i \sum_{i<j} \sum_{j<k} V_3(\bm{r}_i,\bm{r}_j,\bm{r}_k) + ...
 \end{equation}
 The first term $V_1$ is the one body term, due to an external field or boundary conditions, which is typically ignored in classical potentials.  The second term $V_2$ is the pair potential, the interaction of the term is dependent upon the distance between $\bm{r}_i$ and $\bm{r}_j$.  The three-body term potential $V_3$ arises when the interaction interaction of a pair of atoms is modified by the presence of a third.  Based upon this expansion, we can classify certain potentials into two classes: pair potentials when only $V_2$ is present and many-body potentials when $V_3$ and higher order terms are included.
+
+Over the last few decades, a large number of potentials have been developed to descibe various bonding types and environments.  To take representative examples, the Lennard Jones was developed for the van der Waals interactions of noble gases, pair potentials such as the Buckingham potential can be used for ionic solids, the embedded atom model (EAM) is developed for metallic systems, the Assisted Model Building with Energy Refinement (AMBER) for biomolecules, the tersoff potential for covalently bonded materials.  To deal with bonding and chemical environments for heterogenous materials like metal/metal oxide interfaces have led to extensions such as MEAM, REBO, COMB, and ReaxFF.
+
+More recently, potentials such as GAP and SNAP represent the atomic environment of an atom not from a collection of a vectors of atomic positions which feed into formulaic functional forms, but to calculate the bispectrum of the neighborhood of atoms.  The bispectrum combined with an orthogonal expansion of components is dependent upon large amounts of density functional images to use in the fitting dataset to produce DFT fidelity reproductions of interatomic forces on an atom.
+
+Potentials used in this work are discussed in more detail within the chapters they are used.
+
+\section{Molecular Dynamics}
+
+\section{Lattice Dynamics}
 \subsection{Fitting Database}
 A fitting database is a collection of structure property functions $q_i$ with an associated structures $S_j$.  The notation of $q$ comes from verification, validation, and uncertainty quantification literature where the term quantity of interest (QOI)
 
 Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.  In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.
 
 The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
+\subsubsection{Structures}
+\subsubsection{Geometric representation}
 
 \subsection{Prediction Error function}
 In order to assess the prediction errors of the structure property functions, we denote the

@@ -33,14 +33,38 @@ If $X$ admits a density $f(x)$, then the expected value is defined as
   \mathbb{E}[X]=\int_{\mathbb{R}}x f_{X}(x) dx
 \end{equation}
 
-
 \section{Estimation of a Distribution}
 
 \subsection{Non-parametric Estimation}
  Fusce eget tempus lectus, non porttitor tellus. Aliquam molestie sed urna quis convallis. Aenean nibh eros, aliquam non eros in, tempus lacinia justo. In magna sapien, blandit a faucibus ac, scelerisque nec purus. Praesent fermentum felis nec massa interdum, vel dapibus mi luctus. Cras id fringilla mauris. Ut molestie eros mi, ut hendrerit nulla tempor et. Pellentesque tortor quam, mattis a scelerisque nec, euismod et odio. Mauris rhoncus metus sit amet risus mattis, eu mattis sem interdum.
 
 \subsection{Kernel Density Estimation}
-\subsubsection{Selection of Bandwidth Parameters}
+Let $(x_1,x_2,...x_n)$ be a univariate and identically distributed sample drawn from some distribution with an unknown density $f$.  The goal is to estimate the shape of this function $f$.  The kernel density estimator is
+\begin{equation}
+  \hat{f}_h(x)=\frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)
+    =\frac{1}{nh}\sum_{i=1}^{n}K\left(\frac{x-x_i}{h}\right)
+\end{equation}
+where $K$ is the kernel and $h>0$ is a smoothing parameter called the badwidth.  The kernel function satisfies the condition
+\begin{equation}
+  \int_{-\infty}^{+\infty}K(x)dx=1
+\end{equation}
+\subsubsection{Choice of kernels}
+Popular kernels: Epanachnikov, Bi-weight, Triangular, Gaussian, Rectangular.
+
+For the kernel method, we adopt the gaussian kernel $\phi$,
+\begin{equation}
+  \phi(x)=\frac{1}{\sqrt{2\pi\sigma}}\exp{\left(\frac{t^2}{2\sigma^2}\right)}
+\end{equation}
+\subsubsection{Selection of bandwidth parameters}
+The chosen bandwith is important because it has a strong influenjce on the boundary of the density curve.  The curve boundary has poor smoothness quality when bandwidth takes small value; while as the increasing bandwidth, the smoothness improves, but the fitness of the curves becomes poor.  The accuracy of kernel estimation is dependent on suitable bandwidth.
+
+\emph{Scott' Method}
+
+\emph{Silverman Method}
+
+\emph{Chiu Method}
+\section{Bayesian Estimation}
+
 \section{Sampling}
 
 \section{Markov Chain Monte Carlo Methods}
