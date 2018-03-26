@@ -40,7 +40,6 @@ More recently, potentials such as GAP and SNAP represent the atomic environment 
 \subsubsection{Embedded Atom Method Potentials}
 This chapter reviews typical approaches to fitting empirical potentials.
 \section{Interatomic Potentials}
-
 The justification for the use of classical empirical potentials can be demonstrated from the Born-Oppenheimer approximation\cite{born1927_bo}.  The Hamiltonian for a real material is defined by the presence of interacting nuclei and electrons:
 \begin{equation}
 	H = \sum_i \frac{P_i}{2M_i}
@@ -78,23 +77,54 @@ where
 \end{equation}
 This later equation does not contain any electronic degrees of freedom, because all electronic effects are incorporated into $U(\bm{R}_i)$ which is the interatomic potential.  For molecular dynamics, Schr\"{o}dinger's equation is replaced with Newton's equation of motion.
 \section{Molecular Dynamics}
-Molecular dyanmics (MD) is a simulation approach where the time evolution of aset of interacting atoms is followed by numerically solving their equations of motion.  In MD, the behavior of atoms follow Newtonian mechanics [Landau and Lifshitz 1976]:
+Molecular dyanmics (MD) is a simulation approach where the time evolution of aset of interacting atoms is followed by numerically solving their equations of motion.  In MD, the behavior of atoms follow Newtonian mechanics:
 \begin{equation}
     M\frac{d\bm{r}(t)}{dt} = F(\bm{r}(t))=-\nabla V(\bm{r}(t))
 \end{equation}
 where $t$ is time, $\bm{r}(t) = (\bm{r}_1(t),\bm{r}_2(t),...,\bm{r}_N(t))$ represents the forces on the particles, and $M$ is the mass matrix, which is a diagonal matrix with the mass, $m_k$, for $M_{k,k}=m_k$ for all diagonal entries.
-1.  Every object in a state of uniform motion tends to remain in motion unless an external force is applied to it.
-\subsection{Role of the Interatomic Potential}
-The total enegy is converged if the atoms follow Newton's equation of motion in a conservative force field, when forces can be written in terms of the spatial derivative of the potential field, while the kinetic energy and potential energy can themselves change values dynamically.  Newton's equation of motion can be written in their Hamiltonian form (Allen,Tildesley, et al 1989)':
+The total energy is conserved, even if the kinetic energy and potential energy can change dynamically.  In Hamiltonian form, the Newtonian equation of motion can be written Hamiltonian form (Allen, Tildesley, et al 1989).
+\begin{equation}
+	\frac{d \bm{r}}{dt}=\frac{\partial H{\bm{r},\bm{p}}}{\partial \bm{p}},
+	\frac{d \bm{p}}{dt}=\frac{\partial H{\bm{r},\bm{p}}}{\partial \bm{r}}
+\end{equation}
+Therefore,
+\begin{equation}
+	\frac{dH}{dt}=\frac{\partial H(\bm{r},\bm{p})}{\partial \bm{r}} \frac{d\bm{r}}{dt}
+						   +\frac{\partial H(\bm{r},\bm{p})}{\partial \bm{p}} \frac{d\bm{p}}{dt} = 0
+\end{equation}
+
 \subsection{Numerical Integration}
-A dynamical simulation computes atomic positions as a function of time given their initial position $\bm{r}(t=0)$ and velocities $\bm{v}(t=0)$.  Since Newton's equations of motion are 2nd order diffferential equations, an initial condition needs to specify both positions and velocities of all atoms at the initial condition.
+A dynamical simulation computes atomic positions as a function of time given their initial position $\bm{r}(t=0)$ and velocities $\bm{v}(t=0)$.  Since Newton's equations of motion are 2nd order diffferential equations, an initial condition needs to specify both positions and velocities of all atoms at the initial condition.  To solve the equation of motion computationally, we need to descretize time.  Usually, time is descretized uniformly, $t_n=n\Delta t$, where $\Delta t$ is referred to as the time step.  The task of the simulation algorithm is to find $\bm{r}(t_n)$ for $i=1,2,3...$ (Allen, Tildesley \emph{et al} 1989).
+
+The Verlet algorithm begins by approximating
+\begin{equation}
+	\frac{d^2 r(t)}
+	     {dt^2}
+	= \frac{\bm{r}(t+\Delta t) - 2\bm{r}(t) + \bm{r}(t-\Delta t)}
+	       {\Delta t^2}
+\end{equation}
+
+Thus,
+\begin{equation}
+  \frac{\bm{r}(t+\Delta t) - 2\bm{r}(t) + \bm{r}(t-\Delta t)}
+	     {\Delta t^2} = - \frac{1}{m} \frac{dU(\bm{r}(t))}{d\bm{r}} \\
+	\bm{r}(t+\Delta t)
+	     = 2\bm{r}(t)
+			 		- \bm{r}(t-\Delta t)
+	     		- \Delta t \frac{1}{m} \frac{dU(\bm{r}(t))}{d\bm{r}}
+\end{equation}
+
+
 \subsection{Thermodynamic Ensembles}
+\subsubsection{Microcanonical (NVE) ensemble}
+\subsubsection{Canonical (NVT) ensemble}
+\subsubsection{NPT}
 \section{Lattice Dynamics}
 \section{Calculation of Material Properties}
 \subsection{Structural Properties}
 \subsubsection{Minimization Techniques}
-\subsection{Greatest Descent}
-\subsection{Conjugate Gradient}
+\emph{Greatest Descent}
+\emph{Conjugate Gradient}
 \subsection{Phase Order Properties}
 \subsection{Point Defect Formation Energies}
 \subsection{Surface Energies}
