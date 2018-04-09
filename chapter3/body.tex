@@ -315,7 +315,10 @@ We propose the following approach:
 \end{gather}
 \end{subequations}
 % this paragraph has some notational abuse, but is used for the sake of clarity rather than making the notation mathematical rigorous.
-The notation $\rho(\bm{\theta})$ refers to the joint probability density function that $\bm{\theta} \in \Theta^(P)$.  Intuitively, one can think of $\rho(\bm{\theta})\D\bm{\theta}$ as the probability that a random variable drawn from $\rho(\bm{\theta})$ will fall within the infinitesimal compact set $[\bm{\theta},\bm{\theta}+\D\bm{\theta}]$
+The notation $\rho(\bm{\theta})$ refers to the joint probability density function that $\bm{\theta} \in \Theta^{P}$.
+Intuitively, one can think of
+$\rho(\bm{\theta})\Delta\bm{\theta}$
+as the probability that a random variable drawn from $\rho(\bm{\theta})$ will fall within the infinitesimal compact set $[\bm{\theta},\bm{\theta}+\Delta\bm{\theta}]$
 
 Even if $\Theta$ is defined as compact, $\hat{Q}$ may not be bounded.  By construction $\hat{q}_i > 0 $, however $\hat{q}_i$ may not be bounded from above.  There exists $\bm{\theta} \in \Theta$ which produces pathological members of the Pareto set.  Specifically, there is exists $\bm{\theta} \in \Theta$ such that $\bm{\epsilon}(\theta) \in \mathcal{E}^(p)$, but produces an $\epsilon_i(\bm{\theta}) > \epsilon_{i,max}$ for at least one $i\in\{1,...,n\}$, where $\epsilon_{i,max}$ is an arbitrary performance requirement.
 
@@ -324,9 +327,9 @@ To estimate $\Theta^{(p)}$, we simplify the drawing of samples from a uniform di
 \subsubsection{Kernel Density Estimate}
 
 The Kullbach-Leiber divergence\cite{kullback1997} measures the divergence between two probability density functions $f(x)$ and $g(x)$,
-\begin{equation}
-   \label{eq:kld}
-   D(f \parallel g) = \int f(x)\log \frac{f(x)}{g(x)}\D{x}
+\begin{equation}\label{eq:kld}
+   D(f \parallel g) = \int f(x) \log \frac{f(x)}
+                                          {g(x)} dx
 \end{equation}
 is commonly used in statistics as a measure of similarity between two density distributions, and has the following properties: (1) self-similarity, $D(f \parallel f) = 0$, (2) self-identification, $D(f \parallel g) = 0$ only if $f=g$, and (3) positivity, $D(f \parallel g) \geq 0$ for all $f$ and $g$.
 
