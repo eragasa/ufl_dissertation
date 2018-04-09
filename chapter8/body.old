@@ -11,7 +11,7 @@ The original formulation of the EAM represented the reepulsion between the atomi
 
 In either case, the electron density function and the pair potential are given as analytic functions of the radial separation of two atoms $r_{ij}$ with fitted parameters.  The embedding function is sometimes specified as having a specific functional form, or determined by fitting the embedding function to an equation of state such as Rose \emph{et al}[21].
 
-For Nickel, Johnson and Oh[22], Voter Chen[19,23], Angelo {\emph}[20] have used parametric functional forms, where Ercolessi and Adams[24] and Mishin \emph{25} implemented cubic-spline approaches, which do not specify an analytical functional form.
+For Nickel, Johnson and Oh[22], Voter-Chen[19,23], Angelo \emph{et al}[20] have used parametric functional forms, where Ercolessi and Adams[24] and Mishin \emph{25} implemented cubic-spline approaches, which do not specify an analytical functional form.
 
 In early potential development, the parameters are adjusted to match properties such cohesive energy, lattice parameters, elastic properties, and vacancy formation energies.  With additional computational power, stacking fault energies, phase order differences, and surface energies to fit to important relevant environments thought to be important to produce transferrable potentials.
 

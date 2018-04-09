@@ -67,4 +67,29 @@ The chosen bandwith is important because it has a strong influenjce on the bound
 
 \section{Sampling}
 
+Requirements for kernel
+\begin{table}[htbp]
+   \caption{Sample size required to ensure relative mean square error at zero is
+       less than $0.1$, when estimating a standard normal density using a normal
+       kernel and the window width that minimize the mean square error loss at
+       zero\cite{silverman1986_density_estimation}}
+   \label{tab:kde_sample_req}
+   \begin{tabularx}{6.5in}{XX}
+     \hline
+     Dimenstionality & Required Sample Size \\
+     \hline
+     1 & 4 \\
+     2 & 19 \\
+     3 & 67 \\
+     4 & 223 \\
+     5 & 768 \\
+     6 & 2790 \\
+     7 & 10700 \\
+     8 & 43700 \\
+     9 & 187000 \\
+     10 & 842000 \\
+     \hline
+   \end{tabularx}
+\end{table}
+
 \section{Markov Chain Monte Carlo Methods}

@@ -1,6 +1,26 @@
 \chapter{Techniques for Dimensionality Reduction}
 
+In the development of empirical interatomic potentials (EIP), the natural dimensionality of the problem can be daunting.
+The representation of the atomic structures, $\bm{R}$, also known as the configuration space.
+
+\section{Potential}
+
+The interatomic potential, $V$ can be represented in the Born-Oppenheimer approximation as a mapping between the configurational space of atoms, $\bm{X}$, onto the set of possible energies, $U$.
+Since $V:\bm{X} \rightarrow U$, then we can denote this relation as, $V(\bm{x})$, to represent energy for a structure, and $V(\bm{X})$ as potential energy surface.
+
+Since \emph{ab initio} calculations are computational expensive, empirical interatomic potentials, $\hat{V}$ which which are defined by formulae, are often used to simulate larger systems and large time scales.
+If $\bm{\Theta}$ represents the feasible parameterizations for $\hat{V}$, then the vector of $P$ optimal parameters, $\bm{\theta}^{*} = (\theta_1^{*},...,\theta_P^{*})$, must be be contained within the feasible parameterization, $\bm{\theta}^{*} \in \bm{\Theta}$.
+Since $\hat{V}:\bm{\Theta},\bm{X} \rightarrow U$, then it is clear that
+\begin{align}
+  V &= \hat{V} + \varepsilon \\
+  V(\bm{x}) &= \hat{V}(\bm{x},\bm{\theta}) + \varepsilon(\bm{x},\bm{\theta})
+\end{align}
+where $\varepsilon$ is the residual difference between $V(\bm{x})$ and $\hat{V}(\bm{x})$
+ are defined by formulae which are parameterized for a specific material system.  Using the hat notation to denote an estimate,   The set of optimal parameters, $\bm{\theta}^{*} = (\theta_1^{*},...,\theta_P^{*})$ for $P$ parameters
+
 \section{Principal Components Analysis}
+
+
 
 Principal component analysis (PCA) is a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables into a set of values linearly uncorrelated variables called principal compoents.
 

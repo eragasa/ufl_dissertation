@@ -155,7 +155,7 @@
 
 % Chapters to be included (more can be added by creating a new chapter#.tex %
 % file and then implementing the \inlcude{chapter#.tex} command as seen below %
-\include{tex/chapter1}
+\include{chapter1/body}
 \include{chapter2/body}
 \include{chapter3/body}
 \include{chapter4/body}
@@ -185,7 +185,8 @@
 % The citation style differences are from the \citet{key} and \citep{key} commands
 % More options are available; see the Natbib documentation for details
 
-\bibliography{chapter1/body,chapter2/body,chapter3/body,chapter4/body,chapter5/body,chapter6/body,chapter7/body,chapter8/body,chapter9/body,chapter10/body}
+\bibliography{bib/sample}
+%chapter1/body.bib,chapter2/body.bib,chapter3/body.bib,chapter4/body.bib,chapter5/body.bib,chapter6/body.bib,chapter7/body.bib,chapter8/body.bib,chapter9/body.bib,chapter10/body.bib}
 % You can have more than one library of references - put the .bib file
 % in the bib folder and call it here
 %------------------------------------------%

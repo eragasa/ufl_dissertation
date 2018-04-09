@@ -40,7 +40,7 @@ More recently, potentials such as GAP and SNAP represent the atomic environment 
 \subsubsection{Embedded Atom Method Potentials}
 This chapter reviews typical approaches to fitting empirical potentials.
 \section{Interatomic Potentials}
-The justification for the use of classical empirical potentials can be demonstrated from the Born-Oppenheimer approximation\cite{born1927_bo}.  The Hamiltonian for a real material is defined by the presence of interacting nuclei and electrons:
+The justification for the use of classical empirical potentials can be demonstrated from the Born-Oppenheimer approximation\cite{born1927_bo}  The Hamiltonian for a real material is defined by the presence of interacting nuclei and electrons:
 \begin{equation}
 	H = \sum_i \frac{P_i}{2M_i}
 	    + \sum_\alpha \frac{p_\alpha}{2m}
@@ -103,15 +103,16 @@ The Verlet algorithm begins by approximating
 	= \frac{\bm{r}(t+\Delta t) - 2\bm{r}(t) + \bm{r}(t-\Delta t)}
 	       {\Delta t^2}
 \end{equation}
-
 Thus,
 \begin{equation}
   \frac{\bm{r}(t+\Delta t) - 2\bm{r}(t) + \bm{r}(t-\Delta t)}
-	     {\Delta t^2} = - \frac{1}{m} \frac{dU(\bm{r}(t))}{d\bm{r}} \\
+	     {\Delta t^2}
+	=
+	- \frac{1}{m} \frac{dU(\bm{r}(t))}{d\bm{r}}
+\end{equation}
+\begin{equation}
 	\bm{r}(t+\Delta t)
-	     = 2\bm{r}(t)
-			 		- \bm{r}(t-\Delta t)
-	     		- \Delta t \frac{1}{m} \frac{dU(\bm{r}(t))}{d\bm{r}}
+	     = 2\bm{r}(t) - \bm{r}(t-\Delta t) - \Delta t \frac{1}{m} \frac{dU(\bm{r}(t))}{d\bm{r}}
 \end{equation}
 
 

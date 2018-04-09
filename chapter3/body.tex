@@ -35,21 +35,47 @@ For MOOs, the objectives are generally conflicting, preventing simultaneous opti
 If all functions are for minimization, a feasible solution $\bm{x}_1$ is said to dominate another feasible solution $\bm{x}_2$, denoted $\bm{F}(\bm{x}_1 \succ \bm{x}_2)$, if and only if $F_i(\bm{x}_1)\leq F_i(\bm{x}_2)$ for $i = 1,...,k$ and $F_j(\bm{x}_1)< F_j(\bm{x}_2$) for at least one objective function $j$.  A solution is said to be Pareto optimal if it is not dominated by any other solution in the solution space.  A Pareto optimal solution cannot be improved with respect to any objective without worsening at least one objective function.  The set of all feasible non-dominated solutions in $X$ is referred to as the Pareto optimal set, and for a given Pareto optimal set, the corresponding values in the objective space are called the Pareto Front.
 
 \section{Parameter Estimation as a Multiobjective Optimization Problem}
+Parameter estimation can be stated as a MOO problem.
+While this is occasionally stated in potential development literature, it is often within the context of the use of global optimization techniques.
+The purpose of this section is provide a clear methodological approach to determining the optimal parameters within the context of MOO, and elucidate the problems often encountered in potential development specifically to the choice of optimization techniques often employed in potential development.
 
-It is rather trivial to state that parameter estimation is an MOO problem.  However,
-while this is often stated occasionally in potential development literature.  It is often stated within the context of the use of global optimization techniques.  The purpose of this section is to provide a clear methodological approach to determining optimal parameters within the context of MOO, and eludicate the problems often encountered in potential development, specifically to the choice of the optimization techniques often employed in potential optimization.
+Let $V(r_{ij},\bm{\theta})$ be an analytical potential, dependent upon the distance, $r_{ij}$, between atoms $i$ and $j$; the parameters of the potential are defined by the array $\bm{\theta}=(\theta_1,...,\theta_P)$ for $P$ parameters.
+Then to calculate material properties, the potential is combined with the structures and the necessary simulation conditions, such as temperature, pressure, and volume.
+Since there is a difference between the predicted material properties which a potential predicts and the actual material properties, it is necessary to introduce notation to differentiate the two.
+The predicted material properties will be denoted by $\hat{\bm{q}} = (\hat{q}_1,...,\hat{q}_M)$, while the actual material property will be denoted by $\bm{q} = (q_1,...,q_M)$ for $M$ structural properties.  The notation of $q$ comes from verification, validation, and uncertainty quantification literature where the term quantity of interest (QOI) is used.
 
-\subsection{Parameters}
-Let $V$ be an empirical potential parameterized by $P$ number of parameters $\bm{\theta}=[\theta_1,\theta_2,...\theta_P]$.
-\subsection{Constraints on parameters}
-\subsection{Structure Property Relationships}
-\subsection{Constraints on structure property relationships}
+Then for the purposes potential development, a potential can than be viewed as a function $V:\bm{\Theta} \rightarrow \hat{\bm{Q}}$ where the parameters $\bm{\theta} \in \bm{\Theta}$ maps to $\hat{\bm{q}} \in \hat{\bm{Q}}$.
+Since $\hat{\bm{q}}$ is a function of of the potential $V$, then we denote this relationship
+$\hat{\bm{q}}(\bm{\theta})$ and
+$\hat{\bm{Q}}(\bm{\theta})$.
+
 \subsection{Fitting Database}
-A fitting database is a collection of structure property functions $q_i$ with an associated structures $S_j$.  The notation of $q$ comes from verification, validation, and uncertainty quantification literature where the term quantity of interest (QOI)
+A fitting database is a collection of structure property functions $q_i$ with an associated atomic configurations, also referred to as structures.
+The set of all possible atomic configuration is referred to as the configuration space.
+The goal of a fitting database to find to find a representative set of structures in which to calculate the structure property relationships $q_i$.
 
-Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.  In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.
+Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.  In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.  The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
 
-The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
+In literature, the developers of potentials tend to use $0$ K properties.  A more important reason why potentials are fit to $0$ K properties, is that it alows the incorporation of first-principles data.
+The most ubiquitous \emph{ab initio} techniques are calculations using density functional theory (DFT).
+DFT allows the calculation of structural properties which are experimentally difficult to access, as well as provide energic information from kinetically unstable structures.
+The incorporation of first-principles data in the fitting database significantly improves the reliability of semi-empirical potentials by sampling a larger area of configuration space[21-28].
+This is covered in detail in a review article by Payne \emph{et al}\cite{payne1996_dft_database}.
+
+
+Ercolessi F, Adams JB. Europhys Lett 1994;26:583.
+Mishin Y, Farkas D, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 1999;59:3393
+Baskes MI, Asta M, Srinivasan SG. Philos Mag A 2001;81:991
+Mishin Y, Mehl MJ, Papaconstantopoulos DA, Voter AF, Kress JD. Phys Rev B 2001;63:224106
+Mishin Y, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 2002;65:224114
+Li Y, Siegel DJ, Adams JB, Liu XY. Phys Rev B 2003;67:125101
+Zope RR, Mishin Y. Phys Rev B 2003;68:024102
+Mishin Y. Acta Mater 2004;52:1451
+
+From a computational standpoint, at $0$ K the calculation of material properties become precise because atomic motion stops, and only a single evaluation of a parameterization needs to be evaluated against the reference value.  When the $T>0$, issues with sampling arise.  In the long time limit, the sampled trajectory yields detailed information about the Hamiltonian.  Shorter trajectories yield incomplete information and confound comparison of parameters with experimental values.
+
+When many $\hat{\bm{q}}(\theta)$ has to be evaluated many times, fitting to structure property relationships which are dependent upon themodynamic ensembles for $T>0$ becomes quickly computational infeasible.
+
 \subsection{Prediction Error function}
 In order to assess the prediction errors of the structure property functions, we denote the
       $\hat{\bm{q}}(\bm{\theta})=(
@@ -64,19 +90,15 @@ The difference between the prediction values and target values of the QOIs produ
         \hat{q}_2(\bm{\theta})-q_2,
         ...,
         \hat{q}_N(\bm{\theta})-q_N)$,
+\subsection{Parameters}
+Let $V$ be an empirical potential parameterized by $P$ number of parameters $\bm{\theta}=[\theta_1,\theta_2,...\theta_P]$.
+\subsection{Constraints on parameters}
+\subsection{Structure Property Relationships}
+\subsection{Constraints on structure property relationships}
+
 \subsection{Parameter Optimization Problem as MOO formulation}
 DEFINITION OF CONFIGURATION SPACE
 
-The incorporation of first-principles data in the fitting database significantly improves the reliability of semi-empirical potentials by sampling a larger area of configuration space[21-28]
-
-Ercolessi F, Adams JB. Europhys Lett 1994;26:583.
-Mishin Y, Farkas D, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 1999;59:3393
-Baskes MI, Asta M, Srinivasan SG. Philos Mag A 2001;81:991
-Mishin Y, Mehl MJ, Papaconstantopoulos DA, Voter AF, Kress JD. Phys Rev B 2001;63:224106
-Mishin Y, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 2002;65:224114
-Li Y, Siegel DJ, Adams JB, Liu XY. Phys Rev B 2003;67:125101
-Zope RR, Mishin Y. Phys Rev B 2003;68:024102
-Mishin Y. Acta Mater 2004;52:1451
 
 \section{Pareto Front}
 
@@ -224,3 +246,116 @@ Our treatment of the mapping of the empirical potential is treated as a bijectiv
 Let us define parameter space with the probability measure space $(\Theta,\mathcal{F}(\Theta),\mathbb{P})$.
 
 Then we define the error space of the structure property relationships with the probability measure space $(\mathcal{E},\mathcal{F}(\mathcal{E})),\mathbb{Q})$.
+
+
+To solve forward problems, the parameters of a potential, $\bm{\theta}$ is known \emph{a priori}, are used in conjunction of a set of atomic arrangements in a simulation cell with periodic boundary conditions to predict $n$ material properties, $\bm{q} = (q_1,...q_n)$.  These predictions depend not only on the atomic arrangements but also on the parameterization, denoted
+$\bm{\hat{q}}(\bm{\theta}) =
+    (\hat{q}_1(\bm{\theta}),...\hat{q}_n(\bm{\theta}))$.
+The differences between the predicted values and references values are denoted
+$\bm{\epsilon}(\bm{\theta}) =
+    \lvert \bm{\hat{q}}(\bm{\theta})
+         - \bm{q}_i
+    \rvert$,
+where $|\bm{x}|$ is the elementwise magnitude of the vector $\bm{x}$.
+
+The problem of parameterization is an inverse problem where an optimal parameterization produces ideal outcomes for the forward problem, i.e. difference between the predicted value and the reference value,
+$\epsilon_i(\bm{\theta}) = 0$.
+Since replication of results is typically not achievable, then the goal of parameterization becomes
+$\min_{\bm{\theta}} \epsilon_i(\bm{\theta})$
+for all $i$.  Typically, there does not exist an optimal parameterization, $\bm{\theta}^*$, which minimizes $\epsilon_i(\bm{\theta})$ for all $i < n$.  Requiring a prioritization of which material properties have a preference for fidelity in predictions.
+
+The typical approach to solving the inverse problem transforms the above problem into a scalar optimization problem amenable to derivative approaches.  A cost function $C$ which couples the individual objectives, $\epsilon_i$, along with a set of weights $\bm{w} = (w_1,...,w_n)$, to represent preferences, that is
+\begin{equation}
+    C(\bm{\theta}) = \sum_i^n w_i (\hat{q}_i(\bm{\theta}) - q_i)^2
+                   = \sum_i^n w_i \epsilon_i^2(\bm{\theta})
+\end{equation}
+
+It is clear that the selection of $\bm{w}$ uniquely determines $\bm{\theta}^*$.  However, the values of $w_i$ which will produce an acceptable potential are typically not known \emph{a priori}.  When the initial weighting scheme fails to give an acceptable results, $\bm{w}$ is changed in an \emph{ad hoc} approach until an acceptable parameterization is achieved.
+
+Since analytical solutions are intractable, numerical solutions are achieved by selecting an initial parameterization, $\bm{\theta}_0$, and using derivative-based optimization techniques to minimize the cost function.  If the $C(\bm{\theta})$
+
+We generalize the problem of parameter estimation by a casting it more generally into a multi-objective optimization problem:
+\begin{equation}
+    \min_{\bm{\theta}} \bm{\epsilon}(\bm{\theta})
+        = \begin{bmatrix}
+            \epsilon_1(\bm{\theta}) \\
+            \vdots \\
+            \epsilon_n(\bm{\theta})
+          \end{bmatrix}
+        = \begin{bmatrix}
+            \hat{q}_1(\bm{\theta}) - q_1 \\
+            \vdots \\
+            \hat{q}_n(\bm{\theta}) - q_n
+          \end{bmatrix}
+\end{equation}
+
+To remove the dependence on \emph{a priori} performance preferences, it is necessary to define an ensemble of parameterization which are optimal in a sense.  Suppose we have two parameterizations, where $\bm{\theta}_1$ dominates $\bm{\theta}_2$, denoted $\bm{\theta}_1 \prec \bm{\theta}_2$, when $\epsilon_i(\bm{\theta}_1) \leq \epsilon_i(\bm{\theta}_2) \forall i \in \{1,...,n\}$ and
+$\exists i \in \{1,...n\}, \epsilon_i(\bm{\theta}_1) < \epsilon_i(\bm{\theta}_2)$.
+We say that $\bm{\theta}_n$ is Pareto efficient if $\nexists \bm{\theta}_i \in \Theta, \bm{\theta}_i \nprec \bm{\theta}_1$.
+
+The Pareto set $\Theta^{(p)}$ is the set of all Pareto effcient points, that is the set of nondominated points.  While performance requirements have not yet been encoded to determine $\bm{\theta}^*$, this point must fall in the Pareto set, $\bm{\theta}^* \in \Theta$.  If $\epsilon_i$ are competiing, then clearly there are parameterizations which performs well with respect to $\epsilon_i$, but poorly with respect to $\epsilon_j$.
+
+We originally defined $\Theta$ as a compact space of the parameters ${\bm{\theta}}$ defining the feasible $\theta$-space.  In a deterministic approach we would want to identify an algorithm such that we start with feasible set of parameterizations and constrains the sets of parameterizations until it produces a set of parameterizations which produces the Pareto set in $\epsilon$-space, that is a process
+\begin{equation}
+    \Theta = \Theta_0 \supset \Theta_1 \supset \hdots \supset \Theta_k = \Theta^{(p)}
+\end{equation}
+which produces due to Eq \ref{eqn:def_Q} and \ref{eqn:def_E}
+\begin{equation}
+    \mathcal{E} = \mathcal{E}_0 \subset \mathcal{E}_1 \supset \hdots \supset \mathcal{E}_k = \mathcal{E}^{(p)}
+\end{equation}
+for $k < \infty$ iterations.  Since $\Theta \subset \mathbb{R}^p$ and $\mathcal{E} \subset \mathbb{R}^n$, we provide the following approach which uses Monte Carlo simulation in an approach which is inspired by Bayesian inference, although this approach does not use a Bayesian updating approach.  The goal of this approach is to produce an ensemble of $\bm{\theta}\in \Theta^{(p)}$ and describe this ensemble as a probability distribution which could be used as a starting point in uncertainty quantification propagation.
+
+We propose the following approach:
+\begin{subequations}
+\begin{gather}
+      \Theta_k \rightarrow \hat{Q}_k(\Theta_k) \rightarrow \mathcal{E}_k(\Theta_k) \\
+      \mathcal{E}_k(\Theta_k) \rightarrow \mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \\
+      \mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \rightarrow \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \\
+      \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \rightarrow \Theta_{k+1}
+\end{gather}
+\end{subequations}
+% this paragraph has some notational abuse, but is used for the sake of clarity rather than making the notation mathematical rigorous.
+The notation $\rho(\bm{\theta})$ refers to the joint probability density function that $\bm{\theta} \in \Theta^{P}$.
+Intuitively, one can think of
+$\rho(\bm{\theta})\Delta\bm{\theta}$
+as the probability that a random variable drawn from $\rho(\bm{\theta})$ will fall within the infinitesimal compact set $[\bm{\theta},\bm{\theta}+\Delta\bm{\theta}]$
+
+Even if $\Theta$ is defined as compact, $\hat{Q}$ may not be bounded.  By construction $\hat{q}_i > 0 $, however $\hat{q}_i$ may not be bounded from above.  There exists $\bm{\theta} \in \Theta$ which produces pathological members of the Pareto set.  Specifically, there is exists $\bm{\theta} \in \Theta$ such that $\bm{\epsilon}(\theta) \in \mathcal{E}^(p)$, but produces an $\epsilon_i(\bm{\theta}) > \epsilon_{i,max}$ for at least one $i\in\{1,...,n\}$, where $\epsilon_{i,max}$ is an arbitrary performance requirement.
+
+We generalize Eq
+To estimate $\Theta^{(p)}$, we simplify the drawing of samples from a uniform distribution defined by hyperrectangles which defines $\Theta$The choice of
+\subsubsection{Kernel Density Estimate}
+
+The Kullbach-Leiber divergence\cite{kullback1997} measures the divergence between two probability density functions $f(x)$ and $g(x)$,
+\begin{equation}\label{eq:kld}
+   D(f \parallel g) = \int f(x) \log \frac{f(x)}
+                                          {g(x)} dx
+\end{equation}
+is commonly used in statistics as a measure of similarity between two density distributions, and has the following properties: (1) self-similarity, $D(f \parallel f) = 0$, (2) self-identification, $D(f \parallel g) = 0$ only if $f=g$, and (3) positivity, $D(f \parallel g) \geq 0$ for all $f$ and $g$.
+
+The integral in Equation \ref{eq:kld} can be calculated from Monte Carlo\cite{hershey2007kld}, by drawing a sample $x_i$, from $f$ such that $\mathbb{E}\left[\log\frac{f(x)}{g(x)}\right] = D(f \parallel g)$.  Using $N$ i.i.d. samples $\left\{x_i\right\}_{i=1}^N$, we have
+\begin{equation}
+  \label{eq:kdmc}
+  D_{MC}(f \parallel g) = \frac{1}{N}\sum_i^N \log \frac{f(x)}{g(x)}
+      \rightarrow D(f \parallel g)
+\end{equation}
+as $n \rightarrow \infty$.  The variance of the estimation error is $\frac{1}{N}\mathrm{Var}_f\left[\log\frac{f}{g}\right]$.  To compute $D_{\mathrm{MC}}(f \parallel g)$, we need to generate samples $\left\{x_i\right\}_{i=1}^N$ from $f$.  Then for $1 \leq i \leq N$, evaluate $f(x_i)$ and $g(x_i)$ to calculate $D_{\mathrm{MC}}$.
+
+\section{Methodology}
+To demonstrate the potential of this process to develop a working potential, a Coulumb-Buckingham potential\cite{buckingham1938} is developed for magnesium oxide (MgO).  This pair wise potential for atoms $i$ and $j$
+\begin{equation}
+    \label{eq:buck_eq}
+    V(r_{ij};A,\rho,C)
+        = \frac{Z_i Z_j}{4 \pi \varepsilon_0 r_{ij}}
+            + A \exp(-\frac{r_{ij}}{\rho})
+            - \frac{C}{r_{ij}^6}
+\end{equation}
+where $r_{ij} = \lVert \bm{r}_i - \bm{r}_j \rVert_2$ is the distance between the atoms $i$ and $j$, and $q_i$ are$q_i$ describe the charges of the atoms, and $A$, $B$, and $C$, are the parameters of the potential.  The first term of the potential is the electrostatic potential energy, the second term is repulsive due to the Pauli exclusion principle, and the third term is an attractive van der Waals energy.
+
+We use the same relevant assumptions used in Lewis and Catlow\cite{lewis1985potential}, the Mg-Mg interactions are assumped to be purely coulombic, the Mg-O is considered to be the Born-Mayer form, $A \exp(-r/\rho)$, where the van der Waals term is ignored.
+
+The charge of the atoms is allowed to deviate from their formal charges, provided that $Z_{Mg} = - Z_{O}$, to preserve charge neutrality.
+\subsection{Reference Values}
+
+\subsection{Implementation}
+Implemented in Python using LAMMPS as the molecular dynamics engine as the calculator.  Parrellization is done through MPI.
