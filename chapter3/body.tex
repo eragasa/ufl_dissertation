@@ -1,6 +1,30 @@
 \chapter{A PARETO APPROACH TO PARAMETER OPTIMIZATION}
 
+In the previous chapter, an overview of the different computational tools associated to atomistic simulation were presented to give some idea of interconnectivity and breath of atomistic simulations.  Within this chapter, we outline the Pareto approach to potential optimization within the context of more typical current appraoches to potential development.
+
+The structure of this chapter starts off by framing potential development the broadest mathematical framework possible since the purpose of this dissertation is to identify new techniques and directions for potential development which have been enabled by a broad set of computational tools which harnesses large amounts of computational power to solve analytically intractable problems in a field broadly known as machine learning.  We introduce potential development as a surrogate model for the true potential energy surface.
+
+\section{Potential Energy Surfaces}
+
+The potential enrgy surface is the energy of a collection of atoms as a function of the positions of its nuclei, ${R}$.  Using the analogy of a landscape, the potential energy surface.  The PES represents a mapping of the positions of the atoms of a material system to an energies.  This creates an energy landscape which allows materials systems to viewed from a topological perspective, which allows the PES to describe the evolution of a system.
+
+In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative cell unit.  The representative cell unit is describe by the three lattice vectors which define the boundaries of the representative cell, and periodic boundaries conditions applied to reflect the translational symmetry of crystalline systems.
+
+Given $r$, $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an analytical approximation of the potential energy surface, so that the concept of a potential energy surface arises.  To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.
+
 Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.  In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).  Here the set of feasible solutons is not known in advance, but is restricted by constraint functions.  We concentrate on nonlinear multiobjective optimization and ignore approaches designed for multiobjective linear programming.
+
+\section{Interatomic Potentials as a Surrgoate Model}
+The goal of developing a interatomic potential is identify a computationally efficient surrogate model, which models the potential energy surface.
+
+\begin{equation}
+  V(\bm{R}) = \hat{V}(\bm{R}) + \epsilon(\bm{R})
+\end{equation}
+
+Here $V$ is the true potential energy surface which is approximated by our potential model $\hat{V}$, which is a function the representation of a collection of atomic positions, $R$.  Since energy is a scalar value, the difference between the potential energy surface we will refer to as the error function, $\epsilon(\bm{R})$.
+
+
+The geometry of a molecule can be described by the collection of the positions of $N$ atoms $\bm{R} = \{\bm{r}_1,...,\bm{r}_N\}$, where the $\bm{r}_i$ could be the set of Cartesian coordinates of the atoms.  These collections of atoms can be transformed to reflect the distances between atom, $\bm{r}_{ij}=\bm{r}_i - \b{r}_j$ as used in pair potentials, the angles between atoms $\bm{r}_{ijk}$ as in three body potentials.
 
 Additionally, the approach described within this chapter is described briefly and is followed on by more detailed discussions and application in following chapters and appendices.  The emphasis of the development of this methdology will be on the mathematical aspects of the subject and it's applications to the development of classical empirical potentials.  The intent is to provide tools for a decision maker, rather than to convince which particular optimization to use.
 
@@ -48,6 +72,8 @@ Then for the purposes potential development, a potential can than be viewed as a
 Since $\hat{\bm{q}}$ is a function of of the potential $V$, then we denote this relationship
 $\hat{\bm{q}}(\bm{\theta})$ and
 $\hat{\bm{Q}}(\bm{\theta})$.
+
+
 
 \subsection{Fitting Database}
 A fitting database is a collection of structure property functions $q_i$ with an associated atomic configurations, also referred to as structures.

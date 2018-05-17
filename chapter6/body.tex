@@ -1,11 +1,80 @@
 \chapter{POTENTIAL DEVELOPMENT SOFTWARE}
 
+Pypospack was written in python to leverage the strength of python as a high-level language for writing scientific applications.  Python has a liberal open source license which makes the distribution of the application without license issues.  Since Python is available on many platform, there are few issues with portability between platform.
+
+Python flexible syntax allows potential developers to either use the pypospack library to define a potential develop process as a simple procedural script, or allow the developers to encapulate implementation details away from the end users.
+
+We look at the success of the materials project, where the materials properties can be predicted by solving fundamental laws of physics using quantum mechanical appoximation such as density functional theory (DFT).  This virtual testing of materials was employed to design and optimize materials \emph{in silico}.
+
+The success of these approaches is largely driven that epistemic uncertainty associated with DFT calculations are largely driven by the unknown functional form of the exchange correlation functional.
+
+Contrast this to molecular dynamics, where $V(\bm{r}_{ij})$ has uncertainty in both the functional form and parameterization.  Before attacking problems with functional form,
+
+Let us first consider, three fairly simple systems which are widely studied, where the fundamental physics are significantly different.  Metal systems are described by
+
+NiAl
+MgO
+SiGe
+
+\emph{In silico} approaches to molecular dynamics simulation is largely constrained by long development times required to develop a potential.  Molecular dyanamics simulations are largely dominated
+
+Within the ICME approach, different levels of theory lead to different methods of simulation which span the quantum mechanical level, currently dominated by \emph{ab initio} techniques such as Density Functional Theory (DFT) to the engineering scale.  Between these two scales there are atomistic level Molecular Dynamics/Monte Carlo techniques and meso scale simulations.
+
+Pypospack is written as a library to help bridge the \emph{ab initio} techniques to high si
+
+
+
+Error estimation may be monitored through the time-evolution of the ensemble average.  However, this is a necessary, but not sufficient condition for convergence, because plateaus of the ensemble average often conceal anomalous overlap of the density of stats characterizing the initial and final states.  The latter should be the key criterion to ascertain the local convergence of the simulation for those degrees of freedom that are effectively sampled.
+
+Statistical errors in FEP calculations may be estimated by means of a first-order expansion of free energy, which involves an estimation of the sampling ratio of the latter of the calculation (Straatsma, 1986)
+
+\begin{equation}\label{eq:helmoholtz_free_energy}
+  A = U-TS + \sum \mu_i N_i
+\end{equation}
+
+\begin{equation}\label{eq:gibbs_free_energy}
+  G = U+PV-TS + \sum \mu_i N_i = H - TS + \sum \mu_i N_i
+\end{equation}
+
 This software is a collection of software libaries which can be scripted together to evaluate software.
+
+Weight free approaches to developing potentials, such as genetic algorithms, exist and use the concept of Pareto efficiency as metric in which to efficiency of a potential.
+
+Pypospack helps to resolve the problems for potential developers by eliminating the requirements for developing code for MPI and complex queueing systems.  Instead functionality is developed by exposing high-level APIs to potential developers, while the implementation by lower level APIs is done by the software itself.
+
+This allows potential developers to focus on the creation of a testing database, to define reference structure property relationships.  Pypospack then uses an evolutionary algorithm based upon evolving a probability distribution which describes the density of Pareto optimal points in the parameter set.
+
+A series of reusable analytical tools are also developed for the purposes of ad hoc data analysis, and automated data analysis, which aids the potential developer to select potentials ex-post, and then to test these ensembles of potentials against other structure property relationships which are more expensive.
+
+Since the description of the solution of potentials is represented as a probability distribution, the package can be adopted to Bayesian inference techniques which will enable UQ on predictions which represent the propagation of uncertainty to potential development.
+
+Finally, this package also provides some tools to begin to tackle problems of model form uncertainty, transferribility, etc.
 
 This project required the development of software for the development of Pareto frontier.
 
+\section{Representation of Atomic Structures}
+
+
+\section{Quantities of Interest}
+
+Let us start our discussion of the calculation of point defects by starting reviewing the notion of Kr\"oger-Vink notation\cite{kroger1956_notation}
+
+\section{Tasks}
+
+\section{Processing Pipeline}
+Currently the architecture consists of server side application which are intended to evaluate a large numbers of parameterizations for a defined functional form.
+
+The parameter sampling framework was designed as to make parallelization trivially simple.
+
+Within a single simulation
+
+\section{Implementation of the OpenKIM API}
+
 In order to support the largest number of classical potentials, software was written in python using object oriented techniques so that new types of simulations, new potentials, new quantities of interest, and new simulation software.
 
+\section{Possible Scalability Issues}
+
+At the current time, pypospack built upon the scientific python stack.
 Evaluation of interatomic potentials.  This software subprocesses either serial version of LAMMPS or GULP to calculate properties of interest.  Parallelization is batched processed across iterations, which each processor rank being given a unique directory space to prevent IO conflicts.
 
 Supports Buckingham, Tersoff, and EAM potentials.  PYPOSPACK was largely developed to support LAMMPS simulations, but has limited support for GULP as well.
@@ -17,3 +86,8 @@ PyposmatEngine.  The purpose of this class is to evaluate a given parameterizati
 QoiManager
 
 TaskManager
+
+
+The Materials Project\cite{Jain2013_materialsproject}
+Materials Application Programming Interface (MAPI) \cite{ong2015_mapi}
+Python Materials Genomics\cite{ong2013_pymatgen}
