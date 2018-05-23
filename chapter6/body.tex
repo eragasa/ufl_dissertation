@@ -1,11 +1,42 @@
 \chapter{POTENTIAL DEVELOPMENT SOFTWARE}
 
+Classical interatomic potential reduce the quantum-mechanical interactions of electrons and nuclei to an effective interaction between a collection of atoms described by an analytical set of functions.
+This greatly reduces the computational effort in molecular dynamics (MD) simulations.
+
+Potentials are typically obtained by determining the potential paramters which optmize a set of reference data, which typically includes experimental values such as lattice contants, cohesive energies, elastic constants, and are supplemented with \emph{ab-initio} obtained data such as defect formation energies.
+
+In this section, the potential development software Python Potential Operational Software Package (\emph{pypospack}), is presented which is a software library which automates the development of analytical interatomic potentials using evolutionary stochastic optimization techniques, described in the previous chapter.
+
+Like other potential development software packages, \emph{pypospack} was developed to seprate the process of parameter optimization from the selection of the analytical form of the potental.  \emph{pypospack} separates itself from other packages by designed using object-oriented methods which enables users of this software to quickly integrate new potentials, material properties, or even optimization techniques.
+
+Additionally, \emph{pypospack}
+
+Moreover, \emph{pypospack} takes a different approach to the development of potentials by identifying a set of Pareto optimal potentials through an evolutionary stochastic optimization algorithm.
+
+In particular, the software is written with the assumption that the potential developer may not have
+
+\section{Implementation}
 Pypospack was written in python to leverage the strength of python as a high-level language for writing scientific applications.  Python has a liberal open source license which makes the distribution of the application without license issues.  Since Python is available on many platform, there are few issues with portability between platform.
 
 Python flexible syntax allows potential developers to either use the pypospack library to define a potential develop process as a simple procedural script, or allow the developers to encapulate implementation details away from the end users.
 
 We look at the success of the materials project, where the materials properties can be predicted by solving fundamental laws of physics using quantum mechanical appoximation such as density functional theory (DFT).  This virtual testing of materials was employed to design and optimize materials \emph{in silico}.
 
+\subsection{Material System Representation}
+
+Currently, \emph{pypospack} uses the POSCAR file format utilized by VASP as the primary input definition of atomic configuration files to represent different types of structures.
+
+In addition, \emph{pypospack} has a compatibiity layer with the atomistic simulation envioronment (ASE).  This provides capability with a wide variety of structure files.
+
+\subsection{Parallelization}
+
+Since \emph{pypospack} uses Monte Carlo sampling as the workhorse for estimation, the computational effort can be parallelized over the parameter space being searched.  Concurrency is implemented by assigning each processor a different random seed and number of simulations is divded equally amongst the processors.  To avoid issues with file access, each rank is given it's own directory and the results are processed by the rank $0$ processor at the end of each iteration.
+
+Currency is done though \emph{mpi4py} which provides a python interface to the standard Message Passing Interface (MPI), since the implementation details are taken care of by \emph{mpi4py}, \emph{pypospack} supports the broad range of MPI implementations.
+
+\subsection{Energy Evaluations}
+
+The energy evaluation of \emph{pypospack} is done through an integration layer which has been implemented for both GULP and LAMMPS.  The choice to use an external energy calculator rather than implementing one internally was chosen to minimize
 The success of these approaches is largely driven that epistemic uncertainty associated with DFT calculations are largely driven by the unknown functional form of the exchange correlation functional.
 
 Contrast this to molecular dynamics, where $V(\bm{r}_{ij})$ has uncertainty in both the functional form and parameterization.  Before attacking problems with functional form,
