@@ -370,23 +370,27 @@ We say that $\bm{\theta}_n$ is Pareto efficient if $\nexists \bm{\theta}_i \in \
 The Pareto set $\Theta^{(p)}$ is the set of all Pareto effcient points, that is the set of nondominated points.  While performance requirements have not yet been encoded to determine $\bm{\theta}^*$, this point must fall in the Pareto set, $\bm{\theta}^* \in \Theta$.  If $\epsilon_i$ are competiing, then clearly there are parameterizations which performs well with respect to $\epsilon_i$, but poorly with respect to $\epsilon_j$.
 
 We originally defined $\Theta$ as a compact space of the parameters ${\bm{\theta}}$ defining the feasible $\theta$-space.  In a deterministic approach we would want to identify an algorithm such that we start with feasible set of parameterizations and constrains the sets of parameterizations until it produces a set of parameterizations which produces the Pareto set in $\epsilon$-space, that is a process
+
 \begin{equation}
     \Theta = \Theta_0 \supset \Theta_1 \supset \hdots \supset \Theta_k = \Theta^{(p)}
 \end{equation}
+
 which produces due to Eq \ref{eqn:def_Q} and \ref{eqn:def_E}
+
 \begin{equation}
     \mathcal{E} = \mathcal{E}_0 \subset \mathcal{E}_1 \supset \hdots \supset \mathcal{E}_k = \mathcal{E}^{(p)}
 \end{equation}
+
 for $k < \infty$ iterations.  Since $\Theta \subset \mathbb{R}^p$ and $\mathcal{E} \subset \mathbb{R}^n$, we provide the following approach which uses Monte Carlo simulation in an approach which is inspired by Bayesian inference, although this approach does not use a Bayesian updating approach.  The goal of this approach is to produce an ensemble of $\bm{\theta}\in \Theta^{(p)}$ and describe this ensemble as a probability distribution which could be used as a starting point in uncertainty quantification propagation.
 
 We propose the following approach:
 \begin{subequations}
-\begin{gather}
-      \Theta_k \rightarrow \hat{Q}_k(\Theta_k) \rightarrow \mathcal{E}_k(\Theta_k) \\
-      \mathcal{E}_k(\Theta_k) \rightarrow \mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \\
-      \mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \rightarrow \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \\
-      \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \rightarrow \Theta_{k+1}
-\end{gather}
+	\begin{gather}
+	      \Theta_k \rightarrow \hat{Q}_k(\Theta_k) \rightarrow \mathcal{E}_k(\Theta_k) \\
+	      \mathcal{E}_k(\Theta_k) \rightarrow \mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \\
+	      \mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \rightarrow \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \\
+	      \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \rightarrow \Theta_{k+1}
+	\end{gather}
 \end{subequations}
 % this paragraph has some notational abuse, but is used for the sake of clarity rather than making the notation mathematical rigorous.
 The notation $\rho(\bm{\theta})$ refers to the joint probability density function that $\bm{\theta} \in \Theta^{P}$.
@@ -400,14 +404,14 @@ We generalize Eq
 To estimate $\Theta^{(p)}$, we simplify the drawing of samples from a uniform distribution defined by hyperrectangles which defines $\Theta$The choice of
 \subsubsection{Kernel Density Estimate}
 
-The Kullbach-Leiber divergence\cite{kullback1997} measures the divergence between two probability density functions $f(x)$ and $g(x)$,
+The Kullbach-Leiber divergence\cite{kullback1951_kld} measures the divergence between two probability density functions $f(x)$ and $g(x)$,
 \begin{equation}\label{eq:kld}
    D(f \parallel g) = \int f(x) \log \frac{f(x)}
                                           {g(x)} dx
 \end{equation}
 is commonly used in statistics as a measure of similarity between two density distributions, and has the following properties: (1) self-similarity, $D(f \parallel f) = 0$, (2) self-identification, $D(f \parallel g) = 0$ only if $f=g$, and (3) positivity, $D(f \parallel g) \geq 0$ for all $f$ and $g$.
 
-The integral in Equation \ref{eq:kld} can be calculated from Monte Carlo\cite{hershey2007kld}, by drawing a sample $x_i$, from $f$ such that $\mathbb{E}\left[\log\frac{f(x)}{g(x)}\right] = D(f \parallel g)$.  Using $N$ i.i.d. samples $\left\{x_i\right\}_{i=1}^N$, we have
+The integral in Equation \ref{eq:kld} can be calculated from Monte Carlo\cite{hershey2007_kld_approx}, by drawing a sample $x_i$, from the statstical distribution of $f$ such that $\mathbb{E}\left[\log\frac{f(x)}{g(x)}\right] = D(f \parallel g)$.  Using $N$ i.i.d. samples $\left\{x_i\right\}_{i=1}^N$, we have
 \begin{equation}
   \label{eq:kdmc}
   D_{MC}(f \parallel g) = \frac{1}{N}\sum_i^N \log \frac{f(x)}{g(x)}
@@ -416,7 +420,8 @@ The integral in Equation \ref{eq:kld} can be calculated from Monte Carlo\cite{he
 as $n \rightarrow \infty$.  The variance of the estimation error is $\frac{1}{N}\mathrm{Var}_f\left[\log\frac{f}{g}\right]$.  To compute $D_{\mathrm{MC}}(f \parallel g)$, we need to generate samples $\left\{x_i\right\}_{i=1}^N$ from $f$.  Then for $1 \leq i \leq N$, evaluate $f(x_i)$ and $g(x_i)$ to calculate $D_{\mathrm{MC}}$.
 
 \section{Methodology}
-To demonstrate the potential of this process to develop a working potential, a Coulumb-Buckingham potential\cite{buckingham1938} is developed for magnesium oxide (MgO).  This pair wise potential for atoms $i$ and $j$
+To demonstrate the potential of this process to develop a working potential, a Coulumb-Buckingham potential\cite{lewis1985_pot_buck_oxides} is developed for magnesium oxide (MgO).  
+This pair wise potential for atoms $i$ and $j$
 \begin{equation}
     \label{eq:buck_eq}
     V(r_{ij};A,\rho,C)
@@ -424,9 +429,11 @@ To demonstrate the potential of this process to develop a working potential, a C
             + A \exp(-\frac{r_{ij}}{\rho})
             - \frac{C}{r_{ij}^6}
 \end{equation}
-where $r_{ij} = \lVert \bm{r}_i - \bm{r}_j \rVert_2$ is the distance between the atoms $i$ and $j$, and $q_i$ are$q_i$ describe the charges of the atoms, and $A$, $B$, and $C$, are the parameters of the potential.  The first term of the potential is the electrostatic potential energy, the second term is repulsive due to the Pauli exclusion principle, and the third term is an attractive van der Waals energy.
+where $r_{ij} = \lVert \bm{r}_i - \bm{r}_j \rVert_2$ is the distance between the atoms $i$ and $j$, and $q_i$ are$q_i$ describe the charges of the atoms, and $A$, $B$, and $C$, are the parameters of the potential.  
 
-We use the same relevant assumptions used in Lewis and Catlow\cite{lewis1985potential}, the Mg-Mg interactions are assumped to be purely coulombic, the Mg-O is considered to be the Born-Mayer form, $A \exp(-r/\rho)$, where the van der Waals term is ignored.
+The first term of the potential is the electrostatic potential energy, the second term is repulsive due to the Pauli exclusion principle, and the third term is an attractive van der Waals energy.
+
+We use the same relevant assumptions used in Lewis and Catlow\cite{lewis1985_pot_buck_oxides}, the Mg-Mg interactions are assumped to be purely coulombic, the Mg-O is considered to be the Born-Mayer form, $A \exp(-r/\rho)$, where the van der Waals term is ignored.
 
 The charge of the atoms is allowed to deviate from their formal charges, provided that $Z_{Mg} = - Z_{O}$, to preserve charge neutrality.
 \subsection{Reference Values}
