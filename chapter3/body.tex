@@ -2,19 +2,37 @@
 
 In the previous chapter, an overview of the different computational tools associated to atomistic simulation were presented to give some idea of interconnectivity and breath of atomistic simulations.  Within this chapter, we outline the Pareto approach to potential optimization within the context of more typical current appraoches to potential development.
 
-The structure of this chapter starts off by framing potential development the broadest mathematical framework possible since the purpose of this dissertation is to identify new techniques and directions for potential development which have been enabled by a broad set of computational tools which harnesses large amounts of computational power to solve analytically intractable problems in a field broadly known as machine learning.  We introduce potential development as a surrogate model for the true potential energy surface.
+The structure of this chapter starts off by framing potential development the broadest mathematical framework possible since the purpose of this dissertation is to identify new techniques and directions for potential development which have been enabled by a broad set of computational tools which harnesses large amounts of computational power to solve analytically intractable problems in a field broadly known as machine learning.  
+
+This chapter consists of three sections.  In the first section, we introduce the idea of a potential energy surface and how interatomic potentials can be thought of as computational inexpensive surrogate models, and we introduce the terminology of potential development as well as some broad concepts of potential optimization.  
+Next, we build up the notation and terminology of general optimization from a broad mathematical standpoint, first covering the more familiar single-objective optimization then multiobjective optimization.
+In the third section, we combine the discussion of the first and second section, to cast the problem of potential development as a multi-objective optimization utilizing the concepts and notation common to most.  
+In particular, we discuss the the current techniques to potential optimization which are applied to potential optimzation as well as some of the mathematical problems and issues of certain approach, and then clearly demonstrate that multi-objective optimization is dependent upon the concept of Pareto optimality.
 
 \section{Potential Energy Surfaces}
 
-The potential enrgy surface is the energy of a collection of atoms as a function of the positions of its nuclei, ${R}$.  Using the analogy of a landscape, the potential energy surface.  The PES represents a mapping of the positions of the atoms of a material system to an energies.  This creates an energy landscape which allows materials systems to viewed from a topological perspective, which allows the PES to describe the evolution of a system.
+The potential enrgy surface is the energy of a collection of atoms as a function of the positions of its nuclei, $\{\bm{R}\}$.  
+Using the analogy of a landscape, the potential energy surface (PES)represents a mapping of the positions of the atoms of a material system to an energies.  
+This creates an energy landscape which allows materials systems to viewed from a topological perspective, which allows the PES to describe the evolution of a system.
+\\
+In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative cell unit.  
+The representative cell unit is describe by the three lattice vectors, 
+	$\bm{a}_1$,
+	$\bm{a}_2$,
+and 
+	$\bm{a}_3$, 
+which define the boundaries of the representative cell, and periodic boundaries conditions applied to reflect the translational symmetry of crystalline systems.
+\\
+Given an atomic arrangement $\bm{r}$, $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an analytical approximation of the potential energy surface, so that the concept of a potential energy surface arises.  
+To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.
+\\
 
-In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative cell unit.  The representative cell unit is describe by the three lattice vectors which define the boundaries of the representative cell, and periodic boundaries conditions applied to reflect the translational symmetry of crystalline systems.
-
-Given $r$, $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an analytical approximation of the potential energy surface, so that the concept of a potential energy surface arises.  To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.
-
-Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.  In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).  Here the set of feasible solutons is not known in advance, but is restricted by constraint functions.  We concentrate on nonlinear multiobjective optimization and ignore approaches designed for multiobjective linear programming.
-
-\section{Interatomic Potentials as a Surrgoate Model}
+The geometry of a molecule can be described by the collection of the positions of $N$ atoms 
+	$\bm{R} = \{\bm{r}_1,...,\bm{r}_N\}$, 
+	where the $\bm{r}_i$ could be the set of Cartesian coordinates of the atoms.  
+These collections of atoms can be transformed to reflect the distances between the two atoms $i$ and $j$, 
+	$\bm{r}_{ij}=\bm{r}_i - \b{r}_j$ as used in pair potentials, the angles between atoms $\bm{r}_{ijk}$ as in three body potentials.
+\subsection{Interatomic Potentials as a Surrgoate Model}
 The goal of developing a interatomic potential is identify a computationally efficient surrogate model, which models the potential energy surface.
 
 \begin{equation}
@@ -24,15 +42,34 @@ The goal of developing a interatomic potential is identify a computationally eff
 Here $V$ is the true potential energy surface which is approximated by our potential model $\hat{V}$, which is a function the representation of a collection of atomic positions, $R$.  Since energy is a scalar value, the difference between the potential energy surface we will refer to as the error function, $\epsilon(\bm{R})$.
 
 
-The geometry of a molecule can be described by the collection of the positions of $N$ atoms $\bm{R} = \{\bm{r}_1,...,\bm{r}_N\}$, where the $\bm{r}_i$ could be the set of Cartesian coordinates of the atoms.  These collections of atoms can be transformed to reflect the distances between atom, $\bm{r}_{ij}=\bm{r}_i - \b{r}_j$ as used in pair potentials, the angles between atoms $\bm{r}_{ijk}$ as in three body potentials.
-
 Additionally, the approach described within this chapter is described briefly and is followed on by more detailed discussions and application in following chapters and appendices.  The emphasis of the development of this methdology will be on the mathematical aspects of the subject and it's applications to the development of classical empirical potentials.  The intent is to provide tools for a decision maker, rather than to convince which particular optimization to use.
 
 Secondly, another purpose of the development of this methdology is the development of parameterizations which can be expressed as an ensemble of potentials described as a probability distribution function which can be used in UQ propogation.
 
+
+\section{Optimization}
+
+Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.  
+In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).  
+Here the set of feasible solutons is not known in advance, but is restricted by constraint functions.  
+We concentrate on nonlinear multiobjective optimization and ignore approaches designed for multiobjective linear programming.
+\\
+However, before discussing multiple objective optimization we will first discuss single-objective optimization to introduce the terminology and notation used throughout the rest of this book.
+
+To introduce the terminology used within this work, it is instructive to dispose of implementation specifics of algorithms and numerical estimation techniques, and think of an optimization problem in terms of sets.
+
+
+Without resorting to calculus, we can think of optimization using concepts of sets.  
+Suppose that the function $F:A \to \bm{R}$, represents a quantity we wish to optimize.  
+Here $A$ is typically subset of Euclidean space $\bm{R}^n$, but could be mathematically formulated to include non-quantitative data or functionals.
+Then the goal of single objective optimization is to select the element $\bm{x_0} \in A$, such that $F(\bm{x_0} \leq F(\bm{x}$ for all $\bm{x} \in A$.
+
+
+
 \section{Multiobjective optimization}
 
-The general multi-objection optimization problem using the notation of Marler and Arora\cite{Marler2004_moo_survey}:
+change
+Using the notation of Marley and Arora\cite{marler2004_moo_survey}, the general multi-objective optimization problem (MOO) is expressed mathematically as
 %\begin{equation}
 \begin{align}
   & \underset{\bm{x}}{\text{minimize}}
@@ -48,17 +85,28 @@ The general multi-objection optimization problem using the notation of Marler an
 %\end{equation}
 where $k$ is the number of objective functions, $m$ is the number of inequality constraints, and $e$ is the number of equality constraints.
 The vector $\bm{x} \in \bm{X} \subseteq \mathbb{R}^n$ is a vector design variables $x_i$, and $X$ is feasible design space.
-$\bm{F}(\bm{x}) \in \mathbb{R}^k$
-are called objectives, cost functions, or criteria.  The feasible critereon space $Z$ is defined as
+$\bm{F}(\bm{x}) \in \mathbb{R}^k$ are called objectives, cost functions, or criteria.  The feasible critereon space $Z$ is defined as
 $\{\bm{F}(\bm{x}) | \bm{x} \in \bm{X} \}$.
 
+The objective function,
+    $F_1(\bm{x}):\mathbb{R^n} \rightarrow \mathbb{R}$,
 For MOOs, the objectives are generally conflicting, preventing simultaneous optimization.
 
 \subsection{Pareto optimality}
 
-If all functions are for minimization, a feasible solution $\bm{x}_1$ is said to dominate another feasible solution $\bm{x}_2$, denoted $\bm{F}(\bm{x}_1 \succ \bm{x}_2)$, if and only if $F_i(\bm{x}_1)\leq F_i(\bm{x}_2)$ for $i = 1,...,k$ and $F_j(\bm{x}_1)< F_j(\bm{x}_2$) for at least one objective function $j$.  A solution is said to be Pareto optimal if it is not dominated by any other solution in the solution space.  A Pareto optimal solution cannot be improved with respect to any objective without worsening at least one objective function.  The set of all feasible non-dominated solutions in $X$ is referred to as the Pareto optimal set, and for a given Pareto optimal set, the corresponding values in the objective space are called the Pareto Front.
+If all functions are for minimization, a feasible solution $\bm{x}_1$ is said to dominate another feasible solution $\bm{x}_2$, denoted $\bm{F}(\bm{x}_1 \succ \bm{x}_2)$, if and only if $F_i(\bm{x}_1)\leq F_i(\bm{x}_2)$ for $i = 1,...,k$ and $F_j(\bm{x}_1)< F_j(\bm{x}_2$) for at least one objective function $j$.  A solution is said to be Pareto optimal if it is not dominated by any other solution in the solution space.  
 
-\section{Parameter Estimation as a Multiobjective Optimization Problem}
+A Pareto optimal solution cannot be improved with respect to any objective without worsening at least one objective function.  The set of all feasible non-dominated solutions in $X$ is referred to as the Pareto optimal set, and for a given Pareto optimal set, the corresponding values in the objective space are called the Pareto Front.
+
+We can contrast this to single objective function optimization.  
+If $\bm{F}(\bm{x}) = F(\bm{x})$, then this problem becomes a scalar optimization problem.  
+The Karush-Kuhn-Tucker conditions \cite{karush1939_kkt,kuhn1951_kkt} are necessary to solve non-linear optimzation problems.
+Often this is stated as the condition that $F\bm{x})$ is convex with respect to the convex set $\bm{x}$, that is that the inequality constraints, $g_i(\bm{x}$.
+If $F(\bm{x})$ is convex with respect to the domain of $\bm{x}$, the solution can be solved with elementary multivariate calculus methods.  
+
+\section{Application for Potential Development}
+
+At the heart of this work, the development
 Parameter estimation can be stated as a MOO problem.
 While this is occasionally stated in potential development literature, it is often within the context of the use of global optimization techniques.
 The purpose of this section is provide a clear methodological approach to determining the optimal parameters within the context of MOO, and elucidate the problems often encountered in potential development specifically to the choice of optimization techniques often employed in potential development.
