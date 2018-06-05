@@ -6,11 +6,52 @@ We then approach higher order models which reduces computational intensity by lo
 
 % http://cmt.dur.ac.uk/sjc/thesis_prt/node21.html
 \section{The Many-Body Problem}
+
+\subsection{Born-Oppenheimer Approximation}
+The Born-Oppenheimer approximation \cite{born1927_bo} is ubiquitous in \emph{ab initio} calculations, and forms the justification for classical empirical potentials.  The kinetic energy is ignored since the heavy nulclei move more slowly than electrons.  For the remaining interaction terms of the Hamiltonian, the nuclear positions are clamped at certain positions in space, the electron-nuclei interactions are not removed, since the electrons are still influenced by the Coulomb potential of the nuclei.  This allows us to factor the wavefunction as
+\begin{equation}
+	\Psi(\bm{R}_i,\bm{r}_\alpha) = \Xi(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i)
+\end{equation},
+where $\Xi(\bm{R}_i)$ describes the nuclei, and $\Phi(\bm{r}_\alpha;\bm{R}_i)$ describes the electrons parameterized by the clamped position of $\bm{R}_i$.  In turn, the Hamiltonian is solve able as two Schr\"{o}dinger's equations.  The first equation contains the electronic degrees of freedom.
+\begin{equation}
+\label{eq:BO_electronic}
+     H_{e}\Phi(\bm{r}_\alpha;\bm{R}_i)=U(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i)
+\end{equation}
+where
+\begin{equation}
+	H_e = \sum_\alpha \frac{p_\alpha}{2m}
+	      + \frac{1}{2} \sum_{ij} \frac{Z_i Z_j e^2}{r_{ij}}
+	      + \frac{1}{2} \sum_{\alpha\beta} \frac{e^2}{r_{\alpha\beta}}
+	      - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
+\end{equation}
+Eqn. \ref{eq:BO_electronic} gives the energy $U(\bm{R}_i)$ which depends on the clamped coodinates of $\bm{R}_i$.  The electronic effects are contained in $U(\bm{R}_i)$ and is incorporated into the second equation which the motion of the nuclei
+\begin{equation}
+\label{eq:BO_nuclei}
+    H_n\Xi(\bm{R}_i)=E\Xi(\bm{R}_i)
+\end{equation}
+where
+\begin{equation}
+\label{eq:H_n}
+    H_n = \sum_i \frac{P_i}{2m_i} + U(\bm{R_i})
+\end{equation}
+
 Hartree and Hartree-Fock Methods
 \section{Density Functional Theory}
+
+Density Functional Theory is a simplification of the many body electron function by relating the wave function of the system of interest to the electron density of the system, where the firm theoretical underpinning are established by the Hohenberg-Kohn theorems\cite{hohenberg1964_dft}.
+
+The first Hohenberg-Kohn theorem demonstrates that the ground state properties of a many electron system are uniquely determined by an electron density that only depends on the three spatial coordinates.  This reduces the many-body problem of $N$ electrons with $3N$ spartial coordinates to three spatial coordinates, through the use of functionals of the electron density.  
+
+The second Hohenberg-Kohn theorem defines an energy functional and proves that the correct ground electron density also minimizes this energy functional.  Since DFT is a ground state
 \subsection{The Exchange Correlation Term}
 \section{Density Functional Theory for Solids}
 \subsection{Representation of an Infinite Solid}
+
+The potential energy, $V$ is only dependent upon the relative internal coordinates of the system.  
+For a system with $N$ atoms indexed by $i$, there are $3N$ total coordinates for the system,
+	$\bm{r_{i}}=(r_{i1},r_{i2},r_{i3})$
+In the absence of an external field, an atomic system potential energy is invariant of translations and rotations in space.
+
 \subsection{Bloch's Theorem}
 \subsection{Plane Wave Formulation}
 \subsection{k-point sampling}
@@ -49,32 +90,6 @@ The justification for the use of classical empirical potentials can be demonstra
 	    - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
 \end{equation}
 The first terms are kinetic energy terms, the latter terms are the nuclei-nuclei, electron-electron, and nuclei-electron interactions.  Ideally, the solution of Schr\"{o}dinger's equation, $H\Psi=E\Psi$ could be solved providing the total wavefunction $\Psi(\bm{r}_i,\bm{r_\alpha})$.  Except for the simplest of systems, this approach is impossible computationally.
-The Born-Oppenheimer approximation \cite{born1927_bo} is ubiquitous in \emph{ab initio} calculations, and forms the justification for classical empirical potentials.  The kinetic energy is ignored since the heavy nulclei move more slowly than electrons.  For the remaining interaction terms of the Hamiltonian, the nuclear positions are clamped at certain positions in space, the electron-nuclei interactions are not removed, since the electrons are still influenced by the Coulomb potential of the nuclei.  This allows us to factor the wavefunction as
-\begin{equation}
-	\Psi(\bm{R}_i,\bm{r}_\alpha) = \Xi(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i)
-\end{equation},
-where $\Xi(\bm{R}_i)$ describes the nuclei, and $\Phi(\bm{r}_\alpha;\bm{R}_i)$ describes the electrons parameterized by the clamped position of $\bm{R}_i$.  In turn, the Hamiltonian is solve able as two Schr\"{o}dinger's equations.  The first equation contains the electronic degrees of freedom.
-\begin{equation}
-\label{eq:BO_electronic}
-     H_{e}\Phi(\bm{r}_\alpha;\bm{R}_i)=U(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i)
-\end{equation}
-where
-\begin{equation}
-	H_e = \sum_\alpha \frac{p_\alpha}{2m}
-	      + \frac{1}{2} \sum_{ij} \frac{Z_i Z_j e^2}{r_{ij}}
-	      + \frac{1}{2} \sum_{\alpha\beta} \frac{e^2}{r_{\alpha\beta}}
-	      - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
-\end{equation}
-Eqn. \ref{eq:BO_electronic} gives the energy $U(\bm{R}_i)$ which depends on the clamped coodinates of $\bm{R}_i$.  The electronic effects are contained in $U(\bm{R}_i)$ and is incorporated into the second equation which the motion of the nuclei
-\begin{equation}
-\label{eq:BO_nuclei}
-    H_n\Xi(\bm{R}_i)=E\Xi(\bm{R}_i)
-\end{equation}
-where
-\begin{equation}
-\label{eq:H_n}
-    H_n = \sum_i \frac{P_i}{2m_i} + U(\bm{R_i})
-\end{equation}
 This later equation does not contain any electronic degrees of freedom, because all electronic effects are incorporated into $U(\bm{R}_i)$ which is the interatomic potential.  For molecular dynamics, Schr\"{o}dinger's equation is replaced with Newton's equation of motion.
 \section{Molecular Dynamics}
 Molecular dyanmics (MD) is a simulation approach where the time evolution of aset of interacting atoms is followed by numerically solving their equations of motion.  In MD, the behavior of atoms follow Newtonian mechanics:
