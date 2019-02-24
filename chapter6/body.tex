@@ -13,7 +13,29 @@ Additionally, \emph{pypospack}
 
 Moreover, \emph{pypospack} takes a different approach to the development of potentials by identifying a set of Pareto optimal potentials through an evolutionary stochastic optimization algorithm.
 
-In particular, the software is written with the assumption that the potential developer may not have
+Software for potential software development is by necessity a complicated piece of software which draws expertise from many disciplines for software development.  The goal of pypospack is not to deliver a monolithic software application, but provide a software with a flexible software architectural library from which potential developers can quickly create their own potential optimziation software, by leveraging an object-orient software framework based upon a series of core packages, which deliver specific functionality to \emph{pypospack}.
+
+\section{Software Architecture}
+
+\emph{pypospack} is a object-oriented framework, written in Python3 and targeted to a packages curated and maintained to the Anaconda software distribution.
+
+\subsection{Data}
+\subsection{Atomic Structure Files}
+
+\emph{pypospack} uses a a custom class SimulationCell which describes atomic positions as a representative unit volume, bounded by the three lattice vectors, $\bm{a}_1$, $\bm{a}_2$, and $\bm{a}_3$, where $\bm{a}_i=[a_{i1},a_{i2},a_{i3}]$.  These are stored locally by an $H$-matrix representation,
+\begin{equation}\label{eq:H-matrix}
+     H=\left[\right] =
+      \begin{bmatrix}
+        a_{11}&a_{12}&a_{13}\\
+        a_{21}&a_{22}&a_{23}\\
+        a_{31}&a_{32}&a_{33}
+      \end{bmatrix}
+\end{equation}
+
+\subsection{Configuration File}
+One of the goals of \emph{pypospack} is to make it easy for any user to get started quickly
+
+In particular, the software is written to alleviate the potential developer from understanding the complete implementation of all the algorithms for sampling, potential development, calculation of
 
 \section{Implementation}
 Pypospack was written in python to leverage the strength of python as a high-level language for writing scientific applications.  Python has a liberal open source license which makes the distribution of the application without license issues.  Since Python is available on many platform, there are few issues with portability between platform.
@@ -22,6 +44,7 @@ Python flexible syntax allows potential developers to either use the pypospack l
 
 We look at the success of the materials project, where the materials properties can be predicted by solving fundamental laws of physics using quantum mechanical appoximation such as density functional theory (DFT).  This virtual testing of materials was employed to design and optimize materials \emph{in silico}.
 
+\emph{pypospack}
 \subsection{Material System Representation}
 
 Currently, \emph{pypospack} uses the POSCAR file format utilized by VASP as the primary input definition of atomic configuration files to represent different types of structures.
@@ -43,9 +66,13 @@ Contrast this to molecular dynamics, where $V(\bm{r}_{ij})$ has uncertainty in b
 
 Let us first consider, three fairly simple systems which are widely studied, where the fundamental physics are significantly different.  Metal systems are described by
 
-NiAl
-MgO
-SiGe
+\subsection{Statistical Sampling}
+
+Statistical Sampling
+
+\subsection{Machine Learning Algorithms}
+
+SciKitLearn
 
 \emph{In silico} approaches to molecular dynamics simulation is largely constrained by long development times required to develop a potential.  Molecular dyanamics simulations are largely dominated
 

@@ -1,5 +1,8 @@
 \chapter{THE MANY BODY PROBLEM AND ATOMISTIC METHODS}
-
+\hfuzz=20pt
+\vfuzz=20pt
+\hbadness=20000
+\vbadness=\maxdimen
 The properties of a system may be obtained by solving the quantum mechanical (QM) wave equation which governs the system dynamics.  For non-relativistic system, this equation is the Schrodinger's equation.  For all but the simplest systems, this approach in an impossible task in practice; the resulting many body problem has only been solved for a limited number of system.  Within this chapter we outline the many body problem, it's intractibility before considering the Hohenberg-Kohn-Sham formulation of density functional theory (DFT), particularly in it's formulation it's application for systems with periodic boundary conditions.  This reformulates quantuim mechanics, using electron density as the fundamental parameter to solve, rather than the many-electron wavefuction.  This takes the $N$-body problem and recasts it into $N$ single-body problems; which is a dramatic simplification.
 
 We then approach higher order models which reduces computational intensity by looking at classical empirical potentials and their role in both molecular dynamics and lattice dynamics.
@@ -40,14 +43,14 @@ Hartree and Hartree-Fock Methods
 
 Density Functional Theory is a simplification of the many body electron function by relating the wave function of the system of interest to the electron density of the system, where the firm theoretical underpinning are established by the Hohenberg-Kohn theorems\cite{hohenberg1964_dft}.
 
-The first Hohenberg-Kohn theorem demonstrates that the ground state properties of a many electron system are uniquely determined by an electron density that only depends on the three spatial coordinates.  This reduces the many-body problem of $N$ electrons with $3N$ spartial coordinates to three spatial coordinates, through the use of functionals of the electron density.  
+The first Hohenberg-Kohn theorem demonstrates that the ground state properties of a many electron system are uniquely determined by an electron density that only depends on the three spatial coordinates.  This reduces the many-body problem of $N$ electrons with $3N$ spartial coordinates to three spatial coordinates, through the use of functionals of the electron density.
 
 The second Hohenberg-Kohn theorem defines an energy functional and proves that the correct ground electron density also minimizes this energy functional.  Since DFT is a ground state
 \subsection{The Exchange Correlation Term}
 \section{Density Functional Theory for Solids}
 \subsection{Representation of an Infinite Solid}
 
-The potential energy, $V$ is only dependent upon the relative internal coordinates of the system.  
+The potential energy, $V$ is only dependent upon the relative internal coordinates of the system.
 For a system with $N$ atoms indexed by $i$, there are $3N$ total coordinates for the system,
 	$\bm{r_{i}}=(r_{i1},r_{i2},r_{i3})$
 In the absence of an external field, an atomic system potential energy is invariant of translations and rotations in space.
@@ -56,8 +59,8 @@ In the absence of an external field, an atomic system potential energy is invari
 \subsection{Plane Wave Formulation}
 \subsection{k-point sampling}
 \section{Empirical Interatomic Potentials}
-The interatomic potential $U(\bm{R}_i)$ derived from the Born-Oppenheimer approximation is derived from a quantum-mechanical perspective.  The computational cost of \emph{ab initio} such as density-functional theory (DFT) can provide accurate structural energies and forces, but their computational cost limits approaches to compute $U(\bm{R}_i)$ makes the scientific inquiry of systems requiring longer simulation times or larger number of atoms to captures relevant feature sizes unreasonable.
-
+The interatomic potential $U(\bm{R}_i)$ derived from the Born-Oppenheimer approximation is derived from a quantum-mechanical perspective.
+The computational cost of \emph{ab initio} such as density-functional theory (DFT) can provide accurate structural energies and forces, but their computational cost limits approaches to compute $U(\bm{R}_i)$ makes the scientific inquiry of systems requiring longer simulation times or larger number of atoms to captures relevant feature sizes unreasonable.
 An empirical interatomic potential $V(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $U(\bm{R}_i)$.  The total energy of a potential of $N$ atoms with an interaction described by the empirical potential, $V$, can be expanded in a many body expansion.
 \begin{equation}
 	V(\bm{r}_1,...,\bm{r}_N)= \sum_i V_1(\bm{r}_i)

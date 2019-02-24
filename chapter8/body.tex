@@ -10,34 +10,39 @@ In the development of the Finnis-Sinclair method, the second-moment tight-bindin
 
 \section{Embedded Atom Model}
 
-For metallic systems, the most common potential forms are those of the Finnis-Sinclar method\cite{finnis1984_potential_fs} and the embedded atom model (EAM) \cite{daw1984_potential_eam}.  
-Both of these approaches have similar formalisms which combine a pair-potential function and an energy functional dependent upon the electron density contributions from an atoms neighbors with the total energy of the system $V$ being described as 
+For metallic systems, the most common potential forms are those of the Finnis-Sinclar method\cite{finnis1984_potential_fs} and the embedded atom model (EAM) \cite{daw1983_potential_eam_1,daw1984_potential_eam_2}.
+Both of these approaches have similar formalisms which combine a pair-potential function and an energy functional dependent upon the electron density contributions from an atoms neighbors with the total energy of the system $V$ being described as
 
 \begin{equation}
   V=\sum_{i<j}\phi_{s_i s_j}(r_{ij})
 	+\sum_{i}F_{s_i}(\bar{\rho}_{i})
 \end{equation}
 
-The first term is the summation over all neighbors of a pair potential of a pair potential energy($\phi_{ij}$) between two atoms, $i$ and $j$, with the chemical species, $s_i$ and $s_j$.  
-The second term is the embedding energy ($F_i$) necessary to place the atom $i$ at its position in an electron gas density ($\bar{\phi}_i$) influenced by all the neighbors of the atom.  
-In the Finnis-Sinclair potential, $F_{s_i}(\bar{\rho})=-\sqrt(\bar{\rho}_i)$ 
-
+The first term is the summation over all neighbors of a pair potential of a pair potential energy($\phi_{ij}$) between two atoms, $i$ and $j$, with the chemical species, $s_i$ and $s_j$.
+The second term is the embedding energy ($F_i$) necessary to place the atom $i$ at its position in an electron gas density ($\bar{\phi}_i$) influenced by all the neighbors of the atom.
 In EAM, the host electron density is given by the sum of the contributions $\rho_i$ is represented by the sum of the contributions $\rho_{s_j}(r)$ from all neighboring atoms $j$.
 \begin{equation}
 	\bar{\rho}_i = \sum_{j \neq i} \rho_{s_j}(r_{ij})
 \end{equation}
 
+In the Finnis-Sinclair potential, $F_{s_i}(\bar{\rho})=-\sqrt(\bar{\rho}_i)$
 
+\section{Approaches to EAM Potential Development}
 
-The original formulation of the EAM represented the reepulsion between the atomic cores (nuclei and inner electron shells), represented by a power law or an Born-Mayer type exponential function.  Later EAM pair potentials used Morse Functions[10,19,20].
+The original formulation of the EAM represented the reepulsion between the atomic cores (nuclei and inner electron shells), represented by a power law or an Born-Mayer type exponential function.  In these cases, the pair potential, $\phi$, is purely repulsive, while the embedding energy $F$ was attractive.
+Later EAM pair potentials used Morse Functions[10,19,20], which has a distinct energy well, while the embedding function in these cases serves as a corrective term.
 
 In either case, the electron density function and the pair potential are given as analytic functions of the radial separation of two atoms $r_{ij}$ with fitted parameters.  The embedding function is sometimes specified as having a specific functional form, or determined by fitting the embedding function to an equation of state such as Rose \emph{et al}[21].
 
-For Nickel, Johnson and Oh[22], Voter-Chen[19,23], Angelo \emph{et al}[20] have used parametric functional forms, where Ercolessi and Adams[24] and Mishin \emph{25} implemented cubic-spline approaches, which do not specify an analytical functional form.
+For Nickel, Johnson and Oh\cite{johnson1989_eam_embedded_bjs}, Voter-Chen[19,23], Angelo \emph{et al}[20] have used parametric functional forms, where Ercolessi and Adams[24] and Mishin \emph{25} implemented cubic-spline approaches, which do not specify an analytical functional form.
 
 In early potential development, the parameters are adjusted to match properties such cohesive energy, lattice parameters, elastic properties, and vacancy formation energies.  With additional computational power, stacking fault energies, phase order differences, and surface energies to fit to important relevant environments thought to be important to produce transferrable potentials.
 
-\section{Approaches to EAM Potential Development}
+\section{Development of an EAM potential}
+
+Even when a potential has an analytical functional form. EAM potentials are specified in a functional form which is dependent a specific code format which precalculates evaluation of the $\phi(r_{ij})$, $\rho(r_{ij})$, and $F(\bar{\rho})$.  Specifics of this calculation are provided in Appendex \ref{appendix:setfl}.
+\section{Cutoff function}
+
 
 
 \section{Generalized Stacking Fault in FCC}

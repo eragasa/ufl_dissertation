@@ -1,89 +1,110 @@
-\chapter{A PARETO APPROACH TO PARAMETER OPTIMIZATION}
+\chapter{Pareto Optimality and Potential Development}
 
 In the previous chapter, an overview of the different computational tools associated to atomistic simulation were presented to give some idea of interconnectivity and breath of atomistic simulations.  Within this chapter, we outline the Pareto approach to potential optimization within the context of more typical current appraoches to potential development.
 
-The structure of this chapter starts off by framing potential development the broadest mathematical framework possible since the purpose of this dissertation is to identify new techniques and directions for potential development which have been enabled by a broad set of computational tools which harnesses large amounts of computational power to solve analytically intractable problems in a field broadly known as machine learning.  
+The structure of this chapter starts off by framing potential development the broadest mathematical framework possible since the purpose of this dissertation is to identify new techniques and directions for potential development which have been enabled by a broad set of computational tools which harnesses large amounts of computational power to solve analytically intractable problems in a field broadly known as machine learning.
 
-This chapter consists of three sections.  In the first section, we introduce the idea of a potential energy surface and how interatomic potentials can be thought of as computational inexpensive surrogate models, and we introduce the terminology of potential development as well as some broad concepts of potential optimization.  
+This chapter consists of three sections.  In the first section, we introduce the idea of a potential energy surface and how interatomic potentials can be thought of as computational inexpensive surrogate models, and we introduce the terminology of potential development as well as some broad concepts of potential optimization.
 Next, we build up the notation and terminology of general optimization from a broad mathematical standpoint, first covering the more familiar single-objective optimization then multiobjective optimization.
-In the third section, we combine the discussion of the first and second section, to cast the problem of potential development as a multi-objective optimization utilizing the concepts and notation common to most.  
+In the third section, we combine the discussion of the first and second section, to cast the problem of potential development as a multi-objective optimization utilizing the concepts and notation common to most.
 In particular, we discuss the the current techniques to potential optimization which are applied to potential optimzation as well as some of the mathematical problems and issues of certain approach, and then clearly demonstrate that multi-objective optimization is dependent upon the concept of Pareto optimality.
 
 \section{Potential Energy Surfaces}
 
-The potential enrgy surface is the energy of a collection of atoms as a function of the positions of its nuclei, $\{\bm{R}\}$.  
-Using the analogy of a landscape, the potential energy surface (PES)represents a mapping of the positions of the atoms of a material system to an energies.  
+The potential energy surface is the energy of a collection of atoms as a function of the positions of its nuclei, $\{\bm{R}\}$.
+Using the analogy of a landscape, the potential energy surface (PES) represents a mapping of the positions of the atoms of a material system to an energies.
 This creates an energy landscape which allows materials systems to viewed from a topological perspective, which allows the PES to describe the evolution of a system.
-\\
 
-\section{Coordinates of Atoms}
+From a mathematical representation, the PES is a a function, ${V:\bm{R}\rightarrow E}$, which maps a high dimensional interatomic configuration, $\bm{R}$, onto the set of real numbers representing energies, $E\in\mathbb{R}$.
+To describe empirical potentials, we first start with a a mathematical description of configuration space both from a crystallographic perspective, but how this crystallgraphic perspective can be translated into other representation common with empirical potentials.
 
+Next we discuss
 
-In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative cell unit.  
-The representative cell unit is describe by the three lattice vectors, 
-	$\bm{a}_1$,
-	$\bm{a}_2$,
-and 
-	$\bm{a}_3$, 
-which define the boundaries of the representative cell, and periodic boundaries conditions applied to reflect the translational symmetry of crystalline systems.
-\\
-Given an atomic arrangement $\bm{r}$, $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an analytical approximation of the potential energy surface, so that the concept of a potential energy surface arises.  
-To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.
-\\
+\subsection{Configuration Space}
+In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative unit.
+This representative unit is referred to as a unit cell, which defines that boundaries, the volume, the lattice positions of each atom.
 
-The geometry of a molecule can be described by the collection of the positions of $N$ atoms 
-	$\bm{R} = \{\bm{r}_1,...,\bm{r}_N\}$, 
-	where the $\bm{r}_i$ could be the set of Cartesian coordinates of the atoms.  
-These collections of atoms can be transformed to reflect the distances between the two atoms $i$ and $j$, 
-	$\bm{r}_{ij}=\bm{r}_i - \b{r}_j$ as used in pair potentials, the angles between atoms $\bm{r}_{ijk}$ as in three body potentials.
-\subsection{Interatomic Potentials as a Surrgoate Model}
-The goal of developing a interatomic potential is identify a computationally efficient surrogate model, which models the potential energy surface.
-
+The boundaries of the unit cell are defined are defined by three lattice vectors, defined in three dimensional Euclidean space, $\mathbb{R}^3$.
+Thethe three lattice vectors, $\bm{a}_1$, $\bm{a}_2$, and $\bm{a}_3$, with $\bm{a_i}\in\mathbb{R}^3$.
+Each atom $i$ is identified by a chemical species, and its atomic position ${\bm{r_i}=\{r_1,r_2,r_3\}}$, where $\bm{a}_1 \in \mathbb{R}^3$,which defines the boundaries of the representative cell, and periodic boundaries conditions applied to reflects the translational symmetry of crystalline systems.
+Each lattice vector can be represented as a translational operator, $T_i$ for $i={1,2,3}$, such that, $T_i(\bm{r}=\bm{r})$
 \begin{equation}
-  V(\bm{R}) = \hat{V}(\bm{R}) + \epsilon(\bm{R})
+    T(\bm{r}_i) = \bm{r}_i
+		    + n_1 \bm{a}_1
+				+ n_2 \bm{a}_2
+				+ n_3 \bm{a}_3, \forall i \in \mathbb{Z}
 \end{equation}
 
-Here $V$ is the true potential energy surface which is approximated by our potential model $\hat{V}$, which is a function the representation of a collection of atomic positions, $R$.  Since energy is a scalar value, the difference between the potential energy surface we will refer to as the error function, $\epsilon(\bm{R})$.
+\subsection{Pair Wise Interactions}
 
+\subsection{Three Body Interactions}
 
-Additionally, the approach described within this chapter is described briefly and is followed on by more detailed discussions and application in following chapters and appendices.  The emphasis of the development of this methdology will be on the mathematical aspects of the subject and it's applications to the development of classical empirical potentials.  The intent is to provide tools for a decision maker, rather than to convince which particular optimization to use.
-
-Secondly, another purpose of the development of this methdology is the development of parameterizations which can be expressed as an ensemble of potentials described as a probability distribution function which can be used in UQ propogation.
-
-
-\section{Optimization}
-
-Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.  
-In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).  
-Here the set of feasible solutons is not known in advance, but is restricted by constraint functions.  
-We concentrate on nonlinear multiobjective optimization and ignore approaches designed for multiobjective linear programming.
+\subsection{Many Body Interations}
+Given an atomic arrangement $\bm{r}$, $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an analytical approximation of the potential energy surface, so that the concept of a potential energy surface arises.
+To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.
 \\
-However, before discussing multiple objective optimization we will first discuss single-objective optimization to introduce the terminology and notation used throughout the rest of this book.
+The geometry of a molecule can be described by the collection of the positions of $N$ atoms
+	$\bm{R} = \{\bm{r}_1,...,\bm{r}_N\}$,
+	where the $\bm{r}_i$ could be the set of Cartesian coordinates of the atoms.
+These collections of atoms can be transformed to reflect the distances between the two atoms $i$ and $j$,
+	$\bm{r}_{ij}=\bm{r}_i - \bm{r}_j$
+	as used in pair potentials, the angles between atoms $\bm{r}_{ijk}$ as in three body potentials.
+\section{Empirical Interatomic Potentials}
+The goal of developing a interatomic potential is identify a computationally efficient surrogate model, which models the potential energy surface.
+\begin{equation}\label{eq:pes_approximation}
+  V(\bm{R}) = \hat{V}(\bm{R}) + \epsilon(\bm{R})
+\end{equation}
+Here $V$ is the true potential energy surface which is approximated by our potential model $\hat{V}$, which is a function the representation of a collection of atomic positions, $\bm{R}$.
+Throuhout this work, the use of the hat over a variable indicates that the quantity is an approximation of the actual value.
+Since energy is a scalar value, the difference between the potential energy surface we will refer to as the error function,
+\begin{equation}\label{eq:error_function_pes}
+	\epsilon(\bm{R})=V(\bm{R})-\hat{V}(\bm{R}).
+\end{equation}
+\\
+With an empirical potential, $\hat{V}$, is parameterized by a vector of $N$ values,
+${\bm{\theta}=\{\theta_1,...,\theta_N\}}$.
+In the forward use of a potential, the parameters are considered to be fixed, $\hat{V}(\bm{R}:\bm{\theta})$, where the parameterization $\bm{\theta}$ is treated as fixed, and the function is considered vary with respect to the configuration of atoms, $\bm{R}$.
+However, potential development is an inverse problem where the potential developer is looking to determine the best parameterization, $\bm{\theta}^*$, based upon a fixed set of atomic configurations, as in the force-matching method of Ercolessi and Adams\cite{ercolessi1994_fitting_forcematching}, or are probed interdirectly through the calculation of specific material properties.
+As a result, the empirical potential treated as varying due to changing the parameterization, $\bm{\theta}$, while keeping the set of atomic configurations fixed $\bm{R}$.  For the application of the potential development, we can rewrite Equation\ref{eq:error_function_pes}, where the error function is a function of the parameterization, while keeping the set of interatomic configurations fixed.
+\begin{equation}
+	\epsilon(\bm{\theta}:\bm{R})=V(\bm{R})-\hat{V}(\bm{\theta}\bm{R})
+\end{equation}
+\\
+A more popular approach in potential developmet comes from fitting an interatomic potential so that predicted values of material properties predicted by the interatomic potential corresponds with either high-fidelity predictions done through more computationally expensive \emph{ab initio} calculations or directly through experimental observations.
+The material properties calculated are referred to as a quantity of interest, $q$, while the predictions made by the potential denoted, $\hat{q}$.  Since $\hat{q}$ is ultimately detemined from energy calculations upon atomic structures, either directly or though numerical estimation, we can think of
+$\hat{q}:(\hat{V}(\bm{\theta}),\{\bm{R}_1,...\bm{R}_N\}) \rightarrow \mathbb{R}$.
+\begin{equation}
+	\epsilon(\bm{\theta}:\{\bm{R}_1,...,\bm{R}_N\})=\hat{q}(\bm{\theta}:\{\bm{R}_1,...,\bm{R}_N\})-q
+\end{equation}
+\subsection{}
 
+\section{Multi-objective optimization}
+
+Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.
+In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).
+
+\subsection{Loss Functions}
+
+What follows is a discussion of single objective optimization within the context of potential development before discussing multiple objective optimization  before discussing multiple objective optimization we will first discuss single-objective optimization to introduce the terminology and notation used throughout the rest of this book.
+We
 To introduce the terminology used within this work, it is instructive to dispose of implementation specifics of algorithms and numerical estimation techniques, and think of an optimization problem in terms of sets.
-
-
-Without resorting to calculus, we can think of optimization using concepts of sets.  
-Suppose that the function $F:A \to \bm{R}$, represents a quantity we wish to optimize.  
 Here $A$ is typically subset of Euclidean space $\bm{R}^n$, but could be mathematically formulated to include non-quantitative data or functionals.
 Then the goal of single objective optimization is to select the element $\bm{x_0} \in A$, such that $F(\bm{x_0} \leq F(\bm{x}$ for all $\bm{x} \in A$.
 
-
-
-\section{Multiobjective optimization}
-
-change
+The problem of potential development can be cast as an optimization problem.  L
+We start by casting the problem of potential development by adopting the The general multi-objective optimization (MOO)
 Using the notation of Marley and Arora\cite{marler2004_moo_survey}, the general multi-objective optimization problem (MOO) is expressed mathematically as
 %\begin{equation}
 \begin{align}
-  & \underset{\bm{x}}{\text{minimize}}
-        &\bm{F}(\bm{x}) = [ F_1(\bm{x}),
-                            F_2(\bm{x}),
-                            ...,
-                            F_k(\bm{x})]^T\\
+  & \underset{\bm{\theta}\in\Theta}{\text{minimize}}
+        &\bm{L}(\bm{\theta}) = [
+				    L_1(\bm{\theta}),
+            L_2(\bm{\theta}),
+            ...,
+            L_N(\bm{\theta})]^T\\
   & \text{subject to}
         &g_j(\bm{x}) \leq 0, j=1,2,...,m \\
-  &     &h_l(\bm{x}) = 0, l=,1,2,...,e \\
+  &     &h_k(\bm{x}) = 0, l=,1,2,...,n \\
   &     &\bm{x} \in \bm{X}
 \end{align}
 %\end{equation}
@@ -95,18 +116,18 @@ $\{\bm{F}(\bm{x}) | \bm{x} \in \bm{X} \}$.
 The objective function,
     $F_1(\bm{x}):\mathbb{R^n} \rightarrow \mathbb{R}$,
 For MOOs, the objectives are generally conflicting, preventing simultaneous optimization.
-
+\subsection{Cost function method}
 \subsection{Pareto optimality}
 
-If all functions are for minimization, a feasible solution $\bm{x}_1$ is said to dominate another feasible solution $\bm{x}_2$, denoted $\bm{F}(\bm{x}_1 \succ \bm{x}_2)$, if and only if $F_i(\bm{x}_1)\leq F_i(\bm{x}_2)$ for $i = 1,...,k$ and $F_j(\bm{x}_1)< F_j(\bm{x}_2$) for at least one objective function $j$.  A solution is said to be Pareto optimal if it is not dominated by any other solution in the solution space.  
+If all functions are for minimization, a feasible solution $\bm{x}_1$ is said to dominate another feasible solution $\bm{x}_2$, denoted $\bm{F}(\bm{x}_1 \succ \bm{x}_2)$, if and only if $F_i(\bm{x}_1)\leq F_i(\bm{x}_2)$ for $i = 1,...,k$ and $F_j(\bm{x}_1)< F_j(\bm{x}_2$) for at least one objective function $j$.  A solution is said to be Pareto optimal if it is not dominated by any other solution in the solution space.
 
 A Pareto optimal solution cannot be improved with respect to any objective without worsening at least one objective function.  The set of all feasible non-dominated solutions in $X$ is referred to as the Pareto optimal set, and for a given Pareto optimal set, the corresponding values in the objective space are called the Pareto Front.
 
-We can contrast this to single objective function optimization.  
-If $\bm{F}(\bm{x}) = F(\bm{x})$, then this problem becomes a scalar optimization problem.  
+We can contrast this to single objective function optimization.
+If $\bm{F}(\bm{x}) = F(\bm{x})$, then this problem becomes a scalar optimization problem.
 The Karush-Kuhn-Tucker conditions \cite{karush1939_kkt,kuhn1951_kkt} are necessary to solve non-linear optimzation problems.
 Often this is stated as the condition that $F\bm{x})$ is convex with respect to the convex set $\bm{x}$, that is that the inequality constraints, $g_i(\bm{x}$.
-If $F(\bm{x})$ is convex with respect to the domain of $\bm{x}$, the solution can be solved with elementary multivariate calculus methods.  
+If $F(\bm{x})$ is convex with respect to the domain of $\bm{x}$, the solution can be solved with elementary multivariate calculus methods.
 
 \section{Application for Potential Development}
 
@@ -424,7 +445,7 @@ The integral in Equation \ref{eq:kld} can be calculated from Monte Carlo\cite{he
 as $n \rightarrow \infty$.  The variance of the estimation error is $\frac{1}{N}\mathrm{Var}_f\left[\log\frac{f}{g}\right]$.  To compute $D_{\mathrm{MC}}(f \parallel g)$, we need to generate samples $\left\{x_i\right\}_{i=1}^N$ from $f$.  Then for $1 \leq i \leq N$, evaluate $f(x_i)$ and $g(x_i)$ to calculate $D_{\mathrm{MC}}$.
 
 \section{Methodology}
-To demonstrate the potential of this process to develop a working potential, a Coulumb-Buckingham potential\cite{lewis1985_pot_buck_oxides} is developed for magnesium oxide (MgO).  
+To demonstrate the potential of this process to develop a working potential, a Coulumb-Buckingham potential\cite{lewis1985_pot_buck_oxides} is developed for magnesium oxide (MgO).
 This pair wise potential for atoms $i$ and $j$
 \begin{equation}
     \label{eq:buck_eq}
@@ -433,7 +454,7 @@ This pair wise potential for atoms $i$ and $j$
             + A \exp(-\frac{r_{ij}}{\rho})
             - \frac{C}{r_{ij}^6}
 \end{equation}
-where $r_{ij} = \lVert \bm{r}_i - \bm{r}_j \rVert_2$ is the distance between the atoms $i$ and $j$, and $q_i$ are$q_i$ describe the charges of the atoms, and $A$, $B$, and $C$, are the parameters of the potential.  
+where $r_{ij} = \lVert \bm{r}_i - \bm{r}_j \rVert_2$ is the distance between the atoms $i$ and $j$, and $q_i$ are$q_i$ describe the charges of the atoms, and $A$, $B$, and $C$, are the parameters of the potential.
 
 The first term of the potential is the electrostatic potential energy, the second term is repulsive due to the Pauli exclusion principle, and the third term is an attractive van der Waals energy.
 

@@ -1,8 +1,14 @@
-\chapter{INTRODUCTION}
-\label{intro}
+\chapter{INTRODUCTION}\label{intro}
 
-Despite the promise shown by empirical atomistic modeling, the difficulty in developing interatomic potentials leads to long development times when developing empirical potentials due to problems in paramterization.
+Despite the promise of molecular dynamics, the difficulty in developing interatomic potentials leads to long developments when developing empirical potentials due to problems in determining an optimal parameterization.
 
-We present an emerging framework for the automated development of potentials.  Instead of looking to develop the optimal parameterization which is expected to replicate a large range of values.  We accept that the development of an potential largely involves a decision of tradeoffs determined by the potential developer, these expression of preferences is inherently subjective.
+This work presents and emergent frameworkk for the automated development of potentials based upon sampling from a distribution and evolution of that distribution so that the final distribution represents the set of parameterizations which can be described in a way as efficient.
+
+This work is broken up into multiple sections, all which have
+
+
+We present an emerging framework for the automated development of potentials.
+Instead of looking to develop the optimal parameterization which is expected to replicate a large range of values.
+We accept that the development of an potential largely involves a decision of tradeoffs determined by the potential developer, these expression of preferences is inherently subjective.
 
 Instead of developing a large monolithic application, which is difficult to extend, modify, and implement.  Pypospack is conceived largely as software library which defines structure property relationships, how the structure property relationships are calculated, the process management of molecular dynamic simulations, parallel sampling, and potential selection.
