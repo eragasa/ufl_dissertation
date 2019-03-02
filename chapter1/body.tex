@@ -1,13 +1,54 @@
 \chapter{INTRODUCTION}\label{intro}
 
+As compututational power has increased so has the size and complexity of the simulations.
+
+The use of analytical empirical potentials has been part of computational materials science from the start, including problems with lattice dynamics, molecular dynamics, and other charges.
+
 Despite the promise of molecular dynamics, the difficulty in developing interatomic potentials leads to long developments when developing empirical potentials due to problems in determining an optimal parameterization.
 
 This work presents and emergent frameworkk for the automated development of potentials based upon sampling from a distribution and evolution of that distribution so that the final distribution represents the set of parameterizations which can be described in a way as efficient.
 
-This work is broken up into multiple sections, all which have
+We present an novel framework for the automated development of potentials.
+\section{}
+\section{Modernizing Analytical Potential Development}
+
+The modernization of analytical potential development needs to provide: (1) clearly define the problem in it's most general terms in what maybe, at times, in a more rigorous mathematical exposition than what is normally presented, (2) identify the problems with existing methodologies by bringing in terminology and notation from different fields to provide a more general framework for the problem of potential development, (3) provide a baseline implementation of this framework, which while begin largely pedagogical provides results which are analytical, transparent, and robust, and (4) provide an automation framework upon which to do the work.
+
+This work starts with an appropriate level of introduction to the major toolsets in computational materials science in Chapter 2, where we start from a quantum mechanical approaches to solutions to the potential energy surface, a function which maps the configuration space of atomic descriptors onto energies, focusing specifically on Density Functional Theory, which is often used to augment (and often completely replaces) experimental observations.  From here, we look to two tools where analytical potentials are most often used (1) molecular dynamic simulations, and (2) lattice dynamics simulations.  For completeness, a discussion of higher level tools and how these tools are necessary to bridge scale.
+
+In the third chapter, the empirical interatomic potential is described as approximation as the potential energy surface.
+In the traditional approach to potential development, an objective function described as the weighted sum of square differences between the analytical potential predicted values for a finite set of material properties and their respective target values, a set property structure relationships which are known as the fitting database.
+This objective function in minimized usually through either constrained or unconstrained optimization techniques dependent upon a quadratic programming algorithm dependent upon first-order derivatives for optimization.  In this chapter, we show that this method for even identifying the global minimum due to issues with (1) regularization, (2) necessary conditions for a solution are likely not satisfied (Karush-Kuhn-Tucker conditions), and at the very least impossible to prove.
+As a result, quadratic programming techniques are likely unsuitable, except when an initial guess to the target parameterization is already known.
+This problem is hinted at in discussions in literature in discussions in a move from local optimization vs global optimization algorithms.
+However, more damning is that even when these conditions are met, the optimal paramaterization is dependent upon a vector of weights, which uniquely determines the parameterization.
+That is, potential development is inherently a subjective process dependent upon the preferences of the user, which largely cannot be determine with certainty at the beginning of the process.
+
+The ramification of chapter 3 is that potential optimization is NP-hard when preferences are fixed is that probing acceptable potentials by a mechanism of varying weights is computationally brutal, and reevaluates areas in parameter space which have already been solved.
+Chapter 4 starts a framework for sampling in parameter space beginning with statistical concepts and links it to approaches in machine learning with genetic algorithms.
+
+This work first starts with what is hoped an appropriate level of theory required to understand the necessities for automating the problem.
+In much of the literature, there is rather extensive discussion of techniques and applications of techniques, but the supporting justification and rationalization of these techniques is necessarily short due to the format of publications.
+Even when discussing older approaches, appropriate review articles have been identified from different fields into order to provide insight to the problem of potential development.
 
 
-We present an emerging framework for the automated development of potentials.
+In the development of a solid methodology and a description of potential development automation, it is necessary first describe the major computational tools used within the framework of machine learning.  Specifically, the tools of Density Functional Theory, Molecular Dynamics, and Lattice Dynamics are briefly discussed to provide a sense of what is common and what is different between these computational approaches.  This is covered in chapter 2.
+
+Chapter 3 describes which to is referred to the the traditional approach to potential development.  Potential development is normally described as a quadratic programming optimization problem, applied to a description of a problem which it is not normally suited for.  However, this problem has never really been discussed clearly and explains why more recently many potential developers have moved from potential development
+
+
+
+ather than being competitive, \emph{ab initio} computational techniques are often integrated into potential development
+Despite promising work with the development of machine learning potentials, which drastically increases the size of the functional space to describe a potential energy surface, these approaches require large amounts of computational resources to develop the requisite fitting datasets.
+This data is necessary for this data hungry approach as into ensure that the problem is not in functionally underdetermined due to large degrees of freedom associated with the functional form.
+Moreover, neural networks models themselves are NP-hard problems which maps the current configuration of the neural net onto potential configuration space, requiring an extraordinary computational effort to determine the most effective parameter optimization.
+It should not be confused that neural networks are not an optimization solution, but actually an optimization problem, which are aided by different machine learning techniques which are dependent upon sampling
+
+This work takes a contrary, but complimentary approach by addressing the concerns readily brought force by this new avenue of study.
+The promise of machine learning potentials is provide \emph{ab initio} level accuracy at a fraction of the cost of \emph{ab initio} techniques.
+
+It is the opinion of the author, that the development of analytical empirical potentials has largely been retarded by the lack of standard tools and analytical frameworks.
+Despite the ubiquity of molecular dynamics
 Instead of looking to develop the optimal parameterization which is expected to replicate a large range of values.
 We accept that the development of an potential largely involves a decision of tradeoffs determined by the potential developer, these expression of preferences is inherently subjective.
 
