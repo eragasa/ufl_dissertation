@@ -49,24 +49,67 @@ where
 \label{eq:H_n}
     H_n = \sum_i \frac{P_i}{2m_i} + U(\bm{R_i})
 \end{equation}
+Direct solution of the Schr{\"o}dinger equation for the electrons in a molecule is demanding because of the Coulomb repulsion between them.
+
 \subsection{Hartree and Hartree Fock Methods}
 
-Hartree starts with the variational principle for the groundstate function by a adopting a product \emph{ansatz}:
+The Hartree method\cite{hartree1928_hartree,slater1928_hartree,gaunt1928_hartree} applies the variational principle to a product \emph{ansatz} of orthogonal wave functions, known as the Hartree product, to represent the ground state function:
 \begin{equation}
-	\Psi(x_1,x_2,...,x_N)=\phi_1(x_1)\phi_2(x_2)...\psi_n(x_n)
+\label{eq:hartree}
+	\Psi(\bm{x}_1,\bm{x}_2,...,\bm{x}_N)=\psi_1(\bm{x}_1)\psi_2(\bm{x}_2)...\psi_n(\bm{x}_n)
 \end{equation}
-However, this approach did not enforce
-Hartree and Hartree-Fock Methods
+where $\bm{x_i}$ is the set of space-spin coordinates, $\bm{x}_i=\{\bm{r}_i,\omega\}$ with $\omega \in \{\alpha,\beta\}$ being a spin-coordinate.
+However, since electrons are fermions they must follow the Pauli exclusion principle, and must be anti-symmetric under exchange of any of the space-spin coordinates.  The Hartree product does not satisfy the anti-symmetry principle\cite{slater1930_antisymmetry,fock1930_antisymmetry}, which can be demonstrated with a two particle system.  For a two-particle system, the anti-symmetric property can be described as 
+\begin{equation}
+\label{eq:antisymmetry}
+	\Psi(\bm{x}_1,\bm{x}_2) = -\Psi(\bm{x}_2,\bm{x}_1)
+\end{equation}
+and Eq \ref{eq:hartree} clearly fails.
+
+The Hartree–Fock method often assumes that the exact, $N$-body wave function of the system can be approximated by a single Slater determinant from a system of electrons.  By invoking the variational method, one can derive a set of $N$-coipled equations for the $N$ spin orbinals.  A solution of these equations yields the Hatree-Fock wave function and energy of the system.
+
 \section{Density Functional Theory}
 
 Density Functional Theory is a simplification of the many body electron function by relating the wave function of the system of interest to the electron density of the system, where the firm theoretical underpinning are established by the Hohenberg-Kohn theorems\cite{hohenberg1964_dft}.
 
-The first Hohenberg-Kohn theorem demonstrates that the ground state properties of a many electron system are uniquely determined by an electron density that only depends on the three spatial coordinates.  This reduces the many-body problem of $N$ electrons with $3N$ spartial coordinates to three spatial coordinates, through the use of functionals of the electron density.
+The first Hohenberg-Kohn theorem demonstrates that the ground state properties of a many electron system are uniquely determined by an electron density that only depends on the three spatial coordinates.  This establishes a one-to-one correspondence between between the electron potentials different densities.  As a result, the electronic energy of a system as a functional of the density.
+\begin{equation}
+	E_{el}=F_{HK}[n]+\int V_{ext}(\bm{r})n(\bm{r})d\bm{r}
+\end{equation}
+This reduces the many-body problem of $N$ electrons with $3N$ spartial coordinates to three spatial coordinates, through the use of functionals of the electron density.
 
+The variational theorem for wavefunction
+\begin{equation}
+	\int \Psi^{(1)*}\hat{H}_{el}^{(1)}\Psi^{(1)} d\bm{X} \leq \int \Psi^*\hat{H}_{el}^{(1)} \Psi d\bm{X}
+\end{equation}
+When the variational theorem for the electon density, $n$,
+The second Hohenberg-Kohn theorem 
 The second Hohenberg-Kohn theorem defines an energy functional and proves that the correct ground electron density also minimizes this energy functional.  Since DFT is a ground state calculation.
 
 
 \subsection{The Exchange Correlation Term}
+
+In Kohn-Sham DFT, only the exchange-correlation energy, $E_{XC}$, as a functional of the electron spin densities $n(\bm{r})$ must be approximated.
+In the introduction to the Kohn-Sham equations\cite{kohn1965_dft}, the local density approximation is introduced,
+The local density approximation is discussed by Kohn and Sham\cite{kohn1965_dft} in the introduction of the Kohn-Sham equations.  
+In the LDA, the exchange energy per particle in each spatial point is taken as the exchange energy per particle from a uniform electron gas with a density equivalent to the density in this same point. \cite{ceperley1980_lda}.  
+Later LDA take similar approaches, \cite{vosko1980_lda_vwm, perdew1981_lda_pz, perdew1992_lda_pw}.
+
+
+\begin{equation}
+	E_{xc}^{LDA}[n]=\int n(\bm{r})e_{xc}^{hom}(n(\bm{r}))d\tau
+\end{equation}
+The generalized gradient approximation(GGA)\cite{langreth1983_gga_1,becke1988_gga_2} introduces a gradient correction 
+\begin{equation}
+	E_{xc}^{GGA}[n]=\int n e_x^{LDA} F_{xc}^{GGA}(n,s)_{n=n(\bm{r})}d\tau,
+\end{equation}
+where
+\begin{equation}
+	s =\left.
+	       \frac{\lvert\nabla n\rvert}{2k_F n}
+	   \right\rvert_{n=n(\bm{r})}
+\end{equation}
+
 \section{Density Functional Theory for Solids}
 \subsection{Representation of an Infinite Solid}
 
@@ -120,7 +163,8 @@ Thus,
 \section{Empirical Interatomic Potentials}
 The interatomic potential $U(\bm{R}_i)$ derived from the Born-Oppenheimer approximation is derived from a quantum-mechanical perspective.
 The computational cost of \emph{ab initio} such as density-functional theory (DFT) can provide accurate structural energies and forces, but their computational cost limits approaches to compute $U(\bm{R}_i)$ makes the scientific inquiry of systems requiring longer simulation times or larger number of atoms to captures relevant feature sizes unreasonable.
-An empirical interatomic potential $V(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $U(\bm{R}_i)$.  The total energy of a potential of $N$ atoms with an interaction described by the empirical potential, $V$, can be expanded in a many body expansion as described in LeSar\cite{lesar}.
+An empirical interatomic potential $\hat{V}(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $U(\bm{R}_i)$.  
+The total energy of a potential of $N$ atoms with an interaction described by the empirical potential, $V$, can be expanded in a many body expansion.
 \begin{equation}
 	V(\bm{r}_1,...,\bm{r}_N)= \sum_i V_1(\bm{r}_i)
 	        + \sum_i \sum_{i<j} V_2(\bm{r}_i,\bm{r}_j)
@@ -136,12 +180,27 @@ More recently, potentials such as GAP and SNAP represent the atomic environment 
 The bispectrum combined with an orthogonal expansion of components is dependent upon large amounts of density functional images to use in the fitting dataset to produce DFT fidelity reproductions of interatomic forces on an atom.
 This chapter reviews typical approaches to fitting empirical potentials.
 
-
-
 \subsection{Thermodynamic Ensembles}
-\subsubsection{Microcanonical (NVE) ensemble}
-\subsubsection{Canonical (NVT) ensemble}
-\subsubsection{NPT}
+The statistical ensembles for molecular dynamics simulations can be defined by looking at the ideal gas law:
+\begin{equation}
+	PV=Nk_B T
+\end{equation}
+The left hand of the equation is the potential energy, $E_P$, of the system, which is balance by right hand of the equation, which is the kinetic energy, $E_k$, of the system.  i
+Pressure ($P$), volume ($V$), and temperature ($T$), and the number of atoms ($N$) are the state variables of the system.
+
+To relate the ideal gas law equation to molecular dynamics, we first start with the simplest state variable, volume, which is the volume of the simulation cell.  The other state variables are fairly easy to determine from quantites which can be calculated from MD simulation.
+
+In molecular dynamics, through Verlet integration we directly calculate the position, $\bm{r}_i$ and velocity, $\bm{v}_i$, of each atom.  The kinetic energy of an atom is 
+\begin{equation}
+	E_k=\frac{1}{1} m\lvert \bm{v} \rvert^2
+\end{equation}
+
+In the first of ensemble, the NVE system constant number (N), volume (V), and energy (E); the sum of kinetic (KE) and potential energy (PE) is conserved, T and P are unregulated
+
+NVT: constant number (N), volume (V), and temperature (T); T is regulated via a thermostat, which typically adds a degree of freedom to the conserved Hamiltonian; for the CPT module in CHARMM, this is a piston whose KE and PE are included in the Hamiltonian; P is unregulated
+
+NPT: as for NVT, but pressure (P) is regulated; again, for the CPT module this is one or more pistons whose KE and PE are added to the Hamiltonian
+
 \section{Lattice Dynamics}
 \section{Calculation of Material Properties}
 \subsection{Structural Properties}

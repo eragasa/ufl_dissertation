@@ -1,10 +1,38 @@
-\chapter{SUMMARY OF WORK}
+\chapter{DIMENSIONALITY REDUCTION}
 
-\section{General Implications}
+In the development of empirical interatomic potentials (EIP), the natural dimensionality of the problem can be daunting.  The representation of the atomic structures, $\bm{R}$, also known as the configuration space.
 
-\section{Future Work}
+In this section, we look into exploratory measures to tackling analysis and sampling in this high-dimensional space.
 
-\section{Robustness of Potentials}
-Sensitive analysis.  Many models use cutoff-radii as an additional parameter to be determined by the fitting process.  Because of the nature of the stacking fault, the GSF energy must depend upon non-nearest neighbor interactions.
-However, a slight alteration of the cutoff-radius was found to have a dramatic impact on the behavior of EAM potentials by Zimmerman.%\cite{Zimmerman2000_Ni_gsf}.  
-He sugests that parameterizeed models should be only slightly sensitive to a change of value for any of it's parameters.  High sensitivity indicates the possibility of unphysical behavior of a model.  This issue should be address when creating a potential to be used in simulations that involve stacking faults.
+We have established in a previous section that even when we a single objective function,
+%\begin{equation}
+%	C(\theta)=\Sum_{N} w_i L_i(\theta)
+%\end{equation}
+that when the problem is convex, the optimization is likely NP-hard.
+As a result, we are looking at mechanisms which reduce the size of the effective search space.
+We expect our initial algorithm to provide many candidate potentials initially, but since sampling techniques converge slowly, the arrival of new candidate potentials slows down, causing the Kullbach-Liebach divergence indicator to indicate an early end to the iteration loop.
+
+\section{Potential}
+
+The interatomic potential, $V$ can be represented in the Born-Oppenheimer approximation as a mapping between the configurational space of atoms, $\bm{X}$, onto the set of possible energies, $U$.
+Since $V:\bm{X} \rightarrow U$, then we can denote this relation as, $V(\bm{x})$, to represent energy for a structure, and $V(\bm{X})$ as potential energy surface.
+
+Since \emph{ab initio} calculations are computational expensive, empirical interatomic potentials, $\hat{V}$ which which are defined by formulae, are often used to simulate larger systems and large time scales.
+If $\bm{\Theta}$ represents the feasible parameterizations for $\hat{V}$, then the vector of $P$ optimal parameters, $\bm{\theta}^{*} = (\theta_1^{*},...,\theta_P^{*})$, must be be contained within the feasible parameterization, $\bm{\theta}^{*} \in \bm{\Theta}$.
+Since $\hat{V}:\bm{\Theta},\bm{X} \rightarrow U$, then it is clear that
+\begin{align}
+  V &= \hat{V} + \varepsilon \\
+  V(\bm{x}) &= \hat{V}(\bm{x},\bm{\theta}) + \varepsilon(\bm{x},\bm{\theta})
+\end{align}
+where $\varepsilon$ is the residual difference between $V(\bm{x})$ and $\hat{V}(\bm{x})$
+ are defined by formulae which are parameterized for a specific material system.  Using the hat notation to denote an estimate,   The set of optimal parameters, $\bm{\theta}^{*} = (\theta_1^{*},...,\theta_P^{*})$ for $P$ parameters
+
+\section{Principal Components Analysis}
+
+Principal component analysis (PCA) is a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables into a set of values linearly uncorrelated variables called principal compoents.
+
+Pearson[1] and Hotelling[2]
+
+\section{Manifold Learning Learning}
+
+\section{Clustering Algorithms}

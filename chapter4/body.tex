@@ -1,6 +1,15 @@
-\chapter{PROBABILITY METHODS} \label{materials}
+\chapter{PROBABILITY METHODS}
+\label{chapter:probability_methods}
 
 \section{Probability}
+
+The discussion of the probability methods used in this work starts with the probability construction by Kolmogorov, which builds probability as a measure of sets, but adapted to the particular necessities of probability.
+This section clarifies terminology used throughout as this work, which at some points it is more convenient to talk about continuous probability distribution functions, and at other times using the notation for the probability of sets.
+What follows is a necessarily brief introduction to probability theory in a more rigorous sense, we refer the reader to classic textbooks of Rudin\cite{rudin1987_realanalysis} for a rigorous treatment of measure theory and Chung\cite{chung2001_probabilitytheory} for a measure theory construction of probability.
+
+Let $(\Omega,\mathcal{F},\mathbb{P}$ be a measure space with $\mathbb{P}(\Omega)=1$.  
+Then $(\Omega,\mathcal{F},\mathbb{P}$ is a probability space, with sample space $\Omega$, event space $\mathcal{F}$, and probabilty measure $\mathbb{P}$.
+
 A random variable $X$ is a variable whose possible values are outcomes of a random phenemon.  As a function, a random variable is required to be measurable, which rules out pathological issues.
 
 The underlying foundation of any probability  distribution is the sample space, which is the set of all probable outcomes denoted as $\Omega$.  The realization of an outcome is denoted $\omega \in \Omega$.
@@ -11,13 +20,31 @@ The probability measure, $\mathbb{P}$, a function which maps $\mathbb{P}:\mathca
 
 The triplet $(\Omega,\mathcal{F},\mathbb{P})$ is the probability measure space.
 
-\section{Random Variable}
+\subsection{Random Variable}
 A random variable has a probability distribution, which specificies the probability falls in.  Specifically, $X:\Omega\rightarrow\mathbb{R}$.  If a random variable $X:\Omega \rightarrow \mathbb{R}$ is defined on the probability space $(\Omega,\mathcal{F},\mathbb{P})$.  Then the probability of an event $A$ occuring is $\{\omega:X(\omega)=A\}$ which is denoted as $\mathbb{P}(X=A)$.
 
 A probability density function for a random variable $X$ has a density $f_X$, where $f_X$ is a non-negative function:
 \begin{equation}
   \mathbb{P}[a \leq X \leq b]=\int_{a}^{b}f_{X}(x)dx
 \end{equation}
+
+\subsection{Probability Density Function}
+
+For example, the uniform distribution
+
+\subsection{Probability Density Function}
+
+\subsection{Joint Probability Density Function}
+
+\subsection{Sampling from a Distribution}
+
+In this section, we discuss the general concept of sampling using the technique of inverse transform sampling as a method for pseudo random number generation.  Inverse sampling samples from a uniform distribution, $u_i=U(0,1)$, and interprets it as a probability, and then returns the largest number x from the domain of the distribution $\mathbb{P}(X)$ such that $\mathbb{P}(-\infty<X<x) \leq u_i$.
+
+Computationally, this method involves computing the CDF and inverting the function, which is known as the quantile function.i
+
+Note that for a discrete distribution, computing the CDF is not in general too difficult: we simply add up the individual probabilities for the various points of the distribution. 
+For a continuous distribution, however, we need to integrate the probability density function (PDF) of the distribution, which is impossible to do analytically for most distributions (including the normal distribution).
+
 
 \subsection{Expectation}
 If $X$ is a random variable with a finite number of outcomes, $\{x_1,x_2,...,x_k\}$ occurs with the probabilities $\{p_1,p_2,...p_k\}$.  Then the expectation of $X$ is defined as
@@ -35,11 +62,20 @@ If $X$ admits a density $f(x)$, then the expected value is defined as
 
 \section{Estimation of a Distribution}
 
+In the previous section, we have discussed
+
+\subsection{Parametric Estimation}
+
+
+
 \subsection{Non-parametric Estimation}
  Fusce eget tempus lectus, non porttitor tellus. Aliquam molestie sed urna quis convallis. Aenean nibh eros, aliquam non eros in, tempus lacinia justo. In magna sapien, blandit a faucibus ac, scelerisque nec purus. Praesent fermentum felis nec massa interdum, vel dapibus mi luctus. Cras id fringilla mauris. Ut molestie eros mi, ut hendrerit nulla tempor et. Pellentesque tortor quam, mattis a scelerisque nec, euismod et odio. Mauris rhoncus metus sit amet risus mattis, eu mattis sem interdum.
 
 \subsection{Kernel Density Estimation}
-Let $(x_1,x_2,...x_n)$ be a univariate and identically distributed sample drawn from some distribution with an unknown density $f$.  The goal is to estimate the shape of this function $f$.  The kernel density estimator is
+
+\subsubsection{}
+Let $(x_1,x_2,...,x_n)$ be a univariate and identically distributed sample drawn from some distribution with an unknown density $f$.  
+The goal is to estimate the shape of this function $f$.  The kernel density estimator is
 \begin{equation}
   \hat{f}_h(x)=\frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)
     =\frac{1}{nh}\sum_{i=1}^{n}K\left(\frac{x-x_i}{h}\right)

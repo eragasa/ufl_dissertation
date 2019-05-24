@@ -1,13 +1,15 @@
-a%&latex
+%&latex
 % UF Sample ETD Main Document Fall 2014
 % Documenting the dvipdfmx/dvipdfm "File not Found" error
 % Improved method of handling the single/multiple appendices issue
 % Updated font calls to meet latest LaTeX standards
 
 % Define Document Class to be used and options - Choose the option that meets your OS%
-\documentclass[12pt,final,CPage]{ufthesis} %Use this line for Windows OS
-%\documentclass[12pt,dvipdfmx,final,CPage]{ufthesis} %Use this line for Macintosh/Linux OS
+%\documentclass[12pt,final,CPage]{ufthesis} %Use this line for Windows OS
+\documentclass[12pt,dvipdfmx,final,CPage]{ufthesis} %Use this line for Macintosh/Linux OS
 
+% the command for this on OSX
+% latexmk -pvc -pdf main
 
 
 % Macintosh and Linux users - If you get a dvipdfm file not found error
@@ -24,7 +26,7 @@ a%&latex
 \def\UrlFont{\rmfamily} %use this line for Times New Roman
 %\def\UrlFont{\sffamily} %use this line for Helvetica
 
-%\allowdisplaybreaks  % % This command allows equation arrays and similar environments
+\allowdisplaybreaks  % % This command allows equation arrays and similar environments
 % % % to break across pages to improve text flow - use only if needed.
 
 % Prevent figures, tables or algorithms from using a separate page or column alone
@@ -50,8 +52,8 @@ a%&latex
 \SetFullName{Eugene Ragasa}%
 \SetThesisType{Dissertation}%{Dissertation} %{Thesis}
 \SetDegreeType{Doctor of Philosophy}% {Doctor of Philosophy} {Master of Science}
-\SetGradMonth{May}%
-\SetGradYear{2016}%
+\SetGradMonth{July}%
+\SetGradYear{2019}%
 \SetDepartment{Materials Science and Engineering}%
 \SetChair{Simon Phillpot}%
 %\SetCochair{John W. Carver III}%uncomment this line and enter the name of your cochair inside the braces if you have one.
@@ -59,7 +61,7 @@ a%&latex
 %In the "getting personal information" section about line 630
 %And the "Abstract" Section around line 556
 % Type your title here in all CAPS %
-\SetTitle{New Methods, Tools and Techniques for the Evolutionary Determination of Ensembles of Pareto Efficient Parameterizations of Classical Potentials with Applications}
+\SetTitle{MACHINE LEARNING TECHNIQUES FOR THE RATIONAL DESIGN OF ANALYTIC INTERATOMIC POTENTIALS}
 % Define student-specific info (self-explanatory) %
 %\include{userinfo}
 %------------------------------------------%
@@ -155,18 +157,18 @@ a%&latex
 
 % Chapters to be included (more can be added by creating a new chapter#.tex %
 % file and then implementing the \inlcude{chapter#.tex} command as seen below %
-\include{chapter1/body}
-\include{chapter2/body}
-\include{chapter3/body}
-%\include{chapter4/body} % PROBABILITY METHODS
-% \include{chapter5/body} %
-% \include{chapter6/body} % SOFTWARE DEVELOPMENT
+\include{chapter1/body} % INTRODUCTION
+\include{chapter2/body} % COMPUTATIONAL TOOLS
+\include{chapter3/body} % PARETO
+\include{chapter4/body} % PROBABILITY METHODS
+\include{chapter5/body} % DESCRIPTION OF THE FITTING METHOD
+\include{chapter6/body} % SOFTWARE DEVELOPMENT
 \include{chapter7/ionic} % APPLICATION TO IONIC SOLIDS
 \include{chapter8/body} % EAM POTENTIAL DEVELOPMENT
-\include{appendix_A_point_defect/body}
-% \include{chapter10/body}
-%\include{tex/chapter6}  %These chapters are not included in the template
-%\include{tex/chapter7}
+\include{chapter9/body} % SI
+%\include{chapter10/body} % MACHINE LEARNING
+%\include{chapter11/body} % CONCLUSION
+%\include{appendix_A_point_defect/body}
 
 %-----------------------------------------------------------------------%
 
@@ -185,8 +187,9 @@ a%&latex
 % The citation style differences are from the \citet{key} and \citep{key} commands
 % More options are available; see the Natbib documentation for details
 
-\bibliography{bib/sample,chapter2/body,chapter3/chapter3,chapter7/ionic,chapter8/eam,appendix_A_point_defect/pointdefect.bib}
-%chapter1/body.bib,chapter2/body.bib,chapter3/body.bib,chapter4/body.bib,chapter5/body.bib,chapter6/body.bib,chapter7/body.bib,chapter8/body.bib,chapter9/body.bib,chapter10/body.bib}
+\bibliography{chapter2/body,chapter3/body,chapter4/body,chapter6/body,chapter7/ionic,chapter8/eam.bib,chapter9/body.bib}
+%\bibliography{bib/sample,chapter2/body,chapter3/body,chapter4/body,chapter5/body,chapter6/body,chapter7/ionic,chapter8/eam,chapter9/body,chapter10/body,chapter11/body}
+%chapter1/body.bib,chapter2/body.bib,chapter3/body.bib,chapter4/body.bib,chapter5/body.bib,chapter6/body.bib,chapter7/body.bib,chapter8/body.bib,chapter9/body.bib,chapter_silicon/silicon.bib,chapter10/body.bib}
 % You can have more than one library of references - put the .bib file
 % in the bib folder and call it here
 %------------------------------------------%

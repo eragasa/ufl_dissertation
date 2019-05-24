@@ -4,14 +4,60 @@ Lewis Catlow potential\cite{lewis1985_buckingham}
 
 Henkelman \emph{et al}\cite{henkelman2005_buckingham_MgO}
 
-Lewis and Catlow\cite{lewis1985_buckingham} parameterized a wide range of oxide systems with a pairwise potential, between two atoms $i$ and $j$.
+
+Two potentials unpublished Buckingham potentials were developed by Ball and Grimes (BG1 and BG2), but were used in the work of Henkelman \emph{et al}\cite{henkelman2005_buckingham_MgO}.
+
+\section{Potential Formalism}
+
+With every potential formalism, the transformation of atomic positions to suitable descriptors.  
+Directly available descriptors of atomic positions are not invariant with respect to translation and rotation of the system.  
+The energy of a configuration is the summation of the pair-wise contributions between the atoms, and the potential is a function is a function of the interatomic distance between the two atoms.
+
+\begin{align*}
+	\hat{V}_(\bm{R}) &= \sum_{i<j} V_{ij}(\bm{r}_{i},\bm{r}_{j}) \\
+	                 &= \sum_{i<j} V_{ij}(\bm{r_i}-\bm{r_j}) \\
+			 &= \sum_{i<j} V_{ij}(r_{ij})
+\end{align*}
+
+Lewis and Catlow\cite{lewis1985_buckingham} parameterized a wide range of oxide systems with a pairwise potential, between two atoms $i$ and $j$.   
+In this formalism as described by Catlow\cite{catlow1977_buckingham}, the Buckingham potential\cite{buckingham1938} is combined with a Coulombic interaction,
 \begin{equation}
   V_{ij}(r_{ij})=\frac{Z_i Z_j}{r_{ij}}+A_{ij}\exp(-r_{ij}/\rho_{ij})-\frac{C_{ij}}{r_{ij}^6}
 \end{equation}
-The physics of ionic systems is modelled with three pairwise terms.
 The first term is a Coulombic interaction dependent on the the point charges, $Z_i$ and $Z_j$.
-The other terms is a Buckingham potential the repulsion between the two ions due to the Pauli exclusion principle with the exponential function combined with a term for a weak van der Waals interaction.
-In the Lewis and Catlow parameterization (LC), the charges are assumed to have the formal charges of $\pm 2e$ on the magnesium and oxygen ions,respectively.
+The remaining compoentss are components of the Buckingham Potential which combines the repulsion between two ions due to the Pauli exclusion principle combined a term for a weak van der Waals interaction.
+
+\section{Incorporation of Prior Knowledge}
+
+In a binary oxide, there are the three pairwise interactions in which to consider: the anion-anion interaction, the cation-cation interaction, and the cation-cation interaction.  
+Lewis and Catlow make simplifying assumptions, which are replicated in the development of a potential for MgO in this chapter.
+
+Lewis and Catlow make simplifying assumptions\cite{catlow1977_buckingham,lewis1985_buckingham,sangster1980}, which are replicated in the development of a potential for MgO in this chapter.
+
+\begin{enumerate}
+\item The material is charge neutral
+\item Cations only act with each other through Coulomb interaction.
+\item The anion-cation is considered to be the Born-Mayer potential.
+\item The anion-anion interaction
+\end{enumerate}
+
+In the Lewis Catlow (LC) parameterization,
 Additionally, the cations only interact with each other though the Coulomb interaction.
 
-Two potentials unpublished Buckingham potentials were developed by Ball and Grimes (BG1 and BG2), but were used in the work of Henkelman \emph{et al}\cite{henkelman2005_buckingham_MgO}.
+The cation-cation interaction is considered to be completely coulombic
+
+The anion-cation interaction is considered to be the Born-Mayer potential,
+\begin{equation}
+	V_{+-} = A_{+=}\exp(-r_{ij}),
+\end{equation}
+where the attractive $r^{-6}$ term is lost.
+\section{Target Properties and Prior Knowledge}
+
+We choose the target materials properties for MgO to be the lattice parameter, $a_0$, and elastic properties ($c_{11}$,$c_{12}$,$c_{44}$, and shear and bulk, $B$ and $G$) of the ground-state rock-salt (NaCl) structure, the $(100)$ surface energy, the anion and cation Frenkel defect energies, and the Schottky defect formation energy.  
+Although $B$ and $G$ are fully determined by other elastic constants, it is useful to include them in the fitting database as they are the most physically accessible and measurable the specific sums and differences in elastic properties that correspond to criteria for the stability of the crystal ($B> 0$, $G>0$, $c_{44}> 0$).  
+
+Reference values for all of the targeted properties were calculated with VASP\cite{kresse1993_vasp,kresse1996_vasp1,kresse1996_vasp2} using the Perdew, Burke, and Ernzerhof generalized-gradient approximation (PBE-GGA) of the exchange-correlation functional [48], [49]. The lattice parameter and elastic properties were calculated from an 8-ion conventional cubic unit cell using a 6x6x6 k-point mesh.  Surface energies were calculated using a 1x1x10 supercell, with a slab thickness consisting of half of the height of the cell, and a k-point mesh of 9x9x1.  Defect formation energies were calculated from 3x3x3 supercells, using a k-point mesh of 3x3x3.  The plane wave cutoff energy was set at 800 eV. The resulting values of these quantities are shown in Table 1 and constitute the QOIs for the parametrization process.
+
+
+
+

@@ -47,7 +47,11 @@
 \newtheorem{proposition}{Proposition}[chapter]
 \newtheorem{algorithm}{Algorithm}[chapter]
 
-
+\DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{%
+  #1\;\delimsize\|\;#2%
+}
+\newcommand{\infdiv}{D\infdivx}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
 
 %These were some user commands I've run across that I thought some might want to incorporate into their work

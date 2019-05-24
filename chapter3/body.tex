@@ -1,4 +1,4 @@
-\chapter{Pareto Optimality and Potential Development}
+\chapter{Potential Development and Pareto Optimality}
 
 In the previous chapter, an overview of the different computational tools associated to atomistic simulation were presented to give some idea of interconnectivity and breath of atomistic simulations.  Within this chapter, we outline the Pareto approach to potential optimization within the context of more typical current appraoches to potential development.
 
@@ -7,6 +7,7 @@ The structure of this chapter starts off by framing potential development the br
 This chapter consists of three sections.  In the first section, we introduce the idea of a potential energy surface and how interatomic potentials can be thought of as computational inexpensive surrogate models, and we introduce the terminology of potential development as well as some broad concepts of potential optimization.
 Next, we build up the notation and terminology of general optimization from a broad mathematical standpoint, first covering the more familiar single-objective optimization then multiobjective optimization.
 In the third section, we combine the discussion of the first and second section, to cast the problem of potential development as a multi-objective optimization utilizing the concepts and notation common to most.
+
 In particular, we discuss the the current techniques to potential optimization which are applied to potential optimzation as well as some of the mathematical problems and issues of certain approach, and then clearly demonstrate that multi-objective optimization is dependent upon the concept of Pareto optimality.
 
 \section{Potential Energy Surfaces}
@@ -16,74 +17,207 @@ Using the analogy of a landscape, the potential energy surface (PES) represents 
 This creates an energy landscape which allows materials systems to viewed from a topological perspective, which allows the PES to describe the evolution of a system.
 
 From a mathematical representation, the PES is a a function, ${V:\bm{R}\rightarrow E}$, which maps a high dimensional interatomic configuration, $\bm{R}$, onto the set of real numbers representing energies, $E\in\mathbb{R}$.
+Given an atomic arrangement $\bm{R}$, the evaluated potential surface $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an approximation of the potential energy surface, so that the concept of a potential energy surface arises.
+To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.
+\\
 To describe empirical potentials, we first start with a a mathematical description of configuration space both from a crystallographic perspective, but how this crystallgraphic perspective can be translated into other representation common with empirical potentials.
 
-Next we discuss
-
 \subsection{Configuration Space}
-In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative unit.
+In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative unit volume.
 This representative unit is referred to as a unit cell, which defines that boundaries, the volume, the lattice positions of each atom.
 
 The boundaries of the unit cell are defined are defined by three lattice vectors, defined in three dimensional Euclidean space, $\mathbb{R}^3$.
-Thethe three lattice vectors, $\bm{a}_1$, $\bm{a}_2$, and $\bm{a}_3$, with $\bm{a_i}\in\mathbb{R}^3$.
-Each atom $i$ is identified by a chemical species, and its atomic position ${\bm{r_i}=\{r_1,r_2,r_3\}}$, where $\bm{a}_1 \in \mathbb{R}^3$,which defines the boundaries of the representative cell, and periodic boundaries conditions applied to reflects the translational symmetry of crystalline systems.
-Each lattice vector can be represented as a translational operator, $T_i$ for $i={1,2,3}$, such that, $T_i(\bm{r}=\bm{r})$
+The three lattice vectors, $\bm{a}_1$, $\bm{a}_2$, and $\bm{a}_3$, with $\bm{a_i}\in\mathbb{R}^3$, which defines an alternative coordinate sytem in Euclidean space in which to describe a lattice.
+The triplet of lattice vectors, $(\bm{a}_1,\bm{a}_2,\bm{a}_3)$, describes an alternative coordinate system in Euclidean space in which to describe a lattice.
+Throughout this work, the collection of lattice vectors is also referred to as a unit cell or simulation cell depending upon context.
+
+Each atom $i$ is identified by a chemical species, and its atomic position, $\bm{r}$.
+If the Cartesian unit vectors,$[\hat{\bm{\imath}},\hat{\bm{\jmath}},\hat{\bm{k}}]$, then the atomic positions can be represented as the ordered triplet, $(r_x,r_y,r_z)$.
+More commonly, atomic positions are represented in the coordinates system define by the lattice vectors, $(r_1,r_2,r_3)$ and $[\bm{a}_1,\bm{a}_2,\bm{a}_3]$, respectively.
+The relationship between the two coordinates system being represented by the equation
 \begin{equation}
-    T(\bm{r}_i) = \bm{r}_i
-		    + n_1 \bm{a}_1
-				+ n_2 \bm{a}_2
-				+ n_3 \bm{a}_3, \forall i \in \mathbb{Z}
+	r_x \hat{\bm{\imath}} + r_y \hat{\bm{\jmath}} + r_z \hat{\bm{k}}
+	=
+	r_1 \bm{a}_1 + r_2 \bm{a}_2 + r_3 \bm{a}_3
 \end{equation}
 
-\subsection{Pair Wise Interactions}
+The boundaries of the unit cell also describes the periodic boundary conditions, since they also reflect that translational symmetry of the crystalline system.
+Each lattice vector can be represented as a translational operator, $T_i$ for ${i\in\{1,2,3\}}$, such that, $T_i(\bm{r})=\bm{r} + n_i \bm{a}_i = \bm{r}$, and collectively,  
+\begin{equation}
+    T(\bm{r}) = \bm{r}
+		    + n_1 \bm{a}_1
+		    + n_2 \bm{a}_2
+		    + n_3 \bm{a}_3 = \bm{r}, \forall n_i \in \mathbb{Z}
+\end{equation}
 
-\subsection{Three Body Interactions}
-
-\subsection{Many Body Interations}
-Given an atomic arrangement $\bm{r}$, $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an analytical approximation of the potential energy surface, so that the concept of a potential energy surface arises.
-To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.
-\\
 The geometry of a molecule can be described by the collection of the positions of $N$ atoms
 	$\bm{R} = \{\bm{r}_1,...,\bm{r}_N\}$,
 	where the $\bm{r}_i$ could be the set of Cartesian coordinates of the atoms.
 These collections of atoms can be transformed to reflect the distances between the two atoms $i$ and $j$,
 	$\bm{r}_{ij}=\bm{r}_i - \bm{r}_j$
 	as used in pair potentials, the angles between atoms $\bm{r}_{ijk}$ as in three body potentials.
-\section{Empirical Interatomic Potentials}
-The goal of developing a interatomic potential is identify a computationally efficient surrogate model, which models the potential energy surface.
+\\
+\subsection{Empirical Interatomic Potentials}
+The goal of developing a interatomic potential, $\hat{V}$ is identify a computationally efficient surrogate model, which models the potential energy surface, $V$. 
+The use of a hat over a variable indicates that the quantity is an approximation of the actual value; this notation is used to identify approximating quantities throughout this work.
+Since energy is a scalar value, $V$ and $\hat{V}$ are functions in the same measure space that assigns energies to atomic configuration (e.g. 
+${V:\{\bm{R}\}\rightarrow \mathbb{R}}$ 
+and 
+${\hat{V}:\{\bm{R}\} \rightarrow \mathbb{R}}$, 
+the approximating relationship by the addition of a difference term $\epsilon$
 \begin{equation}\label{eq:pes_approximation}
   V(\bm{R}) = \hat{V}(\bm{R}) + \epsilon(\bm{R})
 \end{equation}
-Here $V$ is the true potential energy surface which is approximated by our potential model $\hat{V}$, which is a function the representation of a collection of atomic positions, $\bm{R}$.
-Throuhout this work, the use of the hat over a variable indicates that the quantity is an approximation of the actual value.
-Since energy is a scalar value, the difference between the potential energy surface we will refer to as the error function,
+
 \begin{equation}\label{eq:error_function_pes}
 	\epsilon(\bm{R})=V(\bm{R})-\hat{V}(\bm{R}).
 \end{equation}
-\\
+
+Interatomic potentials are often expressed as a series expansion of functional terms which explain the relevant physics of a system.  In these cases, the total energy of the system is sum of the individual contribution of each atom $i$.  For a system with $N$ atoms,
+\begin{equation}
+	\hat{V}= \sum_{i} \hat{V}(\bm{r}_i\vert\bm{R})
+\end{equation}
+The total energy of a potential of $N$ atoms with an interaction described by the empirical potential, $V$, can be expanded in a many body expansion as described in LeSar\cite{lesar2013_textbook}
+\begin{equation}
+	V(\bm{r}_1,...,\bm{r}_N)= \sum_i V_1(\bm{r}_i)
+	        + \sum_i \sum_{i<j} V_2(\bm{r}_i,\bm{r}_j)
+				  + \sum_i \sum_{i<j} \sum_{j<k} V_3(\bm{r}_i,\bm{r}_j,\bm{r}_k) + ...
+\end{equation}
+The first term $V_1$ is the one body term, due to an external field or boundary conditions, which is typically ignored in classical potentials.  
+The second term $V_2$ is the pair potential, the interaction of the term is dependent upon the distance between $\bm{r}_i$ and $\bm{r}_j$.  
+The three-body term potential $V_3$ arises when the interaction interaction of a pair of atoms is modified by the presence of a third.  
+Based upon this expansion, we can classify certain potentials into two classes: pair potentials when only $V_2$ is present and many-body potentials when $V_3$ and higher order terms are included.
+
+An empirical interatomic potential $\hat{V}(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $U(\bm{R}_i)$.  
+\begin{equation}
+	\hat{V}(\bm{R})=\sum_i \hat{V}_1 + \sum_{i<j} V_2 + \sum_{i<j<k} V_3
+\end{equation}
+represents the total energy of the system, where $\hat{V}(\bm{r}_i \vert \bm{R})$ which is the contribution of the $i$th atom of  a system
+An analytical potential is represented by a set of equation known as a formalism, which decomposes the energy of a structure as the individual contributions of each atom $i$ in its local environment.
+The simplest of these potentials is the Lennard-Jones (LJ) potential\cite{lennardjones1924_lj_pot}, that approximates the interaction between a pair of neutral atoms, such as a noble gas.
+A common expression the LJ potential is 
+\begin{equation}
+  V_{LJ} = 4 \epsilon 
+    \left[ 
+	\left(\frac{\sigma}{r_{ij}}\right)^{12}
+	- \left(\frac{\sigma}{r_{ij}}\right)^{6}
+    \right]
+\end{equation}
+
+
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=5in]{chapter3/lj}
+    \caption[EPS format diagram. Note: no filetype is designated by adding an extension.]{EPS format diagram. Note: no filetype is designated by adding an extension. The file type is determined and the correct procedure is automatically chosen by xelatex.}
+\end{figure}
+
+For an analytical potential, $\hat{V}$ is parameterized with a vector of $P$ parameters, $\bm{\theta} = [\theta_1,...,\theta_P] \in \mathbb{P}]$
+\section{Traditional Approaches to Potential Deveopment}
+
 With an empirical potential, $\hat{V}$, is parameterized by a vector of $N$ values,
 ${\bm{\theta}=\{\theta_1,...,\theta_N\}}$.
 In the forward use of a potential, the parameters are considered to be fixed, $\hat{V}(\bm{R}:\bm{\theta})$, where the parameterization $\bm{\theta}$ is treated as fixed, and the function is considered vary with respect to the configuration of atoms, $\bm{R}$.
-However, potential development is an inverse problem where the potential developer is looking to determine the best parameterization, $\bm{\theta}^*$, based upon a fixed set of atomic configurations, as in the force-matching method of Ercolessi and Adams\cite{ercolessi1994_fitting_forcematching}, or are probed interdirectly through the calculation of specific material properties.
+However, potential development is an inverse problem where the potential developer is looking to determine the best parameterization, $\bm{\theta}^*$, based upon a fixed set of atomic configurations, as in the force-matching method of Ercolessi and Adams \cite{ercolessi1994_fitting_forcematching}
+, or are probed indirectly through the calculation of specific material properties.
 As a result, the empirical potential treated as varying due to changing the parameterization, $\bm{\theta}$, while keeping the set of atomic configurations fixed $\bm{R}$.  For the application of the potential development, we can rewrite Equation\ref{eq:error_function_pes}, where the error function is a function of the parameterization, while keeping the set of interatomic configurations fixed.
 \begin{equation}
-	\epsilon(\bm{\theta}:\bm{R})=V(\bm{R})-\hat{V}(\bm{\theta}\bm{R})
+	\epsilon(\bm{\theta}:\bm{R})=V(\bm{R})-\hat{V}(\bm{\theta}:\bm{R})
 \end{equation}
 \\
+
+\subsection{Fitting Database}
 A more popular approach in potential developmet comes from fitting an interatomic potential so that predicted values of material properties predicted by the interatomic potential corresponds with either high-fidelity predictions done through more computationally expensive \emph{ab initio} calculations or directly through experimental observations.
-The material properties calculated are referred to as a quantity of interest, $q$, while the predictions made by the potential denoted, $\hat{q}$.  Since $\hat{q}$ is ultimately detemined from energy calculations upon atomic structures, either directly or though numerical estimation, we can think of the differences between the predicted and
+The material properties calculated are referred to as a quantity of interest (QOI), $q$, while the predictions made by the potential denoted, $\hat{q}$.  
+A quantity of interest can be related to the PES, by considering aa high-fidelity method used to calculate the potential of iteresst.
+In the case when the target QOI values are calculated from a high-fidelity method, such as density functional theory (DFT), the computation of the material property can be decomposed as a function of energy evaluation of the PES,
+\begin{equation}
+	q(\bm{R}_1,...,\bm{R_N}) = F(V(\bm{R}_1),...,V(\bm{R}_N))
+\end{equation}
+Since $\hat{q}$ is ultimately detemined from energy calculations upon atomic structures, either directly or though numerical estimation, we can represent the energy difference between the predicted QOIs and the target QOIs.
+
 \begin{equation}
 	\epsilon(\bm{\theta}:\{\bm{R}_1,...,\bm{R}_N\})=\hat{q}(\bm{\theta}:\{\bm{R}_1,...,\bm{R}_N\})-q
 \end{equation}
-\subsection{}
+A fitting database is a collection of structure property functions $q_i$ with an associated atomic configurations, also referred to as structures.
+The set of all possible atomic configuration is referred to as the configuration space.
+The goal of a fitting database to find to find a representative set of structures in which to calculate the structure property relationships $q_i$.
+
+Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.  In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.  The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
+
+In literature, the developers of potentials tend to use $0$ K properties.  A more important reason why potentials are fit to $0$ K properties, is that it alows the incorporation of first-principles data.
+The most ubiquitous \emph{ab initio} techniques are calculations using density functional theory (DFT).
+DFT allows the calculation of structural properties which are experimentally difficult to access, as well as provide energic information from kinetically unstable structures.
+The incorporation of first-principles data in the fitting database significantly improves the reliability of semi-empirical potentials by sampling a larger area of configuration space[21-28].
+This is covered in detail in a review article by Payne \emph{et al} \cite{payne1996_dft_database}.
+
+From a computational standpoint, at $0$ K the calculation of material properties become precise because atomic motion stops, and only a single evaluation of a parameterization needs to be evaluated against the reference value.  When the $T>0$, issues with sampling arise.  In the long time limit, the sampled trajectory yields detailed information about the Hamiltonian.  Shorter trajectories yield incomplete information and confound comparison of parameters with experimental values.
+
+When many $\hat{\bm{q}}(\theta)$ has to be evaluated many times, fitting to structure property relationships which are dependent upon themodynamic ensembles for $T>0$ becomes quickly computational infeasible.
+\subsection{Cost Function}
+\label{subsec:cost_function}
+
+When the fitting database is defined, potential development then proceeds by the determination of the optimal database.
+With the description of the fitting database achieved, our discussion turns on how this potential database can be used to obtain an optimizal parameterization, $\bm{\theta}^N$.
+The goal of potential development is to achieve a high-level of fidelity between the approximating potential model, $\hat{V}$ and the potential model $V$, with the ultimate goal of reducing the error function $\epsilon(\{\bm{R}\})=V(\{\bm{R}\})-\hat{V}(\{\bm{R}\}) \rightarrow 0$.  When applied to predictions of a QOI database, then for a high-fidelity equation $\epsilon_i \rightarrow 0$.
+
+For the purposes of numerical optimization, it is convenient to define a scalar valued function, which will determine the optimal parameterization, $\bm{\theta}^*$, when this scalar function is minimized.  Typically, the cost function is defined as the weighted sum of squared differences between the qoi predicted value, $\hat{q}$, and the qoi target value $\hat{q}$.
+A typical approach is the weighted least squares approach, in this approach the squared difference between predicted qois, $\hat{q}$ and its target value, $q$ is coupledeach of the qois, $\hat{q}_i$.
+
+\begin{equation}
+\label{eq:cost_function}
+	C(\bm{\theta})= \sum_{i=1}^{N}w_i\left(q_i-\hat{q}_i(\bm{\theta})\right)^2 = \sum_{i_1}^N \epsilon_i(\theta)
+\end{equation}
+
+The impact of weights
+
+\subsection{single-objective optimization}
+
+
+
+We can contrast this to single objective function optimization.
+If $\bm{F}(\bm{x}) = F(\bm{x})$, then this problem becomes a scalar optimization problem.
+The Karush-Kuhn-Tucker conditions \cite{karush1939_kkt,kuhn1951_kkt} are necessary to solve non-linear optimzation problems.
+Often this is stated as the condition that $F\bm{x})$ is convex with respect to the convex set $\bm{x}$, that is that the inequality constraints, $g_i(\bm{x}$.
+If $F(\bm{x})$ is convex with respect to the domain of $\bm{x}$, the solution can be solved with elementary multivariate calculus methods.
+\subsection{Convex Optimization}
+Numerical algorithms make heavy use of scalarization results, and most papers in the field of MOO and economics deal with non-linear programming problems, corresponding duality theorems, and the repeated application of the simplex method.
+
+However, within the literature of potential development approaches focus upon local minimization techniques and global optimization techniques.
+
+objective function is concave.  constraint set is convex.  KKT requirements for uniqueness.
+
+\subsection{Global Approaches}
+
+The task of global optimization is to find the best parameterization, $\bm{\theta}=(\theta_1,...,\theta_n)^T \in \Theta$ according to a set of objective functions, which we take here to be a set of loss functions,$\bm{L}=\{L_1,...L_m\}$.  When $m=1$ the problem is a single objective optimization problem and the goal is to minimize a single loss function $f$, i.e.,
+\begin{equation}
+	\bm{\theta}^* = \arg \min_{\bm{\theta}\in\bm{\Theta}} L(\bm{\theta}.
+\end{equation}
+When $m>1$, the problem becomes a multiple-objective optimization problem(MOO).  In this case, no global optimum exists since the objective function
+We look at two approaches, the first is a scalar optimization approach which combines the set of loss functions into a single objective function, which converts the problem into scalar optimization.  The second is to look at the problem as a multi-objective optimization problem,
+For $m=1$, the problem is a single objective optimization problem, and the goal
+Genetic algorithms are a popular meta-heuristic that is particularly well-suited for this class of problems.  Traditional GA are customized to accomodate multi-objective problems by using specialized fitness functions and introducing methods to promote solution diversity.
+
+The second general approach is to determine an entire Pareto optimal solution set or a representative subset. A Pareto optimal set is a set of solutions that are nondominated with respect to each other. While moving from one Pareto solution to another, there is always a certain amount of sacrifice in one objective(s) to achieve a certain amount of gain in the other(s). Pareto optimal solution sets are often preferred to single solutions because they can be practical when considering real-life problems since the final solution of the decision-maker is always a trade-off. Pareto optimal sets can be of varied sizes, but the size of the Pareto set usually increases with the increase in the number of objectives.
+
+The ultimate goal of a multi-objective optimization algorithm is to identify solution in the Pareto optimal set.  However, identifiying the entire Pareto optimal set, for multi-objective problems, is impossible to its size.  Proof of solution optimality is computationally infeasible.  Therefore, a practical approach is achieve successively better approximations of the Pareto surface that represent the Pareto set as well as possible.
+
+A multi-objective optimization approach should achieve the following conflicting goals as described by Zitzler \emph{et al}\cite{zitzler2000_moo_evolve}: (1) the best known Pareto front should be as close as possible to the true Pareto front.  Ideally, the best-known Pareto set should be a subset of the Pareto set, (2) solutions in the best known Pareto set should be uniformly distributed and diverse over the Pareto front in order to provide the decision-maker a true picture of trade-offs, and (3) the best-known Pareto front should capture the whole spectrum of the Pareto front at the extreme ends of the spectrum.  While the first two goals are important for multi-objective optimization, the last goal is erroneous.  In general, when developing potentials, the DM is interested in compromise solutions and a parameterization with high fidelity with respect to one material property at the expense of a loss of fidelity with respect to all other prediction would be a pathological parameterization.
+
+\subsubsection{Genetic Algorithms}
+The method which will be proposed in chapter 5 is not a genetic algorithm, but has many similarities as Genetic Algorithms but tailored to create an ensemble of Pareto optimal parameters.  However, it is a genetic solution and the iterative approach of generating new populations is akin to previous solutions.  As a result, the section of review in this section is necessarily incomplete but refer to an introductory review by Konak \emph{et al}\cite{Konak2006_moo_ga} as well as the book by Deb\cite{deb2001_moo_ga}
+
+
 
 \section{Multi-objective optimization}
 
+Parameter estimation can be stated as a MOO problem.
 Many decision and plannning problems involve multiple conflicting criteria which must be considered simultaneously.
 In the field of optimization, problems which have multiple criteria are deferred to as multiple critieria decision making problems (MCDM) and the algorithms used to solve them as multiple-objective optimization (MOO).
 
 \subsection{Loss Functions}
+\label{subsec:lossfunctions}
 
+At this point we turn to generalizing the concept of the cost function described in ~\ref{subsec:costfunction}, The cost function is a piece construction of $w_i \epsilon_i^2(\bm{\theta}$.
 What follows is a discussion of single objective optimization within the context of potential development before discussing multiple objective optimization  before discussing multiple objective optimization we will first discuss single-objective optimization to introduce the terminology and notation used throughout the rest of this book.
 We
 To introduce the terminology used within this work, it is instructive to dispose of implementation specifics of algorithms and numerical estimation techniques, and think of an optimization problem in terms of sets.
@@ -97,7 +231,7 @@ Using the notation of Marley and Arora\cite{marler2004_moo_survey}, the general 
 \begin{align}
   & \underset{\bm{\theta}\in\Theta}{\text{minimize}}
         &\bm{L}(\bm{\theta}) = [
-				    L_1(\bm{\theta}),
+            L_1(\bm{\theta}),
             L_2(\bm{\theta}),
             ...,
             L_N(\bm{\theta})]^T\\
@@ -115,23 +249,16 @@ $\{\bm{F}(\bm{x}) | \bm{x} \in \bm{X} \}$.
 The objective function,
     $F_1(\bm{x}):\mathbb{R^n} \rightarrow \mathbb{R}$,
 For MOOs, the objectives are generally conflicting, preventing simultaneous optimization.
+
 \subsection{Cost function method}
+
 \subsection{Pareto optimality}
 
 If all functions are for minimization, a feasible solution $\bm{x}_1$ is said to dominate another feasible solution $\bm{x}_2$, denoted $\bm{F}(\bm{x}_1 \succ \bm{x}_2)$, if and only if $F_i(\bm{x}_1)\leq F_i(\bm{x}_2)$ for $i = 1,...,k$ and $F_j(\bm{x}_1)< F_j(\bm{x}_2$) for at least one objective function $j$.  A solution is said to be Pareto optimal if it is not dominated by any other solution in the solution space.
 
 A Pareto optimal solution cannot be improved with respect to any objective without worsening at least one objective function.  The set of all feasible non-dominated solutions in $X$ is referred to as the Pareto optimal set, and for a given Pareto optimal set, the corresponding values in the objective space are called the Pareto Front.
 
-We can contrast this to single objective function optimization.
-If $\bm{F}(\bm{x}) = F(\bm{x})$, then this problem becomes a scalar optimization problem.
-The Karush-Kuhn-Tucker conditions \cite{karush1939_kkt,kuhn1951_kkt} are necessary to solve non-linear optimzation problems.
-Often this is stated as the condition that $F\bm{x})$ is convex with respect to the convex set $\bm{x}$, that is that the inequality constraints, $g_i(\bm{x}$.
-If $F(\bm{x})$ is convex with respect to the domain of $\bm{x}$, the solution can be solved with elementary multivariate calculus methods.
 
-\section{Application for Potential Development}
-
-At the heart of this work, the development
-Parameter estimation can be stated as a MOO problem.
 While this is occasionally stated in potential development literature, it is often within the context of the use of global optimization techniques.
 The purpose of this section is provide a clear methodological approach to determining the optimal parameters within the context of MOO, and elucidate the problems often encountered in potential development specifically to the choice of optimization techniques often employed in potential development.
 
@@ -147,32 +274,16 @@ $\hat{\bm{Q}}(\bm{\theta})$.
 
 
 
-\subsection{Fitting Database}
-A fitting database is a collection of structure property functions $q_i$ with an associated atomic configurations, also referred to as structures.
-The set of all possible atomic configuration is referred to as the configuration space.
-The goal of a fitting database to find to find a representative set of structures in which to calculate the structure property relationships $q_i$.
 
-Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.  In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.  The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
+%Ercolessi F, Adams JB. Europhys Lett 1994;26:583.
+%Mishin Y, Farkas D, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 1999;59:3393
+%Baskes MI, Asta M, Srinivasan SG. Philos Mag A 2001;81:991
+%Mishin Y, Mehl MJ, Papaconstantopoulos DA, Voter AF, Kress JD. Phys Rev B 2001;63:224106
+%Mishin Y, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 2002;65:224114
+%Li Y, Siegel DJ, Adams JB, Liu XY. Phys Rev B 2003;67:125101
+%Zope RR, Mishin Y. Phys Rev B 2003;68:024102
+%Mishin Y. Acta Mater 2004;52:1451
 
-In literature, the developers of potentials tend to use $0$ K properties.  A more important reason why potentials are fit to $0$ K properties, is that it alows the incorporation of first-principles data.
-The most ubiquitous \emph{ab initio} techniques are calculations using density functional theory (DFT).
-DFT allows the calculation of structural properties which are experimentally difficult to access, as well as provide energic information from kinetically unstable structures.
-The incorporation of first-principles data in the fitting database significantly improves the reliability of semi-empirical potentials by sampling a larger area of configuration space[21-28].
-This is covered in detail in a review article by Payne \emph{et al}\cite{payne1996_dft_database}.
-
-
-Ercolessi F, Adams JB. Europhys Lett 1994;26:583.
-Mishin Y, Farkas D, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 1999;59:3393
-Baskes MI, Asta M, Srinivasan SG. Philos Mag A 2001;81:991
-Mishin Y, Mehl MJ, Papaconstantopoulos DA, Voter AF, Kress JD. Phys Rev B 2001;63:224106
-Mishin Y, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 2002;65:224114
-Li Y, Siegel DJ, Adams JB, Liu XY. Phys Rev B 2003;67:125101
-Zope RR, Mishin Y. Phys Rev B 2003;68:024102
-Mishin Y. Acta Mater 2004;52:1451
-
-From a computational standpoint, at $0$ K the calculation of material properties become precise because atomic motion stops, and only a single evaluation of a parameterization needs to be evaluated against the reference value.  When the $T>0$, issues with sampling arise.  In the long time limit, the sampled trajectory yields detailed information about the Hamiltonian.  Shorter trajectories yield incomplete information and confound comparison of parameters with experimental values.
-
-When many $\hat{\bm{q}}(\theta)$ has to be evaluated many times, fitting to structure property relationships which are dependent upon themodynamic ensembles for $T>0$ becomes quickly computational infeasible.
 
 \subsection{Prediction Error function}
 In order to assess the prediction errors of the structure property functions, we denote the
@@ -195,7 +306,6 @@ Let $V$ be an empirical potential parameterized by $P$ number of parameters $\bm
 \subsection{Constraints on structure property relationships}
 
 \subsection{Parameter Optimization Problem as MOO formulation}
-DEFINITION OF CONFIGURATION SPACE
 
 
 \section{Pareto Front}
@@ -281,26 +391,6 @@ The weighting method is also difficult
   \end{aligned}
 \end{equation}
 here $x$ is the optimization variable, $f$ is the objective function, $g_i$ are inequality constraints, and $h_j$ are equality constraint functions.
-
-\subsection{Convex Optimization}
-Numerical algorithms make heavy use of scalarization results, and most papers in the field of MOO and economics deal with non-linear programming problems, corresponding duality theorems, and the repeated application of the simplex method.
-
-However, within the literature of potential development approaches focus upon local minimization techniques and global optimization techniques.
-
-objective function is concave.  constraint set is convex.  KKT requirements for uniqueness.
-
-\subsection{Global Approaches}
-
-Genetic algorithms are a popular meta-heuristic that is particularly well-suited for this class of problems.  Traditional GA are customized to accomodate multi-objective problems by using specialized fitness functions and introducing methods to promote solution diversity.
-
-The second general approach is to determine an entire Pareto optimal solution set or a representative subset. A Pareto optimal set is a set of solutions that are nondominated with respect to each other. While moving from one Pareto solution to another, there is always a certain amount of sacrifice in one objective(s) to achieve a certain amount of gain in the other(s). Pareto optimal solution sets are often preferred to single solutions because they can be practical when considering real-life problems since the final solution of the decision-maker is always a trade-off. Pareto optimal sets can be of varied sizes, but the size of the Pareto set usually increases with the increase in the number of objectives.
-
-The ultimate goal of a multi-objective optimization algorithm is to identify solution in the Pareto optimal set.  However, identifiying the entire Pareto optimal set, for multi-objective problems, is impossible to its size.  Proof of solution optimality is computationally infeasible.  Therefore, a practical approach is achieve successively better approximations of the Pareto surface that represent the Pareto set as well as possible.
-
-A multi-objective optimization approach should achieve the following conflicting goals as described by Zitzler \emph{et al}\cite{zitzler2000_moo_evolve}: (1) the best known Pareto front should be as close as possible to the true Pareto front.  Ideally, the best-known Pareto set should be a subset of the Pareto set, (2) solutions in the best known Pareto set should be uniformly distributed and diverse over the Pareto front in order to provide the decision-maker a true picture of trade-offs, and (3) the best-known Pareto front should capture the whole spectrum of the Pareto front at the extreme ends of the spectrum.  While the first two goals are important for multi-objective optimization, the last goal is erroneous.  In general, when developing potentials, the DM is interested in compromise solutions and a parameterization with high fidelity with respect to one material property at the expense of a loss of fidelity with respect to all other prediction would be a pathological parameterization.
-
-\subsubsection{Genetic Algorithms}
-The method which will be proposed in chapter 5 is not a genetic algorithm, but has many similarities as Genetic Algorithms but tailored to create an ensemble of Pareto optimal parameters.  However, it is a genetic solution and the iterative approach of generating new populations is akin to previous solutions.  As a result, the section of review in this section is necessarily incomplete but refer to an introductory review by Konak \emph{et al}\cite{Konak2006_moo_ga} as well as the book by Deb\cite{deb2001_moo_ga}
 
 The concept of genetic algorithms were inspired by evolutionist theories explaining the origin of species\cite{holland1992_ga}.  In nature, weak and unfit speicies within their environment are faced with extinction by natural selection, while strong ones pass on their genes to future generations through reproduction.  In the long run, species carrying the correct combinatioon in their
     genes become dominant in their population.
@@ -399,7 +489,7 @@ We originally defined $\Theta$ as a compact space of the parameters ${\bm{\theta
     \Theta = \Theta_0 \supset \Theta_1 \supset \hdots \supset \Theta_k = \Theta^{(p)}
 \end{equation}
 
-which produces due to Eq \ref{eqn:def_Q} and \ref{eqn:def_E}
+which produces due to Eq %\ref{eqn:def_Q} and \ref{eqn:def_E}
 
 \begin{equation}
     \mathcal{E} = \mathcal{E}_0 \subset \mathcal{E}_1 \supset \hdots \supset \mathcal{E}_k = \mathcal{E}^{(p)}
@@ -408,14 +498,20 @@ which produces due to Eq \ref{eqn:def_Q} and \ref{eqn:def_E}
 for $k < \infty$ iterations.  Since $\Theta \subset \mathbb{R}^p$ and $\mathcal{E} \subset \mathbb{R}^n$, we provide the following approach which uses Monte Carlo simulation in an approach which is inspired by Bayesian inference, although this approach does not use a Bayesian updating approach.  The goal of this approach is to produce an ensemble of $\bm{\theta}\in \Theta^{(p)}$ and describe this ensemble as a probability distribution which could be used as a starting point in uncertainty quantification propagation.
 
 We propose the following approach:
-\begin{subequations}
-	\begin{gather}
-	      \Theta_k \rightarrow \hat{Q}_k(\Theta_k) \rightarrow \mathcal{E}_k(\Theta_k) \\
-	      \mathcal{E}_k(\Theta_k) \rightarrow \mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \\
-	      \mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \rightarrow \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \\
+%\begin{subequations}
+\begin{equation}
+	\Theta_k \rightarrow \hat{Q}_k(\Theta_k) \rightarrow \mathcal{E}_k(\Theta_k)
+\end{equation}
+\begin{equation}
+	\mathcal{E}_k(\Theta_k) \rightarrow \mathcal{E}_k^{(p)}(\Theta_k^{(p)})
+\end{equation}
+\begin{equation}
+	\mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \rightarrow \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)})
+\end{equation}
+\begin{equation}
 	      \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \rightarrow \Theta_{k+1}
-	\end{gather}
-\end{subequations}
+\end{equation}
+%\end{subequations}
 % this paragraph has some notational abuse, but is used for the sake of clarity rather than making the notation mathematical rigorous.
 The notation $\rho(\bm{\theta})$ refers to the joint probability density function that $\bm{\theta} \in \Theta^{P}$.
 Intuitively, one can think of

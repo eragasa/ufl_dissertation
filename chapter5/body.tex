@@ -1,31 +1,73 @@
-\chapter{EVOLUTIONARY ALGORITHM FOR DETERMINING THE PARETO SET}
+\chapter{AN EVOLUTIONARY ALGORITHM FOR GENERATING PARETO EFFICIENT POTENTIALS}
 
-Genetic algorithms are a popular meta-heuristic that is particularly well-suited for this class of problems.  Traditional GA are customized to accomodate multi-objective problems by using specialized fitness functions and introducing methods to promote solution diversity.
+Gradient based optimizers are efficient at finding local minima for high dimensional, non-linearly constrained, convex problems; however, gradient methods have problems dealing with noisy or discontinuous functions, and are not designed to handle multi-modal problems or discrete or mixed descrete-continuous design variables.  In these cases, there are different options available to the potential developer including: multiple restarts of the gradient based optimizer for different initial conditions, which requires multiple guesses at initial starting parameterizations, $\bm{\theta}_0$; systematically searching the design space, and using a gradient free minimizer.
 
-We scale the objective function in
-
-The use of evolutionary algorithms in the development of classical potentials is not new, and numerous optimization approaches such as gradient-based approaches, genetic algorithms, and neural networks have been developed.
-
+When we cast the potential optimization problem from a single objective optimization problem to a multiple objective optimization problem, the problem becomes more difficult.  In order to explore the optimal parameterization space,
 However, in previous literature genetic algorithms are used to optimize potentials.
 
 Our algorthm has the following goals: (1) to identify the strengths and weaknesses of solution of the Pareto optimal solutions, (2) to generate estimates of the Pareto optimal front in a serious of iteratively better approximations, and (3) to describe the candidate parameterizations through the use of a distribution function and use MCMC sampling, but updating the distribution using culling of the Pareto distribution.
 
 \section{Genetic Algorithm}
 
-Step 1: Set $t=1$.  Randomly generate N soluitions to form the first population, $P_1$.  Evaluate the fitness of solutions in $P_1$
+Genetic algorithms are a popular meta-heuristic that is particularly well-suited for this class of problems.  Traditional GA are customized to accomodate multi-objective problems by using specialized fitness functions and introducing methods to promote solution diversity.  The use of evolutionary algorithms in the development of classical potentials is not new, and numerous optimization approaches such as gradient-based approaches, genetic algorithms, and neural networks have been developed.
+Genetic algorithms
 
-Step 2: Crossover
+\begin{itemize}
+\item  Set $t=1$.  Randomly generate N soluitions to form the first population, $P_1$.  Evaluate the fitness of solutions in $P_1$
+\item Crossover
+\item Mutation
+\item Fitness assessment
+\item Selection.  Select $N$ solution from $Q_t$ based on their fitness and copy them to $P_{t+1}$
+\item If the stopping criterion is satisfied, terminate the search and return to the current population, else set $t=t+1$ and go to step 2.
+\end{itemize}
 
-Step 3: Mutation
+\section{The Problem}
 
-Step 4: Fitness assessment
+Using the construction of an empirical potential as outlined in Chapter 2, we define an empirical interatomic potential, $\hat{V}$, which approximates the potential energy surface, $V$.  
+If $\bm{R}$ is an atomic configuration, then both the EIP and the PES maps the configurational space onto energies, $\hat{V}:\bm{R} \rightarrow \mathbb{R}$ and $V:\bm{R} \rightarrow \mathbb{R}$.  
+We can then write
+\begin{equation}
+    \hat{V})(\bm{R}) = V(\bm{R}) + \epsilon(\bm{R})
+\end{equation}
+where $\epsilon(\bm{R})$ is a difference equation required for equality balance.
+\begin{equation}
+    \epsilon(\bm{R}) = \hat{V}(\bm{R}) = V(\bm{R})
+\end{equation}
+Since ${\epsilon \rightarrow 0}$ as the EIP becomes a better approximation to the PES, we will use $\epsilon$ to define loss functions and performance filters. 
 
-Step 5: Selection.  Select $N$ solution from $Q_t$ based on their fitness and copy them to $P_{t+1}$
+If $\hat{V}$ is an analytical parameterized by $P$ parameters, $\bm{\theta}=[\theta_1,...,\theta_P]\in\mathbb{R}^P$
 
-Step 6: If the stopping criterion is satisfied, terminate the search and return to the current population, else set $t=t+1$ and go to step 2.
+\section{A Probability Approach}
 
-In our case, the initial development of solutions requires
+In a deterministic approach, a parameterization, $\theta$, is a member of the domain $\Theta$, and we use numerical routines to identify the optimal parameterization $\theta^*\in\Theta$.
 
-Constraint handling.  Discard infeasible solutions ("death penalty") Coello.
+Here we take a probabilistic approach to potential development.  
+Here $\Theta$ is a random variable, and $\theta\in\Theta$ is a specific realization of that random variable.
 
-Elitism.  When an external list is used to store elist solutions, several issues must be addressed.  The first issue is which solutiojns are going to be stored in elitist list.  Most multi-objective GA store non-dominat4ed solutions identified in the search and the list is updated by removing elitist solutions dominated by a new solution or adding the new solution if it is not dominated by any existing elitist solution.
+For the purpose of generality, we use $\hat{V}$ to predict a set of material values $\hat{q}$ from which we have target values $\bm{q}\in\mathbb{R}$
+
+
+We replace the notion of $\theta$ being a deterministic value, and instead $\theta\in\Theta$
+
+\section{The Fitting Database}
+
+\section{An Iterative Procedure}
+
+\section{Incorporation of Prior Knowledge}
+
+\section{Sampling and Filtering}
+
+\section{Kullbeck-Leiber Divergence}
+
+The Kullback-Leiber divergence\cite{kullback1951_kld}, $D_{KL}(\rho_1\vert\vert\rho_2)$, measures how one probability measures how one probability distribution, $\rho_1$, diverges from a second probability distribution function, $\rho_2$.
+For continuous random variables, $D_{KL}$, is defined as the integral
+\begin{equation}
+   D_{KL}(\rho_1\vert\vert\rho_2)=\int \rho_1(x) \frac{\rho_1(x)}{\rho_2(x)}dx
+\end{equation}
+$D_{KL} > 0$, with $D_{KL}(\rho_1\vert\vert\rho_2)$, when $\rho_1=\rho_2$ almost everywhere.
+For our application, our distributions are KDEs, so the evaluation of the integral can be done by Monte Carlo integration.
+As the number of iterations, $i$, increases, the Kullbach-Leiber divergence $D_{KL}(\rho_{i-1}\vert\vert\rho_i)$ convergences asymtotically to zero.
+Since early iterations are more likely to cause changes in the set approximating $\bm{\Theta}^*$ than later simulations, changes in $D_{KL}$ will initially be large.
+However, it becomes increasingly more difficult to identify further Pareto-optimal solutions later in the simulation.  
+As a result, the distribution becomes more stationary.  
+However, since this integral is evaluated by Monte Carlo estimation, the KDE estimate of the distributions from the sample population will have small divergences betweem, $\rho_i(x)$ and $\rho_{i-1}(x)$.

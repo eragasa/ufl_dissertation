@@ -1,0 +1,85 @@
+\chapter{Applications to Covalently Bonded Materials}
+
+\section{Potential Formalism}
+The Stillinger-Weber potential\cite{stillinger1985_sw} is a combination of a two-body ($\phi_2$) and three-body ($\phi_3$) terms, which is a function of the interatomic distances ($r_{ij}$,$r_{ik}$) from a central atom $i$ and the angle ($\theta_{ijk}$).
+
+\begin{equation}
+    E = \sum_{i<j}\varepsilon \phi_2 (r_{ij})
+        +\sum_{j<k}\varepsilon \phi_3 (r_{ij},r_{ik},\theta_{ijk})
+\end{equation}
+
+where
+
+\begin{equation}
+    \phi_2(r_{ij})=A_{ij} \left[
+        B_{ij}
+        \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{p_{ij}}
+        - \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{q_{ij}}
+    \right]
+    \exp\left(\frac{\sigma_{ij}}{r_{ij}-a_{ij}\sigma_{ij}}\right)
+\end{equation}
+
+\begin{equation}
+    \phi_3(r_{ij},r_{ik},\theta_{ijk}) =
+        \lambda_{ijk}
+        \epsilon_{ijk}
+        \left[
+            \cos(\theta_{ijk}) - \cos(\theta_{0,ijk})
+        \right]
+        \exp\left(\frac{\gamma_{ij}\sigma_{ij}}
+                       {r_{ij}-a_{ij}\sigma_{ij}}
+            \right)
+        \exp\left(\frac{\gamma_{ik}\sigma_{ik}}
+                       {r_{ik}-a_{ik}\sigma_{ik}}
+            \right)
+\end{equation}
+
+The $A$, $B$, $p$, and $q$ parameters only apply to the two-body interactions.
+The $lambda$, $theta_0$ parameters are used only for three-body interactions.
+The $\varepsilon$,$\sigma$, and $a$ parameters shared between the terms.
+
+In order to compare the performance of the potentials developing using this software package, we use the original parameterization of Stillinger and Weber (SW)\cite{stillinger1985_sw}, Vink \emph{et al}(VMWM)\cite{vink2001_sw_Si},
+
+\begin{table}
+	\centering
+	\caption{Table of parameters for the reference potentials, and the lower and upper bounds used to define the uniform distribution}
+	\label{table:sw_parameters_ref}
+	\begin{tabularx}{\textwidth}{c c c c}
+		\hline 
+		Parameter & SW & VBWM & PG \\
+		\hline
+		$\epsilon$ & 2.1686 & 1.64833 & 1.04190 \\
+		$\sigma$ &   2.0951 & 2.0951 & 2.128117 \\
+		$\a$ &       1.80 & 1.80 & 1.80 \\
+		$\lambda$ & 21.0 & 31.5 & 31.0 \\
+		$\gamma$ & 1.20 & 1.20 & 1.1 \\\
+		$A$ & 7.049556277 & 7.049556277 & 19.0 \\
+		$B$ & 0.602224558 & 0.6022245584 & 0.65 \\
+		$p$ & 4.0 & 4.0 & 3.5 \\
+		$q$ & 0.0 & 0.0 & 0.0 \\
+		\hline
+	\end{tabularx}
+\end{table}
+
+\section{Methodology}
+
+For the development of a new potential, we use a subset of the reference values from Pizzagalli \emph{et al} \cite{pizzagalli2013_sw_Si}.
+
+\begin{table}
+	\centering
+	\caption{Fitting database for Si, reference values taken from Pizzagalli \emph{et al}\cite{pizzagalli2013_sw_Si}}
+	\label{table:si_fitting_db}
+	\begin{tabularx}{\textwidth}{c c c}
+		\hline
+		Property & Units & Value \\
+		\hline
+		$E_c$ 		& eV 	& -4.63 \\
+		$a_0$ 		& \AA 	&  5.43 \\
+		$C_{11}$ 	& GPa 	& 166 \\
+		$C_{12}$ 	& GPa 	& 64 \\
+		$C_{44}$ 	& GPa 	& 80 \\
+		$B$ 		& GPa 	& 99 \\
+		$E_v$ 		& eV 	& 3.6 \\
+		\hline
+	\end{tabularx}
+\end{table}
