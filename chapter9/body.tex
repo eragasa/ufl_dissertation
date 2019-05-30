@@ -1,4 +1,4 @@
-\chapter{Applications to Covalently Bonded Materials}
+\chapter{Applications to Covalently Bonded Materials}\label{chapter:pareto_Si}
 
 \section{Potential Formalism}
 The Stillinger-Weber potential\cite{stillinger1985_sw} is a combination of a two-body ($\phi_2$) and three-body ($\phi_3$) terms, which is a function of the interatomic distances ($r_{ij}$,$r_{ik}$) from a central atom $i$ and the angle ($\theta_{ijk}$).
@@ -38,19 +38,19 @@ The $A$, $B$, $p$, and $q$ parameters only apply to the two-body interactions.
 The $lambda$, $theta_0$ parameters are used only for three-body interactions.
 The $\varepsilon$,$\sigma$, and $a$ parameters shared between the terms.
 
-In order to compare the performance of the potentials developing using this software package, we use the original parameterization of Stillinger and Weber (SW)\cite{stillinger1985_sw}, Vink \emph{et al}(VMWM)\cite{vink2001_sw_Si},
+In order to compare the performance of the potentials developing using this software package, we use the original parameterization of Stillinger and Weber (SW)\cite{stillinger1985_sw}, Vink \emph{et al}(VMWM)\cite{vink2001_sw_Si}, and Pizzagalli \emph{et al}\cite{pizzagalli2013_sw_Si}
 
-\begin{table}
+\begin{table}[htbp]
 	\centering
 	\caption{Table of parameters for the reference potentials, and the lower and upper bounds used to define the uniform distribution}
 	\label{table:sw_parameters_ref}
-	\begin{tabularx}{\textwidth}{c c c c}
+	\begin{tabular}{c c c c}
 		\hline 
 		Parameter & SW & VBWM & PG \\
 		\hline
 		$\epsilon$ & 2.1686 & 1.64833 & 1.04190 \\
 		$\sigma$ &   2.0951 & 2.0951 & 2.128117 \\
-		$\a$ &       1.80 & 1.80 & 1.80 \\
+		$a$ &       1.80 & 1.80 & 1.80 \\
 		$\lambda$ & 21.0 & 31.5 & 31.0 \\
 		$\gamma$ & 1.20 & 1.20 & 1.1 \\\
 		$A$ & 7.049556277 & 7.049556277 & 19.0 \\
@@ -58,18 +58,20 @@ In order to compare the performance of the potentials developing using this soft
 		$p$ & 4.0 & 4.0 & 3.5 \\
 		$q$ & 0.0 & 0.0 & 0.0 \\
 		\hline
-	\end{tabularx}
+	\end{tabular}
 \end{table}
 
 \section{Methodology}
 
+Here we repeat the process outlines in Chapter.
+
 For the development of a new potential, we use a subset of the reference values from Pizzagalli \emph{et al} \cite{pizzagalli2013_sw_Si}.
 
-\begin{table}
+\begin{table}[htbp]
 	\centering
 	\caption{Fitting database for Si, reference values taken from Pizzagalli \emph{et al}\cite{pizzagalli2013_sw_Si}}
 	\label{table:si_fitting_db}
-	\begin{tabularx}{\textwidth}{c c c}
+	\begin{tabular}{c c c}
 		\hline
 		Property & Units & Value \\
 		\hline
@@ -81,5 +83,87 @@ For the development of a new potential, we use a subset of the reference values 
 		$B$ 		& GPa 	& 99 \\
 		$E_v$ 		& eV 	& 3.6 \\
 		\hline
-	\end{tabularx}
+	\end{tabular}
 \end{table}
+
+\section{Results and Discussion}
+
+\subsection{Analysis of Prediction Performance}
+\subsubsection{Univariate QOI analysis}
+To analyze the performance of our ensemble of potentials, an univariate inspection of the probability density functions for each of the QOIs can provide insight on the performance of the potential formalism.
+Figure \ref{fig:Si_qoi_B} shows the evolution of the predicted values of the bulk modulus for Silicon, $B$.  The typical evolution on how these parameter optimization process evolves an ensemble of potentials.  
+These curves are the probability density function, estimate using a kernel density estimate with the Silverman bandwidth estimation.  
+In early iterations, the uncertainty reduction in predictions is quite large, but in later iterations the estimates for the Pareto optimal ensemble improves, the probability density function increases around the target value.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=5in]{chapter9/qoi_plots/Si_dia_B}
+	\caption{Evolution of the prediction of the bulk modulus, $B$, for Silicon.}
+	\label{fig:Si_qoi_B}
+\end{figure}
+
+In a scalar optimization approach, the existance of local minima make the identification of the optimal parameterization as local minima becomes a basin of attraction in a gradient descent approach.
+Even when global optimization techniques are used, the potential developer is not aware if the existence of local minima and cannot evaluate the region of these parameterizations, would be an area of interest.
+In contrast, the Pareto optimization approach does not look for a single optimal parameterization but a ensemble of candidate parameters, which product Pareto optimal predctions.
+Instead, these regions become basins of attractions for candidate potentials, which manifests itself in regions of elevated probability.
+for identifying candidate parameters is the presence of multiple regions of parameterization becomes apparent upon visual inspection of the distribution of QOI predctions.
+
+In Figure \ref{fig:Si_qoi_a0}, the probability density plot for the predictions of the lattice parameter, $a_0$ shows a bimodal distribution; the candidate potentials have two peaks which indicate an elevated probability distribution due a high concentration of predictions in those regions.
+Simular to the evolution of predictions for the bulk modulus, initial iterations have a broad proability distribution which indicates a high level of uncertainty, while the later iterations concentrate the predictions.
+In this situation, one peak centered around the target value of $a_0=5.43$ \AA.  The second peak becomes more pronounced in later iterations indicate a second population of potentials which predict a lattice parameter of $~5.0$ \AA.
+While potential developers are interested in getting the lattice parameters correct, the second peaks contains potentials which are not dominated by the potentials in the first peak, and must have better predictions in other material properties.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=5in]{chapter9/qoi_plots/Si_dia_a0}
+	\caption{Evolution of the the prediction of the lattice parameter, $a_0$, for Si.}
+	\label{fig:Si_qoi_a0}
+\end{figure}
+
+Prediction for the cohesive energy $E_c$ of the system is the material property which shows an atypical distribution; Figure \ref{fig:Si_qoi_E_coh} shows the evolution of those predictions.
+In early iterations ($i=1$ and $i=2$), the probability density functiosn resemble a normal distribution with peaks approximately $-4.0$ eV/\AA, which is significantly higher than the target value of $-4.63$ eV/\AA.
+The candidate parameterizations continue to concentrate their probability density into a smaller region, but does so in an unexpected way.  
+The tail end probabilities continue to reduce markedly, but by the fifth iteration ($i=5$), a probability density function takes a significantly different shape.  
+Instead of having a peak, there is a region of elevated probability that is relatively constant over the range $-4.5 \AA < E_c < -3.6 \AA$.
+At the final iteration ($i=20$), a clear mode develops at $E_c=-4.3$ \AA with a shoulder at $E_c=-3.6$ \AA.
+The distribution of potentials conveys important information to the potential developer; the majority of the potentials predicting a cohesive energy larger than the target values means that choosing to get the cohesive energy corrent likely means markedly lower fidelity in predicting the other target material properties.
+
+\begin{figure}
+	\centering
+	\captionsetup{justification=centering,margin=1in}
+	\includegraphics[width=5in]{chapter9/qoi_plots/Si_dia_E_coh}
+	\caption{Evolution of the prediction of the cohesive energy, $E_c$ for Si.}
+	\label{fig:Si_qoi_E_coh}
+\end{figure}
+\subsubsection{Bivariate QOI objective analysis}
+In moving towards the selection of a potential in a multi-objective space, it is useful examine the problem through a series of bi-objective plots.
+
+\subsubsection{Multivariate QOI objective analysis}
+
+\subsection{Analysis of parameter space}
+\subsection{Selection of Potentials}
+
+Both the Akaike information criterion (AIC)\cite{akaike1998_aic} and the Bayesian information criterion (BIC) \cite{schwarz1978_bic} 
+are estimators of the relative quality of statistical models for a given set of data.  
+Both of these criteria are penalized for using a more complicated model.  The AIC or BIC of a model is written in the form $[2\log(\hat{L}+kp]$, where $\hat{L}$ is a likelihood function, $p$ is the number of parameters in the model, and $k$ is $2$ for AIC and $\log(n)$ for BIC.
+Given a collection of models for data, bot h the AIC and BIC estimates the quality of each model relative to the other models, providing a mechanism for model selection.  
+ddhe Akaike information criterion (AIC) \cite{akaike1998_aic} is an estimator of the relative quality of statistical models for a given set of data.   Given a collections of models for the data, AIC estimates the quality of each model relative to other models, providing a mechanism for model selection.
+
+
+\begin{figure}
+	\centering
+	\captionsetup{justification=centering,margin=1in}
+	\includegraphics{chapter9/aic_bic_plot}
+	\caption{Identification of the number of }
+	\label{fig:Si_Ec_a0_aic_bic}
+\end{figure}
+
+\begin{figure}[hbt]
+	\centering
+	\captionsetup{justification=centering,margin=1in}
+	\includegraphics[width=5in]{chapter9/gmm_parallel_plot}
+	\caption{Parallel plot}
+	\label{fig:Si_gmm_parallel_plot_2_qoi}
+\end{figure}
+
+\subsection{Validation of Potentials}
+

@@ -133,11 +133,30 @@ Table \ref{table:pypospack_potentials} lists the currently implemented potential
 
 The execution framework involves the management of the \verb|Qoi| objects and the \verb|Task| each parameter set.  \verb|Task| defines a simulation task, which will spawn a subprocess using the Python \verb|subprocess| module to execute external code.
 
+\subsection{Pyposmat}
+For the purposes of the decomposition of simulation tasks and the calculation of material properties.  The implementation of the simulation tasks are contained within the tasks submodule while the implementation of the calculation of the material properties are contained within qoi submodule.  To avoid duplication of the same the same simulations, the QoiManager determines which task are necessary to be run, whie the TaskManager is responsible for the execution of these tasks.  The PyposmatEngine coordinates information passing between the QoiManager and TaskManager, by configuring the QoiManager with information from the PyposmatConfigurationFile, it then extracts the task list from the QoiManager which is used to configure the TaskManager which then instantiates all the tasks, runs the simulations, and processes the results of those simulations.  When the TaskManager has completed, the PyposmatEngine then extracts the results of the simulations and passes it to the QoiManager, which then calcualtes the material properties.  Thus the pypospack simulation engine implements the fundamental function of 
+\begin{equation}
+    \bm{\hat{q}}(\hat{V}(\bm{\theta}|\bm{R}_1,...\bm{R}_N)
+\end{equation}
+which is the calcualtion of the qois, and when conbined with the target QOI values calculates the difference,
+\begin{equation}
+    \bm{epsilon{\theta}}=\bm{\hat{q}}(\hat{V}(\bm{\theta}|\bm{R}_1,...\bm{R}_N)-\bm{q}
+\end{equation}
+
 \subsection{Simulation Tasks}
 At the heart of the \verb|pypospack| conceptualization of the parameterization workflow is the decomposition of the calcuation of material properties into individual simulations.
 
 All tasks inherit from the the abstract class \verb|task.Task|, with an intermediate abstract class for the implementation of simulation tasks for LAMMPS(\verb|AbstractLammpsSimulation|), and GULP(\verb|task.gulp.GulpSimulation|.  LAMMPS and GULP implementation of tasks are determined separately.
 
+A simulation task has several states: INIT, CONFIG, READY, RUNNING, POST, FINISHED, and ERROR.  It start with INIT and proceeds to the other stages unless an error conditions happens, in which case the instance of the class is marked with the status ERROR.
+
+The INIT state is automatically set when a Task is instantiated.  
+When, the TaskManager provides the information necessary to a class, with exception of information it requires from other tasks, it will mark itself into the CONFIG state, unless it is not dependent upon Task completation, in which case it will automatically move to READY.   
+When all Tasks reach the CONFIG state, then the TaskManager will begin running simulations by creating a the necessary input files to the external calculator, such as LAMMPS or GULP, subprocess the calculator to run the simulation, and mark the status as RUNNING.  
+Monitoring of the subprocesses in done within a sleep loop in the TaskManager; the TaskManager iterates throug the list of tasks, instructing it to poll it's subprocess, this enables multiple simulations to be done simultaneously, without locking the main thread.  Each task with logic to identify abnormal exit conditions of the simulation software and will kill the child subprocess, without killing the main thread.
+When the simulation is complete, the Task will notice that the subprocess is complete TaskManager will then mark the task in being the POST state, indicating that the results of the simulation are ready for post-processing.  The task manager will then instruct the task to post-process the results of the simulation by reading the output files and providing the information as dictionary object which is then broadcast to all the other tasks as well as the QoiManager, which collects the data for the calculation of material properties.  When the post-processing tasks are complete and the information received by the TaskManager, the task is then marked FINISHED.
+
+When all tasks have the FINISHED status, then all simulations are complete, and the information is transferred from the TaskManager to the QoiManager for calculation of material properties.
 \subsection{Quantities of Interest}
 
 \section{Sampling Framework}

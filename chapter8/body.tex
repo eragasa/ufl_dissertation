@@ -39,9 +39,36 @@ In early potential development, the parameters are adjusted to match properties 
 \section{Development of an EAM potential}
 
 Even when a potential has an analytical functional form. EAM potentials are specified in a functional form which is dependent a specific code format which precalculates evaluation of the $\phi(r_{ij})$, $\rho(r_{ij})$, and $F(\bar{\rho})$.  Specifics of this calculation are provided in Appendex \ref{appendix:setfl}.
-\section{Cutoff function}
+
+\subsection{Potential Formalisms}
+
+A variety of potential formalisms have been explored.
+
+\subsubsection{Density Function}
 
 
+Mishin\cite{mishin2004_eam_NiAl} and Purja Pun and Mishin\cite{purjapun2009_eam_NiAl} use the following density function (\verb|density_mishin2004|):
+
+\begin{equation}
+\label{eq:density_mishin2004}
+	\rho(r) = A_0 (r-r_0)^y e^{-\gamma (r-r_0)}(1+B_0 e^{-\gamma (r-r_0} + C0,
+\end{equation}
+Mishin sets $A_$ to be zero, but can arbitrarily set to any number since
+
+which is mollified by the function $\psi(x) = x^4 / (1+x^4), such that the mollified density function is 
+
+\begin{equation}
+    \bar{\rho}(r) = \psi \left(\frac{r-r_c}{h}\right)\rho(r)
+\end{equation}
+
+\subsection{Pair Potential Functions}
+
+
+The Ni pair potential takes the form of a generalized LJ potential as in Mishin\cite{mishin2004_eam_NiAl}
+
+\begin{equation}
+\label{eq:pair_mishin2004}
+\end{equation}
 
 \section{Generalized Stacking Fault in FCC}
 The generalized stacking fault in FCC metals describe the the slip of \{111\} planes of the face centered cubic cell in the <112> direction, which represents the energy

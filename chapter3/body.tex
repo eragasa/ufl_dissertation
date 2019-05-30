@@ -127,6 +127,11 @@ As a result, the empirical potential treated as varying due to changing the para
 
 \subsection{Fitting Database}
 A more popular approach in potential developmet comes from fitting an interatomic potential so that predicted values of material properties predicted by the interatomic potential corresponds with either high-fidelity predictions done through more computationally expensive \emph{ab initio} calculations or directly through experimental observations.
+In early efforts of potential development, potentials were developed by fitting to a few experimental numbers.
+As DFT calculations improved, the current trend is to include a significant amount of \emph{ab initio} data.  \emph{Ab initio} data drastically improves the reliability of potentials by allowing the sampling of regions of configuration space, which includes atomic configurations which are difficult or inaccessible experimentally.
+
+
+
 The material properties calculated are referred to as a quantity of interest (QOI), $q$, while the predictions made by the potential denoted, $\hat{q}$.  
 A quantity of interest can be related to the PES, by considering aa high-fidelity method used to calculate the potential of iteresst.
 In the case when the target QOI values are calculated from a high-fidelity method, such as density functional theory (DFT), the computation of the material property can be decomposed as a function of energy evaluation of the PES,
@@ -134,6 +139,10 @@ In the case when the target QOI values are calculated from a high-fidelity metho
 	q(\bm{R}_1,...,\bm{R_N}) = F(V(\bm{R}_1),...,V(\bm{R}_N))
 \end{equation}
 Since $\hat{q}$ is ultimately detemined from energy calculations upon atomic structures, either directly or though numerical estimation, we can represent the energy difference between the predicted QOIs and the target QOIs.
+
+
+
+
 
 \begin{equation}
 	\epsilon(\bm{\theta}:\{\bm{R}_1,...,\bm{R}_N\})=\hat{q}(\bm{\theta}:\{\bm{R}_1,...,\bm{R}_N\})-q
@@ -560,3 +569,13 @@ The charge of the atoms is allowed to deviate from their formal charges, provide
 
 \subsection{Implementation}
 Implemented in Python using LAMMPS as the molecular dynamics engine as the calculator.  Parrellization is done through MPI.
+
+\subsection{More modern techniques}
+The development of the potentials have incorporated more modern techniques
+
+Frederiksen \emph{et al.} \cite{fredericksen2004_bayesian_fitting} introduces a Bayesian approach to potential parameterization.
+Robertson, Heine, and Payne \cite{robertson1993_glue_schemes} develops glue schemes
+
+Neural network approaches were pioneered by Behler and Parrinello \cite{behler2007_NN_potdev} and Sanville \emph{et al.} \cite{sanville2008_NN_potdev_si}.
+
+Genetic algorithm approach\cite{marques2008_ga_potdev} and \cite{hunger1998_ga_potdev}.
