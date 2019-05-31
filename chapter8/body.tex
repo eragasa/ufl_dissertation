@@ -40,11 +40,20 @@ In early potential development, the parameters are adjusted to match properties 
 
 Even when a potential has an analytical functional form. EAM potentials are specified in a functional form which is dependent a specific code format which precalculates evaluation of the $\phi(r_{ij})$, $\rho(r_{ij})$, and $F(\bar{\rho})$.  Specifics of this calculation are provided in Appendex \ref{appendix:setfl}.
 
-\subsection{Potential Formalisms}
+\subsection{Pair Potential}
 
+\subsection{Density Function}
+
+\subsection{Embedding Function}
+
+\subsubsection{Analytical EAM Embedding Functions}
+
+\subsubsection{Fitting of an Equation of State}
+
+A common approach to determining the equation of state is through an equation of state.
+The bulk modulus $B_0 = -V\left( \frac{\delta P}{\delta V} \right)_{P=0}$
 A variety of potential formalisms have been explored.
 
-\subsubsection{Density Function}
 
 
 Mishin\cite{mishin2004_eam_NiAl} and Purja Pun and Mishin\cite{purjapun2009_eam_NiAl} use the following density function (\verb|density_mishin2004|):
@@ -55,7 +64,7 @@ Mishin\cite{mishin2004_eam_NiAl} and Purja Pun and Mishin\cite{purjapun2009_eam_
 \end{equation}
 Mishin sets $A_$ to be zero, but can arbitrarily set to any number since
 
-which is mollified by the function $\psi(x) = x^4 / (1+x^4), such that the mollified density function is 
+which is mollified by the function $\psi(x) = x^4 / (1+x^4)$, such that the mollified density function is
 
 \begin{equation}
     \bar{\rho}(r) = \psi \left(\frac{r-r_c}{h}\right)\rho(r)

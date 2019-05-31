@@ -1,0 +1,13 @@
+.DS_Store
+# latex generated files
+*.aux
+*.log
+*.bbl
+*.ls
+*.dvi
+*.fdb_latexmk
+*.fls
+*.out
+*.toc
+*.lof
+*.lot

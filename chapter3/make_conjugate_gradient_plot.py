@@ -58,9 +58,9 @@ if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
 
-    fig, ax = plt.subplots(1,1)
+    fig, ax = plt.subplots(1,)
     ax.scatter(df['f1'],df['f2'],c='black',marker=".",s=1)
     #ax.set_xlim(-20,-14)
     #ax.set_ylim(-12,2)
-    fig.savefig('mc_sampling.eps',dps=1200) 
-
+    plt.show()
+    fig.savefig('pareto_mc_sampling.eps',dps=1200)
