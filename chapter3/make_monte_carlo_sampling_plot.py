@@ -55,6 +55,7 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(data,
                  columns=column_names)
+    print(df)
 
     import matplotlib.pyplot as plt
 
