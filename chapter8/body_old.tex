@@ -1,0 +1,31 @@
+\chapter{APPLICATIONS TO NICKEL EMBEDDED ATOM POTENTIALS}
+
+The EAM, originally developed by Foiles \emph{et al}, describes a system of $N$ atoms as
+\begin{equation}
+  E=\sum_{i<j}^{N}\phi_{ij}(r_{ij})
+    +\sum_{i=1}^{N}F_{i}(\rho_{i})
+\end{equation}
+The first term is the summation over all neighbors of a pair potential of a pair potential energy($\phi_{ij}$) between two atoms, $i$ and $j$.  The second term is the embedding energy ($F_i$) necessary to place the atom $i$ at its position in an electron gas density ($\phi_i$) influenced by all the neighbors of the atom.
+
+The original formulation of the EAM represented the reepulsion between the atomic cores (nuclei and inner electron shells), represented by a power law or an Born-Mayer type exponential function.  Later EAM pair potentials used Morse Functions[10,19,20].
+
+In either case, the electron density function and the pair potential are given as analytic functions of the radial separation of two atoms $r_{ij}$ with fitted parameters.  The embedding function is sometimes specified as having a specific functional form, or determined by fitting the embedding function to an equation of state such as Rose \emph{et al}[21].
+
+For Nickel, Johnson and Oh[22], Voter-Chen[19,23], Angelo \emph{et al}[20] have used parametric functional forms, where Ercolessi and Adams[24] and Mishin \emph{25} implemented cubic-spline approaches, which do not specify an analytical functional form.
+
+In early potential development, the parameters are adjusted to match properties such cohesive energy, lattice parameters, elastic properties, and vacancy formation energies.  With additional computational power, stacking fault energies, phase order differences, and surface energies to fit to important relevant environments thought to be important to produce transferrable potentials.
+
+\section{Generalized Stacking Fault in FCC}
+The generalized stacking fault in FCC metals describe the the slip of \{111\} planes of the face centered cubic cell in the <112> direction.
+
+In the early works of Frenkel and Mackenzie describe this motion as a function of the macroscopically measured shear modulus, the Burgers vector and the interplanar spacing of the \{111\} planes.
+
+Rice[3] unstable stacking faults and stable stacking faults
+
+Vitek\cite{vitek1966_gsf,vitek1968_gsf} develops the notion of the generalized stacking fault, which cannot be measured experimental except at a single point knows as the intrinsic stacking fault $\gamma_{ISF}$
+
+Calculation of unstable stacking faults\cite{sun1990_eam_esf,sun1993_eam_esf,farkas1997_eam_usf} was done with EAM potentials, while DFT has been used for the calcualtion of the GSF curve [14,15,16]
+
+Zimmerman takes the approach of creating a simulation of the FCC crystal oriented in the <111> direction, with the basal plane formed by the <112> and the <111> direction.  For the ease of creating the stacking fault, the <112> direction is chosen on the x-axis, and the <110> is chosen for the y-axis, and the z-axis on the <111>.  To create the stacking fault, the lower half remains fixed, while the upperhalf is displaced in the <112> direction in small increments.  Zimmerman uses 6000 atoms consisting of 30 {111} planes.  After lateral displacement, the atoms are allowed to relax laterally (in the <111> direction) except for three {111} planes at the top and bottom.  This method is used in [11-13]
+
+To create a surrogate model, we use the atomic simulation enviornment (ASE)

@@ -1,7 +1,21 @@
 \chapter{AN EVOLUTIONARY ALGORITHM FOR GENERATING PARETO EFFICIENT POTENTIALS}
 
-Gradient based optimizers are efficient at finding local minima for high dimensional, non-linearly constrained, convex problems; however, gradient methods have problems dealing with noisy or discontinuous functions, and are not designed to handle multi-modal problems or discrete or mixed descrete-continuous design variables.  In these cases, there are different options available to the potential developer including: multiple restarts of the gradient based optimizer for different initial conditions, which requires multiple guesses at initial starting parameterizations, $\bm{\theta}_0$; systematically searching the design space, and using a gradient free minimizer.
+The purpose of this chapter to introduce a cost-efficient algorithm to determine the appropriate trade-offs between concurrent minimization problems associated with several critera.
 
+Our algorthm has the following goals: (1) to identify the strengths and weaknesses of solution of the Pareto optimal solutions, (2) to generate estimates of the Pareto optimal front in a serious of iteratively better approximations, and (3) to describe the candidate parameterizations through the use of a distribution function and use Monte Carlo sampling, but updating the distribution by keeping the Pareto dominated points.
+
+
+\section{Comparison to Other Methods}
+
+In the case, where the Pareto front is continuous and convex.  Gradient-based optimization can be used efficiently.
+
+Gradient based optimizers are efficient at finding local minima for high dimensional, non-linearly constrained, convex problems; however, gradient methods have problems dealing with noisy or discontinuous functions, and are not designed to handle multi-modal problems or discrete or mixed descrete-continuous design variables.  In these cases, there are different options available to the potential developer including: multiple restarts of the gradient based optimizer for different initial conditions, which requires multiple guesses at initial starting parameterizations, $\bm{\theta}_0$; systematically searching the design space by varying the weighting vector $\bm{w}$, and using a gradient free minimizer.
+
+The use of the gradient minimization methods used in
+Additionally, in order to understand the tradeoffs in parameterization, it necessary to vary the vector of weights.
+
+To demonstrate the problem with gradient based approaches,
+To demonstrate the problem with the cost function approach, the Kurasawe multi-objective optimization problem\cite{kurasawe1991_pareto}.
 When we cast the potential optimization problem from a single objective optimization problem to a multiple objective optimization problem, the problem becomes more difficult.  In order to explore the optimal parameterization space,
 However, in previous literature genetic algorithms are used to optimize potentials.
 
@@ -23,8 +37,8 @@ Genetic algorithms
 
 \section{The Problem}
 
-Using the construction of an empirical potential as outlined in Chapter 2, we define an empirical interatomic potential, $\hat{V}$, which approximates the potential energy surface, $V$.  
-If $\bm{R}$ is an atomic configuration, then both the EIP and the PES maps the configurational space onto energies, $\hat{V}:\bm{R} \rightarrow \mathbb{R}$ and $V:\bm{R} \rightarrow \mathbb{R}$.  
+Using the construction of an empirical potential as outlined in Chapter 2, we define an empirical interatomic potential, $\hat{V}$, which approximates the potential energy surface, $V$.
+If $\bm{R}$ is an atomic configuration, then both the EIP and the PES maps the configurational space onto energies, $\hat{V}:\bm{R} \rightarrow \mathbb{R}$ and $V:\bm{R} \rightarrow \mathbb{R}$.
 We can then write
 \begin{equation}
     \hat{V})(\bm{R}) = V(\bm{R}) + \epsilon(\bm{R})
@@ -33,7 +47,7 @@ where $\epsilon(\bm{R})$ is a difference equation required for equality balance.
 \begin{equation}
     \epsilon(\bm{R}) = \hat{V}(\bm{R}) = V(\bm{R})
 \end{equation}
-Since ${\epsilon \rightarrow 0}$ as the EIP becomes a better approximation to the PES, we will use $\epsilon$ to define loss functions and performance filters. 
+Since ${\epsilon \rightarrow 0}$ as the EIP becomes a better approximation to the PES, we will use $\epsilon$ to define loss functions and performance filters.
 
 If $\hat{V}$ is an analytical parameterized by $P$ parameters, $\bm{\theta}=[\theta_1,...,\theta_P]\in\mathbb{R}^P$
 
@@ -41,7 +55,7 @@ If $\hat{V}$ is an analytical parameterized by $P$ parameters, $\bm{\theta}=[\th
 
 In a deterministic approach, a parameterization, $\theta$, is a member of the domain $\Theta$, and we use numerical routines to identify the optimal parameterization $\theta^*\in\Theta$.
 
-Here we take a probabilistic approach to potential development.  
+Here we take a probabilistic approach to potential development.
 Here $\Theta$ is a random variable, and $\theta\in\Theta$ is a specific realization of that random variable.
 
 For the purpose of generality, we use $\hat{V}$ to predict a set of material values $\hat{q}$ from which we have target values $\bm{q}\in\mathbb{R}$
@@ -68,6 +82,6 @@ $D_{KL} > 0$, with $D_{KL}(\rho_1\vert\vert\rho_2)$, when $\rho_1=\rho_2$ almost
 For our application, our distributions are KDEs, so the evaluation of the integral can be done by Monte Carlo integration.
 As the number of iterations, $i$, increases, the Kullbach-Leiber divergence $D_{KL}(\rho_{i-1}\vert\vert\rho_i)$ convergences asymtotically to zero.
 Since early iterations are more likely to cause changes in the set approximating $\bm{\Theta}^*$ than later simulations, changes in $D_{KL}$ will initially be large.
-However, it becomes increasingly more difficult to identify further Pareto-optimal solutions later in the simulation.  
-As a result, the distribution becomes more stationary.  
+However, it becomes increasingly more difficult to identify further Pareto-optimal solutions later in the simulation.
+As a result, the distribution becomes more stationary.
 However, since this integral is evaluated by Monte Carlo estimation, the KDE estimate of the distributions from the sample population will have small divergences betweem, $\rho_i(x)$ and $\rho_{i-1}(x)$.

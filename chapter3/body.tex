@@ -2,36 +2,39 @@
 
 In the previous chapter, an overview of the different computational tools associated to atomistic simulation were presented to give some idea of interconnectivity and breath of atomistic simulations.  Within this chapter, we outline the Pareto approach to potential optimization within the context of more typical current appraoches to potential development.
 
-The structure of this chapter starts off by framing potential development the broadest mathematical framework possible since the purpose of this dissertation is to identify new techniques and directions for potential development which have been enabled by a broad set of computational tools which harnesses large amounts of computational power to solve analytically intractable problems in a field broadly known as machine learning.
+This chapter frames potential development using a broad mathematical treatment.  The purpose is to frame some of the problems in potential development in the proper context as to understand the limitations of typical approaches in potential development.  Parameterization is often approaches to the minimization of a scalar objective functions consisting of the weighted sum of square differences with respect to the prediction of a set of material properties.  When the gradient is continuously differentiable with respect to its parameters and the objective function is convex, the gradient approach is relatively efficient, even in high dimension.  For interatomic potentials, these conditions are most likely not guaranteed for even fairly simple formulas to represent the interactions between atoms.  This necessitates the implementation of global optimization approaches to the minimization, drastically increasing the computational time for even a single selection of weights.
+
+Moreover, gradient approaches to optimization are not amenable to parallelization.  The approach starts at an initial condition and improves the estimate in an iterative manner.  As a result, the parallelization of the computational effort is limited by the dimensionality of the parameter space (length of the computation of the gradient) and limited to the number of simulations required to compute each material property.  This limits the processor utilization to $(M \times N)$, where $M$ is the number of simulations required to calculate the cost function, and $N$ is the length of parameter space.
+
+A larger problem is the weighted least squares approach makes parameterization dependent upon the selection of weights, which determines the optimal parameterization.   The weights expresses the preferences of the potential developer which must be expressed \emph{a priori}.  Some methods have been developed to pre-determine weights which incorporate the magnitude and acceptable errors of the target properties and a rough sense of properties.  In practice, a initial choice of weights is made based on the experience of the potential developer and the weights varied with respect the magnitude of the target until an acceptable parameterization is achieved.
+
+To address the issues of this approach, a novel approach to parameter optimization is taken which incorporates two pieces.  First, since gradient based scalar optimization is problematic, we recast the problem as a multi-objective optimization problem (MOO), where each of the subobjectives in the cost function are treated indpendently.  The concept of a single optimal parameterization is clearly an inappropriate representation since the objective functions are conflicting.  As a result, the solution to a MOO must be an ensemble of parameterizations; each optimal in it's own way.  This set of optimal potentials is defined as Pareto optimal.  Second, while the Pareto optimal can be estimated by varying the weights in the cost function in a systematic way, such an approach is likely inefficient due to the problems with gradient based optimization.  Instead, a sampling based approach is proposed.
 
 This chapter consists of three sections.  In the first section, we introduce the idea of a potential energy surface and how interatomic potentials can be thought of as computational inexpensive surrogate models, and we introduce the terminology of potential development as well as some broad concepts of potential optimization.
-Next, we build up the notation and terminology of general optimization from a broad mathematical standpoint, first covering the more familiar single-objective optimization then multiobjective optimization.
-In the third section, we combine the discussion of the first and second section, to cast the problem of potential development as a multi-objective optimization utilizing the concepts and notation common to most.
 
-In particular, we discuss the the current techniques to potential optimization which are applied to potential optimzation as well as some of the mathematical problems and issues of certain approach, and then clearly demonstrate that multi-objective optimization is dependent upon the concept of Pareto optimality.
+Next, we build up the notation and terminology of general optimization from a broad mathematical standpoint, first covering the more familiar single-objective optimization.  In particular, we discuss the the current techniques to potential optimization which are applied to potential optimzation as well as some of the mathematical problems and issues of this approach.
+
+At this point, the problem of a parameterization is defined within the context of a MOO problem, with the solution of MOO being the set of parameters which produce the Pareto optimal set.  When the a Pareto surface which is convex and continuously differentiable, the Pareto surface can be estimated using gradient based approaches.  However, when these conditions do not exist.  These gradient based approaches can produce erroneous results.  As a preview to the evolutionary method presended in chapter \ref{chap5}, we demonstrate how a random sampling based approach to optimization is likely a better approach to estimating a Pareto optimal surface when the potential developer has a high degree of uncertainty to the selection of a region of potential parameterizations or weighting vectors.  This is demonstrated through some sample calculations on the test problems of 
 
 \section{Potential Energy Surfaces}
 
-The potential energy surface is the energy of a collection of atoms as a function of the positions of its nuclei, $\{\bm{R}\}$.
-Using the analogy of a landscape, the potential energy surface (PES) represents a mapping of the positions of the atoms of a material system to an energies.
-This creates an energy landscape which allows materials systems to viewed from a topological perspective, which allows the PES to describe the evolution of a system.
-
-From a mathematical representation, the PES is a a function, ${V:\bm{R}\rightarrow E}$, which maps a high dimensional interatomic configuration, $\bm{R}$, onto the set of real numbers representing energies, $E\in\mathbb{R}$.
+To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.  The potential energy surface is the energy of a collection of atoms as a function of the positions of its nuclei, $\{\bm{R}\}$.
+A PES represents a mapping of the positions of the atoms of a material system to an energies, $V:\{\bm{R}\}\rightarrow E$, with $E\in\mathbb{R}$.
 Given an atomic arrangement $\bm{R}$, the evaluated potential surface $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an approximation of the potential energy surface, so that the concept of a potential energy surface arises.
-To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.
-\\
+This creates an energy landscape which allows materials systems to viewed from a topological perspective, which allows the PES to describe the evolution of a system as it moves from one atomic configuration to another atomic configuration.
+
 To describe empirical potentials, we first start with a a mathematical description of configuration space both from a crystallographic perspective, but how this crystallgraphic perspective can be translated into other representation common with empirical potentials.
 
-\subsection{Configuration Space}
+\section{Configuration Space}
 In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative unit volume.
 This representative unit is referred to as a unit cell, which defines that boundaries, the volume, the lattice positions of each atom.
 
 The boundaries of the unit cell are defined are defined by three lattice vectors, defined in three dimensional Euclidean space, $\mathbb{R}^3$.
 The three lattice vectors, $\bm{a}_1$, $\bm{a}_2$, and $\bm{a}_3$, with $\bm{a_i}\in\mathbb{R}^3$, which defines an alternative coordinate sytem in Euclidean space in which to describe a lattice.
 The triplet of lattice vectors, $(\bm{a}_1,\bm{a}_2,\bm{a}_3)$, describes an alternative coordinate system in Euclidean space in which to describe a lattice.
-Throughout this work, the collection of lattice vectors is also referred to as a unit cell or simulation cell depending upon context.
 
-Each atom $i$ is identified by a chemical species, and its atomic position, $\bm{r}$.
+To describe the atoms, each atom is identified by a
+Each atom $i$ is identified by a chemical species, $s\in S$, and its atomic position, $\bm{r}$.
 If the Cartesian unit vectors,$[\hat{\bm{\imath}},\hat{\bm{\jmath}},\hat{\bm{k}}]$, then the atomic positions can be represented as the ordered triplet, $(r_x,r_y,r_z)$.
 More commonly, atomic positions are represented in the coordinates system define by the lattice vectors, $(r_1,r_2,r_3)$ and $[\bm{a}_1,\bm{a}_2,\bm{a}_3]$, respectively.
 The relationship between the two coordinates system being represented by the equation
@@ -42,7 +45,7 @@ The relationship between the two coordinates system being represented by the equ
 \end{equation}
 
 The boundaries of the unit cell also describes the periodic boundary conditions, since they also reflect that translational symmetry of the crystalline system.
-Each lattice vector can be represented as a translational operator, $T_i$ for ${i\in\{1,2,3\}}$, such that, $T_i(\bm{r})=\bm{r} + n_i \bm{a}_i = \bm{r}$, and collectively,  
+Each lattice vector can be represented as a translational operator, $T_i$ for ${i\in\{1,2,3\}}$, such that, $T_i(\bm{r})=\bm{r} + n_i \bm{a}_i = \bm{r}$, and collectively,
 \begin{equation}
     T(\bm{r}) = \bm{r}
 		    + n_1 \bm{a}_1
@@ -50,7 +53,7 @@ Each lattice vector can be represented as a translational operator, $T_i$ for ${
 		    + n_3 \bm{a}_3 = \bm{r}, \forall n_i \in \mathbb{Z}
 \end{equation}
 
-The geometry of a molecule can be described by the collection of the positions of $N$ atoms
+The geometry of a system can be described by the collection of the positions of $N$ atoms
 	$\bm{R} = \{\bm{r}_1,...,\bm{r}_N\}$,
 	where the $\bm{r}_i$ could be the set of Cartesian coordinates of the atoms.
 These collections of atoms can be transformed to reflect the distances between the two atoms $i$ and $j$,
@@ -58,19 +61,15 @@ These collections of atoms can be transformed to reflect the distances between t
 	as used in pair potentials, the angles between atoms $\bm{r}_{ijk}$ as in three body potentials.
 \\
 \subsection{Empirical Interatomic Potentials}
-The goal of developing a interatomic potential, $\hat{V}$ is identify a computationally efficient surrogate model, which models the potential energy surface, $V$. 
-The use of a hat over a variable indicates that the quantity is an approximation of the actual value; this notation is used to identify approximating quantities throughout this work.
-Since energy is a scalar value, $V$ and $\hat{V}$ are functions in the same measure space that assigns energies to atomic configuration (e.g. 
-${V:\{\bm{R}\}\rightarrow \mathbb{R}}$ 
-and 
-${\hat{V}:\{\bm{R}\} \rightarrow \mathbb{R}}$, 
-the approximating relationship by the addition of a difference term $\epsilon$
-\begin{equation}\label{eq:pes_approximation}
-  V(\bm{R}) = \hat{V}(\bm{R}) + \epsilon(\bm{R})
-\end{equation}
 
-\begin{equation}\label{eq:error_function_pes}
-	\epsilon(\bm{R})=V(\bm{R})-\hat{V}(\bm{R}).
+While the actual PES for any given material system is certainly not analytical, simulations based on solving the Kohn-Sham(KS) equation of density functional theory (DFT) can provide energy calculations of sufficient accuracy for many materials system.  However, the computational bottleneck associated in solving for the charge density, energy levels, and wavefunctions of the KS equation limits its adoption as a viable energy calculator to systems consisting of more than a few hundred atoms.
+
+In contrast, the use of empirical interatomic potentials (EIP) in molecular dynamics simulations can routinely comprise of millions of timesteps on millions of atoms.  In \emph{ab initio} simulations, the solution to the electronic structure of the system is used to calculate the energies of atomic configurations and the forces on the atoms required to evolve the system. In contrast, EIPs have an analytical formalisms consisting of formulas which represent the relevant physics of the system.  This simplification in calculation allows energies and forces to be calculated quickly.
+
+The goal of developing a interatomic potential, $\hat{V}$ is identify a computationally efficient surrogate model, which models the potential energy surface, $V$.  The use of a hat over a variable indicates that the quantity is an approximation of the actual value; this notation is used to identify approximating quantities.
+Since energy is a scalar value, $V$ and $\hat{V}$ are functions in the same measure space that assigns energies to atomic configuration (e.g. ${V:\{\bm{R}\}\rightarrow \mathbb{R}}$ and ${\hat{V}:\{\bm{R}\} \rightarrow \mathbb{R}}$, we can then approximating relationship by the addition of a difference term $\epsilon$
+\begin{equation}\label{eq:pes_approximation}
+    V(\bm{R}) = \hat{V}(\bm{R}) + \epsilon(\bm{R})
 \end{equation}
 
 Interatomic potentials are often expressed as a series expansion of functional terms which explain the relevant physics of a system.  In these cases, the total energy of the system is sum of the individual contribution of each atom $i$.  For a system with $N$ atoms,
@@ -83,22 +82,22 @@ The total energy of a potential of $N$ atoms with an interaction described by th
 	        + \sum_i \sum_{i<j} V_2(\bm{r}_i,\bm{r}_j)
 				  + \sum_i \sum_{i<j} \sum_{j<k} V_3(\bm{r}_i,\bm{r}_j,\bm{r}_k) + ...
 \end{equation}
-The first term $V_1$ is the one body term, due to an external field or boundary conditions, which is typically ignored in classical potentials.  
-The second term $V_2$ is the pair potential, the interaction of the term is dependent upon the distance between $\bm{r}_i$ and $\bm{r}_j$.  
-The three-body term potential $V_3$ arises when the interaction interaction of a pair of atoms is modified by the presence of a third.  
+The first term $V_1$ is the one body term, due to an external field or boundary conditions, which is typically ignored in classical potentials.
+The second term $V_2$ is the pair potential, the interaction of the term is dependent upon the distance between $\bm{r}_i$ and $\bm{r}_j$.
+The three-body term potential $V_3$ arises when the interaction interaction of a pair of atoms is modified by the presence of a third.
 Based upon this expansion, we can classify certain potentials into two classes: pair potentials when only $V_2$ is present and many-body potentials when $V_3$ and higher order terms are included.
 
-An empirical interatomic potential $\hat{V}(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $U(\bm{R}_i)$.  
+An empirical interatomic potential $\hat{V}(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $U(\bm{R}_i)$.
 \begin{equation}
 	\hat{V}(\bm{R})=\sum_i \hat{V}_1 + \sum_{i<j} V_2 + \sum_{i<j<k} V_3
 \end{equation}
 represents the total energy of the system, where $\hat{V}(\bm{r}_i \vert \bm{R})$ which is the contribution of the $i$th atom of  a system
 An analytical potential is represented by a set of equation known as a formalism, which decomposes the energy of a structure as the individual contributions of each atom $i$ in its local environment.
 The simplest of these potentials is the Lennard-Jones (LJ) potential\cite{lennardjones1924_lj_pot}, that approximates the interaction between a pair of neutral atoms, such as a noble gas.
-A common expression the LJ potential is 
+A common expression the LJ potential is
 \begin{equation}
-  V_{LJ} = 4 \epsilon 
-    \left[ 
+  V_{LJ} = 4 \epsilon
+    \left[
 	\left(\frac{\sigma}{r_{ij}}\right)^{12}
 	- \left(\frac{\sigma}{r_{ij}}\right)^{6}
     \right]
@@ -126,24 +125,24 @@ As a result, the empirical potential treated as varying due to changing the para
 \\
 
 \subsection{Fitting Database}
-A more popular approach in potential developmet comes from fitting an interatomic potential so that predicted values of material properties predicted by the interatomic potential corresponds with either high-fidelity predictions done through more computationally expensive \emph{ab initio} calculations or directly through experimental observations.
+A popular approach in potential developmet comes from optimizing a potential based upon the performance to a fixed set of material properties, known as the fitting database.
+The materials properties selected Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.
+These material properties are denoted $\bm{q} = ( q_{1},...,q_{M} )$, for $M$ quantities of interest (QOI); the values predicted by a potential are denoted, $\hat{\bm{q}}= ( q_{1},...,q_{Q})$.
+In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.
+for are referred to as a quantity of interest (QOI), $q$, while the predictions made by the potential denoted, $\hat{q}$.
+fitting an interatomic potential so that predicted values of material properties predicted by the interatomic potential corresponds with either high-fidelity predictions done through more computationally expensive \emph{ab initio} calculations or directly through experimental observations.
 In early efforts of potential development, potentials were developed by fitting to a few experimental numbers.
 As DFT calculations improved, the current trend is to include a significant amount of \emph{ab initio} data.  \emph{Ab initio} data drastically improves the reliability of potentials by allowing the sampling of regions of configuration space, which includes atomic configurations which are difficult or inaccessible experimentally.
 
 
 
-The material properties calculated are referred to as a quantity of interest (QOI), $q$, while the predictions made by the potential denoted, $\hat{q}$.  
+The material properties calculated are referred to as a quantity of interest (QOI), $q$, while the predictions made by the potential denoted, $\hat{q}$.
 A quantity of interest can be related to the PES, by considering aa high-fidelity method used to calculate the potential of iteresst.
 In the case when the target QOI values are calculated from a high-fidelity method, such as density functional theory (DFT), the computation of the material property can be decomposed as a function of energy evaluation of the PES,
 \begin{equation}
 	q(\bm{R}_1,...,\bm{R_N}) = F(V(\bm{R}_1),...,V(\bm{R}_N))
 \end{equation}
 Since $\hat{q}$ is ultimately detemined from energy calculations upon atomic structures, either directly or though numerical estimation, we can represent the energy difference between the predicted QOIs and the target QOIs.
-
-
-
-
-
 \begin{equation}
 	\epsilon(\bm{\theta}:\{\bm{R}_1,...,\bm{R}_N\})=\hat{q}(\bm{\theta}:\{\bm{R}_1,...,\bm{R}_N\})-q
 \end{equation}
@@ -151,7 +150,7 @@ A fitting database is a collection of structure property functions $q_i$ with an
 The set of all possible atomic configuration is referred to as the configuration space.
 The goal of a fitting database to find to find a representative set of structures in which to calculate the structure property relationships $q_i$.
 
-Lattice constant, bulk modulus, vacancy formation energy, or anything that can be defined from energy structures.  In the fitting database, the structure proerty functions evaluated using an empirical potentials and compared to target reference values, with values either determined from experimental values or a a high-fidelity structure such as DFT.  The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
+  The collection of structure property relationships, is denoted $\bm{q}=(q_1,q_2,...q_N)$ for $N$ structure property relationships.  Usually accuracy and transferribility are tested against an external database.
 
 In literature, the developers of potentials tend to use $0$ K properties.  A more important reason why potentials are fit to $0$ K properties, is that it alows the incorporation of first-principles data.
 The most ubiquitous \emph{ab initio} techniques are calculations using density functional theory (DFT).
