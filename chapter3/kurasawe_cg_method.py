@@ -61,7 +61,7 @@ class KurasaweParetoProblem(ParetoProblem):
 class ParetoSurfaceEstimatorConjugateGradientMethod():
     def __init__(self,pareto_problem):
         assert isinstance(pareto_problem,ParetoProblem)
-        
+
 def costfunction(x,w1,w2):
     global n_simulations
     weights = (w1,w2)
@@ -183,7 +183,7 @@ def pareto_surface_from_kde_sampling():
             df = pd.DataFrame(data, columns=column_names)
     return df
 
-fig, ax = plt.subplot(1,3,figsize=(5,5/3))
+fig, ax = plt.subplots(1,3,figsize=(5,5/3))
 if True:
     n_simulations = 0
     cg_df = pareto_surface_from_conjugate_gradient_method()
