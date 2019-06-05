@@ -1,0 +1,37 @@
+\appendix{Calculation of Point Defect Energies}
+
+This appendix documents the heuristics and algorithms for the automation for the calculation of point defects.
+In theory, point defect calculations are dependent upon the interatomic cutoff of the interatomic potential.
+However, the energies of pair-wise interactions vanish quickly due to tails of power-law and expoential distribution functions.
+The author has found it instructive that even when the targets of the fitting database are taken from literature, \emph{ab initio} calculations to understand how large the size that the representative volume should be to prevent defect interaction
+\section{Calculation of Point Defects}
+In ionic materials, the formation of energy of a defect $d$ with charge $q$ is calculated as
+\begin{equation}
+  E_d^f=E_{def}-E_{perf}=\sum_\alpha n_\alpha \mu_\alpha - q\mu_e + E_{chcor} + E_elcor
+\end{equation}
+A point defect occur at or around a lattice point, there are not expanded into space in any direction.
+
+A vacancy are lattice sites which would be occupied in a single crystal, but are vacant.  The stability of surrounding crystal structure prevents the atoms from occupying the vacancy.
+
+In an ionic solid, the combination of a two vacanies of a cation and anion species are refrred to as a Schottky defect, which is neutral in nature.
+
+A popular way to calculate defect energies from first principles or empirical potentials is based on the supercell idea.
+In this method, the atoms in a unit cell are replicated by extending them in one or more directions in the direction of the translational symmetry operators defined by the basis vectors of the unit cell.
+This enlarged area, known as the supercell, becomes the new representative unit cell of the system, and typically periodic boundary conditions are apply applied at it's borders.
+The supercell method is one of three main approaches to defect calculations.  In finite cluste methods, the defect is simply incorporated into bulk material of finite exist, and ensure that the cluster is large enough to prevent to prevent surface effects.
+Embedding techniques match the defect region to the known DFT Green's function of the ideal host material.  However, the numerical implementation of Greens func method is challenging as it requires well-localized defect potential and usually short-range basis functions.  The great advantage of supercell calculations is that the periodic boundary condition
+
+The drawback to supercelll methods for defect calculations is that periodicity is artificial, and self-interaction of the defect.
+For a more detailed discussion of supercell methods in DFT, the reader is encouraged to read Nieminen \cite{nieminen2007supercell}.
+\section{Creation of Supercell}
+The technique for creating supercell
+\subsection{Definition of the defect in supercell calculation}
+
+\subsection{Convergence conditions}
+To ensure that convergence
+\section{Future Work}
+
+\section{Robustness of Potentials}
+Sensitive analysis.  Many models use cutoff-radii as an additional parameter to be determined by the fitting process.  Because of the nature of the stacking fault, the GSF energy must depend upon non-nearest neighbor interactions.
+However, a slight alteration of the cutoff-radius was found to have a dramatic impact on the behavior of EAM potentials by Zimmerman.%\cite{Zimmerman2000_Ni_gsf}.
+He sugests that parameterizeed models should be only slightly sensitive to a change of value for any of it's parameters.  High sensitivity indicates the possibility of unphysical behavior of a model.  This issue should be address when creating a potential to be used in simulations that involve stacking faults.

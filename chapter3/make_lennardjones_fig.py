@@ -14,9 +14,8 @@ print('calculating LJ potential')
 r = np.linspace(1,1000,1000)/1000*3
 r_m = 2**(1/6)*testcase['parameters']['ArAr_sigma']
 o = LennardJonesPotential(symbols=testcase['symbols'])
-o.evaluate(
-        r=r,
-        parameters=testcase['parameters'])
+print('symbols:',o.symbols)
+o.evaluate(r=r,parameters=testcase['parameters'])
 
 print('creating plot...')
 import matplotlib.pyplot as plt
@@ -55,4 +54,13 @@ ax.set_xlim(x_lim_min,x_lim_max)
 ax.set_ylim(y_lim_min,y_lim_max)
 ax.set_xlabel(x_label_latex)
 ax.set_ylabel(y_label_latex)
+#plt.gca().set_axis_off()
+plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace =0, wspace=0)
+plt.margins(0,0)
+#plt.gca().xaxis.set_major_locator(plt.NullLocator())
+#plt.gca().yaxis.set_major_locator(plt.NullLocator())
+fig.tight_layout()
+plt.show()
+
 fig.savefig('lj.eps',dpi=1200)
+#,bbox_inches='tight',pad_inches=0)

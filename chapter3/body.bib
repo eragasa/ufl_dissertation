@@ -1,11 +1,20 @@
-# General Textbooks on Molecular Dynamics
-@book{lesar2013_textbook,
+--# General Textbooks on Molecular Dynamics
+@book{lesar2013_textbook,-
   title={Introduction to computational materials science: fundamentals to applications},
   author={LeSar, Richard},
   year={2013},
   publisher={Cambridge University Press}
 }
 
+@book{boyd_convex_optimization,
+  title = {Convex Optimization},
+  author={Boyd, Stephen and Vandenberghe, Lieven},
+  publisher={Cambridge University Press},
+  address={New York, USA},
+  year={2004},
+  isbn={978-0-521-83378-3},
+  url={https://stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf}
+  }
 @article{ercolessi1994_fitting_forcematching,
   author = {F Ercolessi and J. B Adams},
   title = {Interatomic Potentials from First-Principles Calculations: The Force-Matching Method},
@@ -19,7 +28,81 @@
   url = {https://doi.org/10.1209\%2F0295-5075\%2F26\%2F8\%2F005},
 }
 
-# LENNARD JONES
+
+@article{behler2016_ml_pot,
+  author = {Behler,Jörg },
+  title = {Perspective: Machine learning potentials for atomistic simulations},
+  journal = {The Journal of Chemical Physics},
+  volume = {145},
+  number = {17},
+  pages = {170901},
+  year = {2016},
+  doi = {10.1063/1.4966192},
+  URL = {https://doi.org/10.1063/1.4966192},
+  eprint = {https://doi.org/10.1063/1.4966192}
+}
+@article{wood2018_snap,
+  author = {Wood,Mitchell A.  and Thompson,Aidan P. },
+  title = {Extending the accuracy of the SNAP interatomic potential form},
+  journal = {The Journal of Chemical Physics},
+  volume = {148},
+  number = {24},
+  pages = {241721},
+  year = {2018},
+  doi = {10.1063/1.5017641},
+  url = {https://doi.org/10.1063/1.5017641},
+  eprint = {https://doi.org/10.1063/1.5017641}
+}
+%%% potential developments
+@article{martinez2013_fitting,
+  title = "Fitting empirical potentials: Challenges and methodologies",
+  journal = "Current Opinion in Solid State and Materials Science",
+  volume = "17",
+  number = "6",
+  pages = "263 - 270",
+  year = "2013",
+  note = "Frontiers in Methods for Materials Simulations",
+  issn = "1359-0286",
+  doi = "https://doi.org/10.1016/j.cossms.2013.09.001",
+  url = "http://www.sciencedirect.com/science/article/pii/S1359028613000727",
+  author = "Jackelyn A. Martinez and Dundar E. Yilmaz and Tao Liang and Susan B. Sinnott and Simon R. Phillpot",
+}
+
+@article{martinez2016_posmat,
+  title = "Potential Optimization Software for Materials (POSMat)",
+  journal = "Computer Physics Communications",
+  volume = "203",
+  pages = "201 - 211",
+  year = "2016",
+  issn = "0010-4655",
+  doi = "https://doi.org/10.1016/j.cpc.2016.01.015",
+  url = "http://www.sciencedirect.com/science/article/pii/S0010465516300042",
+  author = "Jackelyn A. Martinez and Aleksandr Chernatynskiy and Dundar E. Yilmaz and Tao Liang and Susan B. Sinnott and Simon R. Phillpot",
+}
+%%% FITTING Database
+@article{zhang2015_bayes_fitttingdb,
+  author = {Pinchao Zhang and Dallas R Trinkle},
+  title = {Database optimization for empirical interatomic potential models},
+  journal = {Modelling and Simulation in Materials Science and Engineering},
+	year = 2015,
+	month = {aug},
+	publisher = {{IOP} Publishing},
+	volume = {23},
+	number = {6},
+	pages = {065011},
+  doi = {10.1088/0965-0393/23/6/065011},
+	url = {https://doi.org/10.1088%2F0965-0393%2F23%2F6%2F065011}
+}
+
+% MOOs
+@book{miettinen1998_mcdm,
+  title = {Nonlinear multobjective optimization},
+  author = {Miettinen, Kaisa},
+  year = {1999},
+  publisher = {Springer Science \& Business Media},
+  address = {New York, New York USA},
+  doi = {https://doi.org/10.1007/978-1-4615-5563-6}
+}
 
 @article{lennardjones1924_lj_pot,
   title={On the determination of molecular fields.—I. From the variation of the viscosity of a gas with temperature},
@@ -219,6 +302,9 @@ author = "Abdullah Konak and David W. Coit and Alice E. Smith"
   url = {https://link.aps.org/doi/10.1103/PhysRevLett.93.165501}
 }
 
+@article{caflisch1998_mc, title={Monte Carlo and quasi-Monte Carlo methods}, volume={7}, DOI={10.1017/S0962492900002804}, journal={Acta Numerica}, publisher={Cambridge University Press}, author={Caflisch, Russel E.}, year={1998}, pages={1–49},url={
+https://doi.org/10.1017/S0962492900002804},doi={10.1017/S0962492900002804}}
+
 %%%
 %%% Glue schemes
 %%%
@@ -288,7 +374,7 @@ author = "Abdullah Konak and David W. Coit and Alice E. Smith"
   title = {How to Derive Force Field Parameters by Genetic Algorithms: Modelling tripod-Mo(CO)3 Compounds as an Example},
   author = {Hunger, Johannes and Beyreuther, Stefan and Huttner, Gottfried and Allinger, Kurt and Radelof, Uwe and Zsolnai, Laszlo},
   journal = {European Journal of Inorganic Chemistry},
-  year = {1998}
+  year = {1998},
   volume = {1998},
   number = {6},
   pages = {693-702},
@@ -297,25 +383,58 @@ author = "Abdullah Konak and David W. Coit and Alice E. Smith"
   url = {https://doi.org/10.1002/(SICI)1099-0682(199806)1998:6<693::AID-EJIC693>3.0.CO;2-M}
 }
 
-
-%% Pareto Optimization
-@article{pareto1897_pareto,
-  author = {Pareto, Vilfredo},
-  title = {Cours d'Économie Politique},
-  volume = {I},
-  year = {1896}
-
-
+@phdthesis{schaffer1984_pareto,
+  author       = {Schaffer, J. David},
+  title        = {Some experiments in machine learning using vector evaluated genetic algorithms},
+  school       = {Vanderbuild University},
+  year         = 1984,
+  address      = {Nashville, Tennessee},
+  month        = 12,
+}
+@InProceedings{kursawe1991_pareto,
+author="Kursawe, Frank",
+editor="Schwefel, Hans-Paul
+and M{\"a}nner, Reinhard",
+title="A variant of evolution strategies for vector optimization",
+booktitle="Parallel Problem Solving from Nature",
+year="1991",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="193--197",
+isbn="978-3-540-70652-6"
 }
 
-@article{doi:10.1177/000271629700900314,
-  author = {H.L. Moore},
-  title ={Cours d'Économie Politique. By VILFREDO PARETO, Professeur à l'Université de Lausanne. Vol. I. Pp. 430. I896. Vol. II. Pp. 426. I897. Lausanne: F. Rouge},
-  journal = {The ANNALS of the American Academy of Political and Social Science},
-  volume = {9},
-  number = {3},
-  pages = {128-131},
-  year = {1897},
-  doi = {10.1177/000271629700900314},
-  URL = {https://doi.org/10.1177/000271629700900314}
+
+%% Pareto Optimization
+@book{pareto1897_pareto,
+  title={Cours d'{\'e}conomie politique profess{\'e} {\`a} l'Universit{\'e} de Lausanne},
+  author = {Pareto, Vilfredo},
+  publisher = {Lausanne},
+  adress = {F. Rouge},
+  year = {1897}
+}
+@article{aspers2001_pareto,
+  author = {Aspers, Patrik},
+  title = {Crossing the Boundary of Economics and Sociology: The Case of Vilfredo Pareto},
+  journal = {American Journal of Economics and Sociology},
+  volume = {60},
+  number = {2},
+  pages = {519-545},
+  doi = {10.1111/1536-7150.00073},
+  url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/1536-7150.00073},
+  eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1111/1536-7150.00073},
+  year = {2001}
+}
+@article{mathur1991_pareto,
+author = {Vijay K. Mathur},
+title = {How Well Do We Know Pareto Optimality?},
+journal = {The Journal of Economic Education},
+volume = {22},
+number = {2},
+pages = {172-178},
+year  = {1991},
+publisher = {Routledge},
+doi = {10.1080/00220485.1991.10844705},
+URL = {https://www.tandfonline.com/doi/abs/10.1080/00220485.1991.10844705},
+eprint = {https://www.tandfonline.com/doi/pdf/10.1080/00220485.1991.10844705}
 }
