@@ -40,12 +40,12 @@ The $\varepsilon$,$\sigma$, and $a$ parameters shared between the terms.
 
 In order to compare the performance of the potentials developing using this software package, we use the original parameterization of Stillinger and Weber (SW)\cite{stillinger1985_sw}, Vink \emph{et al}(VMWM)\cite{vink2001_sw_Si}, and Pizzagalli \emph{et al}\cite{pizzagalli2013_sw_Si}
 
-\begin{table}[htbp]
+\begin{table}[h]
 	\centering
 	\caption{Table of parameters for the reference potentials, and the lower and upper bounds used to define the uniform distribution}
 	\label{table:sw_parameters_ref}
 	\begin{tabular}{c c c c}
-		\hline 
+		\hline
 		Parameter & SW & VBWM & PG \\
 		\hline
 		$\epsilon$ & 2.1686 & 1.64833 & 1.04190 \\
@@ -91,8 +91,8 @@ For the development of a new potential, we use a subset of the reference values 
 \subsection{Analysis of Prediction Performance}
 \subsubsection{Univariate QOI analysis}
 To analyze the performance of our ensemble of potentials, an univariate inspection of the probability density functions for each of the QOIs can provide insight on the performance of the potential formalism.
-Figure \ref{fig:Si_qoi_B} shows the evolution of the predicted values of the bulk modulus for Silicon, $B$.  The typical evolution on how these parameter optimization process evolves an ensemble of potentials.  
-These curves are the probability density function, estimate using a kernel density estimate with the Silverman bandwidth estimation.  
+Figure \ref{fig:Si_qoi_B} shows the evolution of the predicted values of the bulk modulus for Silicon, $B$.  The typical evolution on how these parameter optimization process evolves an ensemble of potentials.
+These curves are the probability density function, estimate using a kernel density estimate with the Silverman bandwidth estimation.
 In early iterations, the uncertainty reduction in predictions is quite large, but in later iterations the estimates for the Pareto optimal ensemble improves, the probability density function increases around the target value.
 
 \begin{figure}[h]
@@ -121,9 +121,9 @@ While potential developers are interested in getting the lattice parameters corr
 
 Prediction for the cohesive energy $E_c$ of the system is the material property which shows an atypical distribution; Figure \ref{fig:Si_qoi_E_coh} shows the evolution of those predictions.
 In early iterations ($i=1$ and $i=2$), the probability density functiosn resemble a normal distribution with peaks approximately $-4.0$ eV/\AA, which is significantly higher than the target value of $-4.63$ eV/\AA.
-The candidate parameterizations continue to concentrate their probability density into a smaller region, but does so in an unexpected way.  
-The tail end probabilities continue to reduce markedly, but by the fifth iteration ($i=5$), a probability density function takes a significantly different shape.  
-Instead of having a peak, there is a region of elevated probability that is relatively constant over the range $-4.5 \AA < E_c < -3.6 \AA$.
+The candidate parameterizations continue to concentrate their probability density into a smaller region, but does so in an unexpected way.
+The tail end probabilities continue to reduce markedly, but by the fifth iteration ($i=5$), a probability density function takes a significantly different shape.
+Instead of having a peak, there is a region of elevated probability that is relatively constant over the range $-4.5 \text{\AA} < E_c < -3.6 \text{\AA}$.
 At the final iteration ($i=20$), a clear mode develops at $E_c=-4.3$ \AA with a shoulder at $E_c=-3.6$ \AA.
 The distribution of potentials conveys important information to the potential developer; the majority of the potentials predicting a cohesive energy larger than the target values means that choosing to get the cohesive energy corrent likely means markedly lower fidelity in predicting the other target material properties.
 
@@ -142,10 +142,10 @@ In moving towards the selection of a potential in a multi-objective space, it is
 \subsection{Analysis of parameter space}
 \subsection{Selection of Potentials}
 
-Both the Akaike information criterion (AIC)\cite{akaike1998_aic} and the Bayesian information criterion (BIC) \cite{schwarz1978_bic} 
-are estimators of the relative quality of statistical models for a given set of data.  
+Both the Akaike information criterion (AIC)\cite{akaike1998_aic} and the Bayesian information criterion (BIC) \cite{schwarz1978_bic}
+are estimators of the relative quality of statistical models for a given set of data.
 Both of these criteria are penalized for using a more complicated model.  The AIC or BIC of a model is written in the form $[2\log(\hat{L}+kp]$, where $\hat{L}$ is a likelihood function, $p$ is the number of parameters in the model, and $k$ is $2$ for AIC and $\log(n)$ for BIC.
-Given a collection of models for data, bot h the AIC and BIC estimates the quality of each model relative to the other models, providing a mechanism for model selection.  
+Given a collection of models for data, bot h the AIC and BIC estimates the quality of each model relative to the other models, providing a mechanism for model selection.
 ddhe Akaike information criterion (AIC) \cite{akaike1998_aic} is an estimator of the relative quality of statistical models for a given set of data.   Given a collections of models for the data, AIC estimates the quality of each model relative to other models, providing a mechanism for model selection.
 
 
@@ -166,4 +166,3 @@ ddhe Akaike information criterion (AIC) \cite{akaike1998_aic} is an estimator of
 \end{figure}
 
 \subsection{Validation of Potentials}
-

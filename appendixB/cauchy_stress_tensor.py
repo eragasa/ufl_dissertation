@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -56,9 +57,32 @@ def plot_cube(cube_definition):
     # Plot the points themselves to force the scaling of the axes
     ax.scatter(points[:,0], points[:,1], points[:,2], s=0)
 
+    arrows = OrderedDict()
+    arrows['sigma_11'] = OrderedDict()
+    arrows['sigma_11']['x0'] = (1.0,0.5,0.5)
+    arrows['sigma_11']['xdir'] = (1,0,0)
+    arrows['sigma_11']['length'] = 0.4
+    arrows['sigma_11']['text_location'] = ()
+
+    def annonated_quiver(ax,x,y,z,u,v,w,l,s):
+        x_0 = np.array([x,y,z])
+        x_f = x_0 + l * np.array([u,v,w])
+
+        if (u,v,w) == (1,0,0) or (u,v,w) == (0,1,0):
+            x_t = (x_0 + x_f)/2 + np.array([0,0,.05])
+        elif (u,v,w) == (0,0,1):
+            x_t = (x_0 + x_f)/2 + np.array([0,0.05,0])
+        else:
+            raise NotImplementedError
+
+        ax.quiver(x,y,z,y,v,w,l)
+        ax.text(x_t[0],x_t[1].x_t[2],s)
     ax.quiver(1.0, 0.5, 0.5, 1,0,0, length=0.4, normalize=False)
+    ax.text(1.2,0.5,0.55,r'$\sigma_{11}$')
     ax.quiver(1.0, 0.5, 0.5, 0,1,0, length=0.4, normalize=False)
+    ax.text(1.0,0.65,0.55,r'$\sigma_{12}$')
     ax.quiver(1.0, 0.5, 0.5, 0,0,1, length=0.4, normalize=False)
+    ax.text(1.0,0.55,0.68,r'$\sigma_{13}$')
 
     ax.quiver(0.5, 1.0, 0.5, 0,1,0, length=0.4, normalize=False)
     ax.quiver(0.5, 1.0, 0.5, 1,0,0, length=0.4, normalize=False)
@@ -71,6 +95,8 @@ def plot_cube(cube_definition):
 
     ax.set_axis_off()
     ax.set_aspect('equal')
+    ax.view_init(azim=54, elev=27)
+    fig.savefig('stress_tensor.eps',dpi=1200)
     plt.show()
 
 

@@ -1,0 +1,34 @@
+\appendix{Pareto Optimization Problem}
+\label{ap:pareto optimization_test}
+
+Test function provide an artificial functional landscape which are useful to evaluate the characteristics of optimization algorithms for properties such as convergence rate, precision, robustness, and general performance.
+
+The first of the test optimization function of a smooth convex multi-objective optimization problem described by Schaffer\cite{schaffer1984_pareto}.  Here the multi-objective function $F:\mathbb{R} \rightarrow \mathbb{R}^2$.
+\begin{equation}
+\begin{aligned}
+  &\min_{x}
+      \begin{aligned}
+           &f_1(x) = x^2 \\
+           &f_2(x) = (x-2)^2 \\
+      \end{aligned}
+\end{aligned}
+\end{equation}
+
+The second of the test optimization function is a discontinuous convex mutli-objective optimization problem described by Kursawe \cite{kursawe1991_pareto}.
+\begin{equation}
+\begin{aligned}
+  &\min_{\bm{x}}
+    \begin{aligned}[t]
+      &f_(\bm{x}) = \sum_{i=1}^2
+          \left[
+            -10 \exp\left(-0.2 \sqrt{x_i^2} + x_{i+1^2}\right)
+          \right] \\
+      &f_x(\bm{x}) = \sum_{i=1}^3 \left[ \vert|x_{i} \vert|^{0.8} + 5\sin(x_i^3)\right] \\
+    \end{aligned}
+  &\text{subject to} \\
+    \begin{aligned}[t]
+      &-5 \leq x_i \leq -5 \\
+      & 1 \leq i \leq 3 \\
+    \end{aligned}
+  \end{aligned}
+\end{equation}

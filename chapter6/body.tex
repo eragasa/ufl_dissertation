@@ -1,26 +1,26 @@
 \chapter{POTENTIAL DEVELOPMENT SOFTWARE}
 
 \section{Background}
-The simulation of atoms involving hundreds of atoms are commonplace, due to the success of density functional theory\cite{hohenberg1964_dft,kohn1965_dft} and the availability of many software packages avail for the calculations such as VASP\cite{kresse1993_vasp,kresse1996_vasp1,kresse1996_vasp2}, ABINIT\cite{gonze2002_abinit,gonze2005_abinit,gonze2009_abinit,gonze2016_abinit}, and Quantum Espresso\cite{giannozzi2009_quantumespresso}.  These electronic-structure calculations are high-fidelity calculations, which accuracy improving as the description of the exchange correlation energy functional has improved from local density approximation(LDA) to PBE to hybrid methods.  
+The simulation of atoms involving hundreds of atoms are commonplace, due to the success of density functional theory\cite{hohenberg1964_dft,kohn1965_dft} and the availability of many software packages avail for the calculations such as VASP\cite{kresse1993_vasp,kresse1996_vasp1,kresse1996_vasp2}, ABINIT\cite{gonze2002_abinit,gonze2005_abinit,gonze2009_abinit,gonze2016_abinit}, and Quantum Espresso\cite{giannozzi2009_quantumespresso}.  These electronic-structure calculations are high-fidelity calculations, which accuracy improving as the description of the exchange correlation energy functional has improved from local density approximation(LDA) to PBE to hybrid methods.
 Thesg electronic-structure models allow for simulations of hundreds of atoms which when combined with workflow management software, such as AFLOW\cite{curtarolo2012_aflow} and \verb|pymatgen|\cite{ong2013_pymatgen} has given rise to high-throughput computational efforts, which leverage these energy calculators.
 
 As an alternate to electronic structure methods, the use of empirical potential that describe the effects of the valence electron interactions without explicitly describing the electrons themselves.  The simplief descriptions of interatomic interations allow for larger system sizes and longer simulations timeframes than can be accomplished with \emph{ab initio} techniques.  However, these approaches are accompanied by a loss of accuracy compared to electronic structure methods.
 
-In this chapter, a software toolkit for the reproducible, algorithmic development of interatomic potentials for atomic-level simulations using autonomous machine-learning techniques is described.  
+In this chapter, a software toolkit for the reproducible, algorithmic development of interatomic potentials for atomic-level simulations using autonomous machine-learning techniques is described.
 The \emph{Python Potential Optimization Software Package}(\verb|pypospack|) is open-access software for the automation of potential development workflows, which leverages the richness of machine learning codes of the python language with ubiquitous molecular dynamics software code, LAMMPS\cite{plimpton1995_lammps}, and the lattice dynamics code, GULP\cite{gale2003_gulp}.
 
-Nevertheless, the process of potential development largely remains non-transparent and subjective, involving the repeated intervention of a skilled potential developer.\cite{martinez2013_fitting,martinez2016_posmat} 
+Nevertheless, the process of potential development largely remains non-transparent and subjective, involving the repeated intervention of a skilled potential developer.\cite{martinez2013_fitting,martinez2016_posmat}
 As a result, the final parameterization depends on the many choices made by the potential developer; this means that the process by which a potential is developed is generally neither fully documented, nor reproducible. Moreover, there is currently no objective method for evaluating the suitability of the function form of the atomic potential or determining if the final parameterization selected yields the best possible fit to the fitting database.
 
 \section{Introduction}
-Classical atomistic simulation methods, of which molecular dynamics (MD) simulation\cite{allen1987_md,haile1992_md,lesar2013_md,frenkel2002_md} is the most common, are a vital tool in the analysis of solid state and materials systems. 
-The description of the interactions of the atoms is encoded in the interatomic potential, many of which have been developed to describe specific materials systems. 
-The embedded atom method (EAM)\cite{daw1983_eam,daw1984_eam,daw1993_eam_review,foiles2012_eam_review} and Finnis and Sinclair\cite{finnis1984_fs} potentials, among others, were developed and continue to be developed for metals. 
-Bond order potentials (BOP) such as those of Brenner\cite{brenner1989_bop,brenner2002_rebo} and Tersoff\cite{tersoff1988_tersoff}, and the three-body Stillinger and Weber\cite{stillinger1985_sw} potential are widely used to describe covalently-bonded materials. 
+Classical atomistic simulation methods, of which molecular dynamics (MD) simulation\cite{allen1987_md,haile1992_md,lesar2013_md,frenkel2002_md} is the most common, are a vital tool in the analysis of solid state and materials systems.
+The description of the interactions of the atoms is encoded in the interatomic potential, many of which have been developed to describe specific materials systems.
+The embedded atom method (EAM)\cite{daw1983_eam,daw1984_eam,daw1993_eam_review,foiles2012_eam_review} and Finnis and Sinclair\cite{finnis1984_fs} potentials, among others, were developed and continue to be developed for metals.
+Bond order potentials (BOP) such as those of Brenner\cite{brenner1989_bop,brenner2002_rebo} and Tersoff\cite{tersoff1988_tersoff}, and the three-body Stillinger and Weber\cite{stillinger1985_sw} potential are widely used to describe covalently-bonded materials.
 For ionically bonded materials, the electrostatic interactions are typically described by Coulomb potentials, with various formalisms for the short ranged interactions, the Buckingham potential being the most widely used.\cite{lewis1985_buck,gale1996_buck}
-The continuing evolution of these formalisms, the development of more sophisticated potential formulations such as ReaxFF\cite{vanduin2001_reaxff,senftle2016_reaxff} and COMB \cite{liang2013_comb_1,liang2013_comb_2}, and the increasing accuracy of density functional theory (DFT) calculations, which typically constitute at least part of the fitting database, have allowed the materials fidelity of these potentials to increase markedly. 
-Nevertheless, the process of potential development largely remains non-transparent and subjective, involving the repeated intervention of a skilled potential developer.\cite{brenner2000_fitting,martinez2013_fitting,martinez2016_posmat} 
-As a result, the final parameterization depends on the many choices made by the potential developer; this means that the process by which a potential is developed is generally neither fully documented, nor reproducible. 
+The continuing evolution of these formalisms, the development of more sophisticated potential formulations such as ReaxFF\cite{vanduin2001_reaxff,senftle2016_reaxff} and COMB \cite{liang2013_comb_1,liang2013_comb_2}, and the increasing accuracy of density functional theory (DFT) calculations, which typically constitute at least part of the fitting database, have allowed the materials fidelity of these potentials to increase markedly.
+Nevertheless, the process of potential development largely remains non-transparent and subjective, involving the repeated intervention of a skilled potential developer.\cite{brenner2000_fitting,martinez2013_fitting,martinez2016_posmat}
+As a result, the final parameterization depends on the many choices made by the potential developer; this means that the process by which a potential is developed is generally neither fully documented, nor reproducible.
 Moreover, there is currently no objective method for evaluating the suitability of the function form of the atomic potential or determining if the final parameterization selected yields the best possible fit to the fitting database.
 
 The key driver of this software is to implement a systematic methodology to fit interatomic potentials that allows the objective evaluation of the quality of the parameterization, and the stability of the functional form, and that is both completely algorithmic and reproducible.  Current parameterization processes generally involve the minimization of a single scalar cost function, typically a weight sum of some measure of the error (typically, absolute difference of square difference, as discussed in chapter 3) of the predicted value, $\hat{q}_i{\bm{\theta}}$ and the reference value of the specific material property $\hat{q}_i$.  This approach has a number of challenges:
@@ -30,23 +30,34 @@ The key driver of this software is to implement a systematic methodology to fit 
 	\item Most importantly, the weights chosen for the fitting by the developer purport to represent the priorities of the potential develop in terms of the size of acceptable erros in the predicted values, when no such direct correspondence between the weights and errors in the final potential predictions.
 \end{itemize}
 \section{Fitting Process}
+In MCDM literature, the idea of solving a multiobjective optimization problem is understood as helping a human decision maker (DM) in understanding the multiple objectives simultaneously and finding a Pareto optimal solution.  Thus, the solution process requires some interaction with the DM in the form of specifying preference information and the final solution is determined by these preferences.
 
+\begin{itemize}
+	\item {\emph{a priori} methods}.  In \emph{a priori} methods, the DM first articulates preference information and the solution tries to find a Pareto optimal solution satisfying them as well as possible.
+  \item \emph{a posteriori} methods.  A representation of a set of Pareto optimal solution is first generated and then the DM is supposed to select the most preferred one among them.  This approach gives the DM an overview of different solutions available but if there are more than two objectives in the problem, it may be difficult for the DM to analyze the large amount of information.
+	\item Solution methods.  MOO solution methods fall under the category of scalarization or non-scalarization methods.  Scalarization is the primary method for MOO problems [Miettinen 1999].  Scalarization converts the MOO problem into a paramterized single-objective problem which can be solved using using well-established single-objective optimization methods.
+	\item Interactive methods.  After each iteration, some information is provided to the DM in order to specify preference information.  What is noteworthy is that the DM can specify and adjust one's preferences between each iteration and at the same time learn about interdepencies between each iteration and at the same time learn about interdependencies in the problem as well as one's own preferences.
+\end{itemize}
+
+While this is occasionally stated in potential development literature, it is often within the context of the use of global optimization techniques.
+The purpose of this section is provide a clear methodological approach to determining the optimal parameters within the context of MOO, and elucidate the problems often encountered in potential development specifically to the choice of optimization techniques often employed in potential development.
+We start our review of methods using Hwang and Masud 1979 and Miettinen 199, to classify the different classes of approaches by methological approach rather than technical techniques.
 Instead of looking at gradient approaches to optimization,
 The challenge for potential fitting is to identify an optimal parameterization, $\bm{\theta}^*$, that yields the smallest errors in predicted properties.  We cast this as a multi-objective optimization problem, as commonly used in the field optimal criteria decision making.  In attacking this MOO problem, we need an appropriate descriptor for the set of possible solutions before the developers preferences are expressed; we adopt the concept of Pareto optimality. A Pareto optimal solution is a point in parameter space at which the reduction in error in the predicted value of any materials property can take place only through an increase in the error in one or more other materials property.
 
-A parameterization $\bm{\theta}_2$ dominates $\bm{\theta}_1$, 
+A parameterization $\bm{\theta}_2$ dominates $\bm{\theta}_1$,
 when $\lvert \epsilon_i(\bm{\theta}_1) \rvert \leq  \lvert \epsilon_i(\bm{\theta}_2 \rvert$ for all $i$; the parameter vector $\bm{\theta}_i$ is Pareto optimal if it is not dominated by any other $\bm{\theta}_j$.  The set of parameter vectors, $\bm{\Theta}^{(p)}$, contains all the parameterizations for multi-objective optimization problem.
 \section{Implementation}
 
-Software for potential software development is by necessity a complicated piece of software which draws expertise from different functional expertise.  
+Software for potential software development is by necessity a complicated piece of software which draws expertise from different functional expertise.
 In addition to the faithful execution of potential formalisms, software for potential development must be able to simulate a wide range of materials properties, implement optimization routine, and conduct post-fitting analysis.
 
 Our optimization process, identifies a set of parameterization, which produces Pareto optimal results, but it is still necessary for the potential developer to identify which parameterization is most suitable for this application.
 
 In one use case, the potential developer will look to approximate the parameter set which produces Pareto optimal predictions.  Since parameter space is explored by sampling from a probability distribution, this effort is embarassingly parallelizable and we wish to scale this effort over the large number of processors available in a high performance cluster (HPC) environment likely available to potential development.  The typical use case for this software package involves a potential developer using the software program by modifying the examples distributed with this program for their particular needs.
 
-On the other hand, once the optimization process is complete, the potential developer needs to explore the tradeoffs in performance between different QOIs, explore relationships between the different parameters, and select potentials of interest.  
-Now, the potential developer uses the same software library which aids them in interactive, exploratory data analysis, likely requiring \emph{ad hoc} visualization.  
+On the other hand, once the optimization process is complete, the potential developer needs to explore the tradeoffs in performance between different QOIs, explore relationships between the different parameters, and select potentials of interest.
+Now, the potential developer uses the same software library which aids them in interactive, exploratory data analysis, likely requiring \emph{ad hoc} visualization.
 In this use case, \verb|pypospack| enables users to quickly create their own analysis and visualization routine, by leverage the same core packages to meet their specific needs, typically on a workstation.
 
 As a result, our potential development software cannot be delivered as a monolithic software application, but must support a workflow which allows for interactive, exploratory data analysis.  It needs to be largely platform agnostic, capable of running on HPC clusters as well as personal workstations.
@@ -64,11 +75,11 @@ Moreover, \emph{pypospack} takes a different approach to the development of pote
 
 Python is popular programming language that is popular for scientific applications, due to the maturity and stability of fundamental numerical libraries, quality of documentation, and availability of well-supported distrbutions, such as Anaconda\cite{python_anaconda}, makes Python accessible and convenient for a broad audience.  Additionally, matplotlib\cite{hunter2007_matplotlib} integrated with IPython\cite{} provides an interactive research and development environment with data visualization suitable for most users.  As a result, is an appealing choice for algorithmic development and exploratory data analysis\cite{dubois2007_python}
 
-NumPy\cite{walt2011_numpy} adds an array language, similar in syntax to MATLAB, and similar in power to Fortran, in which operations are performed in compiled code.  
-Scipy\cite{jones_scipy} builds on top of NumPy to provide functionality for optimization, numerical integration, and a statistics package for creating random variates, and a linear algebra package which provides extended interfaces to BLAS\cite{blas2002} and LAPACK\cite{anderson1990_lapack}.   
+NumPy\cite{walt2011_numpy} adds an array language, similar in syntax to MATLAB, and similar in power to Fortran, in which operations are performed in compiled code.
+Scipy\cite{jones_scipy} builds on top of NumPy to provide functionality for optimization, numerical integration, and a statistics package for creating random variates, and a linear algebra package which provides extended interfaces to BLAS\cite{blas2002} and LAPACK\cite{anderson1990_lapack}.
 When possible, the data produced by \verb|pypospack| is exposed through Pandas\cite{mckinney2010_pandas} to simplify data management and data analysis tasks using well known syntax.
 Scikit-learn\cite{pedregosa2011_sklearn} integrating a wide range of machine learning algorithms for medium-scale supervised and unsupervised problems. This package focuses on bringing machine learning to non-specialists using a general-purpose high-level language.
-MPI for Python(mpi4py(\cite{dalcin2005_mpi4py,dalcin2008_mpi4py} provides bindings of the Message Passing Interface (MPI)\cite{mpi2015} standard for the Python programming language and allows the exploitation of multiple processors in an HPC environment.  
+MPI for Python(mpi4py(\cite{dalcin2005_mpi4py,dalcin2008_mpi4py} provides bindings of the Message Passing Interface (MPI)\cite{mpi2015} standard for the Python programming language and allows the exploitation of multiple processors in an HPC environment.
 This is important for ease of installation and portability, as providing libraries around Fortran code can prove challenging on various platforms.
 
 To run simulations, \verb|pypospack| spawns a new process, through the Python \verb|subprocess| module, and obtain the exit codes, which is returned from the child process and is interpreted by \verb|pypospack| in the event of external codes returning a success or failure.  Through this facility, input files are made for the external executable, which is run under a child subprocess until an exit code is detected, when the output files of the energy calculator are then parsed for pertinent information.  Currently, \verb|pypospack| supports LAMMPS and GULP as external energy calculators
@@ -82,9 +93,9 @@ Software for potential software development is by necessity a complicated piece 
 Configuration space consists of the position of each atom, $\bm{r}=\{r_1,r_2,r_3\}$, embedded in a periodic volume used to model the infinite bulk defined by the collective basis vectors, $\mathbb{R}^3$, $H=(\bm{a}_1,\bm{a}_2,\bm{a}_3)$.
 For the purposes of notational compactness, we will refer to a configuration of atoms as $R$, and treat the potential energy surface as a function, $U:\bm{R}\rightarrow\mathbb{R}$.
 
-An empirical potential, $\hat{V}$, approximates the potential energy surface with a set of equations referred to collectively as the functional form.  
-These set of equations are often chosen to capture the relevant physics or chemistry of a system, such as the Buckingham potential for ionic solids, the embedded atom method for metals, and many body potentials for covalently bonded materials.  
-To specialize an empirical potential for material system a set of parameters, $\bm{\theta}=(\theta_1,...,\theta_P)\in\mathbb{R}^P$, needs to be selected.  
+An empirical potential, $\hat{V}$, approximates the potential energy surface with a set of equations referred to collectively as the functional form.
+These set of equations are often chosen to capture the relevant physics or chemistry of a system, such as the Buckingham potential for ionic solids, the embedded atom method for metals, and many body potentials for covalently bonded materials.
+To specialize an empirical potential for material system a set of parameters, $\bm{\theta}=(\theta_1,...,\theta_P)\in\mathbb{R}^P$, needs to be selected.
 Since $\hat{V}:\{\bm{R},\bm{\theta}\}\rightarrow\mathbb{R}$, we can think of $\hat{V}$ as a function that is not only dependent upon the configuration of the atoms $\bm{R}$, but also upon the parameterization $\bm{\theta}$.
 
 Classical interatomic potential reduce the quantum-mechanical interactions of electrons and nuclei to an effective interaction between a collection of atoms described by an analytical set of functions.
@@ -96,7 +107,7 @@ In this section, the potential development software Python Potential Operational
 
 Like other potential development software packages, \emph{pypospack} was developed to seprate the process of parameter optimization from the selection of the analytical form of the potental.  \emph{pypospack} separates itself from other packages by designed using object-oriented methods which enables users of this software to quickly integrate new potentials, material properties, or even optimization techniques.
 
-The \verb|potential| package contains class objects which inherent from the appropriate abstract base class and overide the required methods for implementation.  Currently, the \verb|Potential| abstract class only requires the implementation of the \verb|_init_parameter_names|, \verb|lammps_potential_section_to_string|, \verb|gulp_potential_section_to_string|, and \verb|evaluate| methods.  Each of these methods accepts a \verb|parameter| ordered dictionary object, with the parameter name and it's respective value for key-value pairs.  Depending upon the use of the potential, not all methods need to be overridden. For example, if simulations are only to be run in LAMMPS or GULP, then the only the \verb|lammps_potential_section_to_string| and \verb|gulp_potential_section_to_string| need to be implemented respectively. 
+The \verb|potential| package contains class objects which inherent from the appropriate abstract base class and overide the required methods for implementation.  Currently, the \verb|Potential| abstract class only requires the implementation of the \verb|_init_parameter_names|, \verb|lammps_potential_section_to_string|, \verb|gulp_potential_section_to_string|, and \verb|evaluate| methods.  Each of these methods accepts a \verb|parameter| ordered dictionary object, with the parameter name and it's respective value for key-value pairs.  Depending upon the use of the potential, not all methods need to be overridden. For example, if simulations are only to be run in LAMMPS or GULP, then the only the \verb|lammps_potential_section_to_string| and \verb|gulp_potential_section_to_string| need to be implemented respectively.
 
 For the implementation of the EAM potential, the potential formalism consists of three functions, which are specified in the formalism.
 
@@ -123,7 +134,7 @@ Table \ref{table:pypospack_potentials} lists the currently implemented potential
 	EamEmbeddingFunction & Potential \\
 	BjsEmbeddingFunction & EamEmbeddingFunction \\
 	UniversalEmbeddingFunction & EamEmbeddingFunction \\
-	FinnisSinclairEmbeddingFunction & EamEmbeddingFunction \\ 
+	FinnisSinclairEmbeddingFunction & EamEmbeddingFunction \\
 	EamEmbeddingEquationOfState & EamEmbeddingFunction \\
 	RoseEquationOfStateEmbeddingFunction & EamEmbeddingEquationOfState \\
 	\hline
@@ -134,7 +145,7 @@ Table \ref{table:pypospack_potentials} lists the currently implemented potential
 The execution framework involves the management of the \verb|Qoi| objects and the \verb|Task| each parameter set.  \verb|Task| defines a simulation task, which will spawn a subprocess using the Python \verb|subprocess| module to execute external code.
 
 \subsection{Pyposmat}
-For the purposes of the decomposition of simulation tasks and the calculation of material properties.  The implementation of the simulation tasks are contained within the tasks submodule while the implementation of the calculation of the material properties are contained within qoi submodule.  To avoid duplication of the same the same simulations, the QoiManager determines which task are necessary to be run, whie the TaskManager is responsible for the execution of these tasks.  The PyposmatEngine coordinates information passing between the QoiManager and TaskManager, by configuring the QoiManager with information from the PyposmatConfigurationFile, it then extracts the task list from the QoiManager which is used to configure the TaskManager which then instantiates all the tasks, runs the simulations, and processes the results of those simulations.  When the TaskManager has completed, the PyposmatEngine then extracts the results of the simulations and passes it to the QoiManager, which then calcualtes the material properties.  Thus the pypospack simulation engine implements the fundamental function of 
+For the purposes of the decomposition of simulation tasks and the calculation of material properties.  The implementation of the simulation tasks are contained within the tasks submodule while the implementation of the calculation of the material properties are contained within qoi submodule.  To avoid duplication of the same the same simulations, the QoiManager determines which task are necessary to be run, whie the TaskManager is responsible for the execution of these tasks.  The PyposmatEngine coordinates information passing between the QoiManager and TaskManager, by configuring the QoiManager with information from the PyposmatConfigurationFile, it then extracts the task list from the QoiManager which is used to configure the TaskManager which then instantiates all the tasks, runs the simulations, and processes the results of those simulations.  When the TaskManager has completed, the PyposmatEngine then extracts the results of the simulations and passes it to the QoiManager, which then calcualtes the material properties.  Thus the pypospack simulation engine implements the fundamental function of
 \begin{equation}
     \bm{\hat{q}}(\hat{V}(\bm{\theta}|\bm{R}_1,...\bm{R}_N)
 \end{equation}
@@ -150,9 +161,9 @@ All tasks inherit from the the abstract class \verb|task.Task|, with an intermed
 
 A simulation task has several states: INIT, CONFIG, READY, RUNNING, POST, FINISHED, and ERROR.  It start with INIT and proceeds to the other stages unless an error conditions happens, in which case the instance of the class is marked with the status ERROR.
 
-The INIT state is automatically set when a Task is instantiated.  
-When, the TaskManager provides the information necessary to a class, with exception of information it requires from other tasks, it will mark itself into the CONFIG state, unless it is not dependent upon Task completation, in which case it will automatically move to READY.   
-When all Tasks reach the CONFIG state, then the TaskManager will begin running simulations by creating a the necessary input files to the external calculator, such as LAMMPS or GULP, subprocess the calculator to run the simulation, and mark the status as RUNNING.  
+The INIT state is automatically set when a Task is instantiated.
+When, the TaskManager provides the information necessary to a class, with exception of information it requires from other tasks, it will mark itself into the CONFIG state, unless it is not dependent upon Task completation, in which case it will automatically move to READY.
+When all Tasks reach the CONFIG state, then the TaskManager will begin running simulations by creating a the necessary input files to the external calculator, such as LAMMPS or GULP, subprocess the calculator to run the simulation, and mark the status as RUNNING.
 Monitoring of the subprocesses in done within a sleep loop in the TaskManager; the TaskManager iterates throug the list of tasks, instructing it to poll it's subprocess, this enables multiple simulations to be done simultaneously, without locking the main thread.  Each task with logic to identify abnormal exit conditions of the simulation software and will kill the child subprocess, without killing the main thread.
 When the simulation is complete, the Task will notice that the subprocess is complete TaskManager will then mark the task in being the POST state, indicating that the results of the simulation are ready for post-processing.  The task manager will then instruct the task to post-process the results of the simulation by reading the output files and providing the information as dictionary object which is then broadcast to all the other tasks as well as the QoiManager, which collects the data for the calculation of material properties.  When the post-processing tasks are complete and the information received by the TaskManager, the task is then marked FINISHED.
 
@@ -179,7 +190,7 @@ The lattice vectors which bound the simulation box, $(\bm{a}_1,\bm{a}_2,\bm{a}_3
 \subsection{Structure Database}
 \subsection{Potential Definition}
 
-Structure files use the 
+Structure files use the
 To that end, the configuration file is a YAML("YAML Ain't Markup Langage) is a human-readable, data-serialization language.
 
 
@@ -294,4 +305,3 @@ In order to support the largest number of classical potentials, software was wri
 
 At the current time, pypospack built upon the scientific python stack.
 Evaluation of interatomic potentials.  This software subprocesses either serial version of LAMMPS or GULP to calculate properties of interest.  Parallelization is batched processed across iterations, which each processor rank being given a unique directory space to prevent IO conflicts.
-

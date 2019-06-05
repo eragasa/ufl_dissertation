@@ -5,6 +5,81 @@ The purpose of this chapter to introduce a cost-efficient algorithm to determine
 Our algorthm has the following goals: (1) to identify the strengths and weaknesses of solution of the Pareto optimal solutions, (2) to generate estimates of the Pareto optimal front in a serious of iteratively better approximations, and (3) to describe the candidate parameterizations through the use of a distribution function and use Monte Carlo sampling, but updating the distribution by keeping the Pareto dominated points.
 
 
+\emph{Vector Evaluated Genetic Algorithm (VEGA)}.  Schaffer proposed VEGA for finding multiple solutions to multiobjective problems.  He created VEGA to find and maintain multiple classification rules in a set covering problem.  VEGA tried to achieve this goal by selecting a fraction of the next generation using one of the objective functions.
+
+Fitness Sharing encourage the search in unexplored section of a Pareto front by artificially thinning solutions in densely populated area.  To achieve this goal, densely populated areas are identified and a penalty method is used to penalize the solutions located in such areas.  This approach was recommended by Goldberg and Richardson\cite{goldberg1987genetic} and used by Fonseca and Fleming\cite{fonseca1993multiobjective} to penalize clustered solutions.
+\begin{equation}
+    dz(\bm{x}_1,\bm{x}_2)
+    = \sqrt{\sum_{k=1}^{K}  \left(\frac{z_k(\bm{x_1})-z_k(\bm{x_2})}
+                                       {z_{k}^{max}-z_{k}^{min}}
+                            \right)^{2}
+      }
+\end{equation}
+
+based on these distances, calculate a niche count for each solution $\bm{x}\in\bm{X}$ as
+\begin{equation}
+  nc(\bm{x}_1,t)=\sum_{\bm{x}_2\in\bm{X},r(\bm{x}_2,t)=r(\bm{x}_1,t)}
+      \max\left\{ \frac{\sigma_{share}-dz(\bm{x}_1,\bm{x}_2)}
+                       {\sigma_{share}},0
+          \right\}
+\end{equation}
+where $\sigma_{share}$ is the niche size by defining a neighborhood of solutions in the objective space.  Solutions in the same neighborhood contribute to each other's nich count.  Therefore, a solution in a crowded neighborhood will have a higher niche count, reducing the probability of selecting that solution from being culled from the survivor set.
+
+\section{Visualization}
+This problem is dealt with in discussions about visualization and and analysis of the large amounts of data generated from a posteriori approaches to solving these problems.
+Edgeworth 1881
+Koopmans 1951
+Kuhn Tucker 1951
+Pareto 1896, 1906
+\section{Treatment}
+
+Our treatment of the mapping of the empirical potential is treated as a bijective mapping into two measure spaces.
+
+Let us define parameter space with the probability measure space $(\Theta,\mathcal{F}(\Theta),\mathbb{P})$.
+
+Then we define the error space of the structure property relationships with the probability measure space $(\mathcal{E},\mathcal{F}(\mathcal{E})),\mathbb{Q})$.
+
+
+To solve forward problems, the parameters of a potential, $\bm{\theta}$ is known \emph{a priori}, are used in conjunction of a set of atomic arrangements in a simulation cell with periodic boundary conditions to predict $n$ material properties, $\bm{q} = (q_1,...q_n)$.  These predictions depend not only on the atomic arrangements but also on the parameterization, denoted
+$\bm{\hat{q}}(\bm{\theta}) =
+    (\hat{q}_1(\bm{\theta}),...\hat{q}_n(\bm{\theta}))$.
+The differences between the predicted values and references values are denoted
+$\bm{\epsilon}(\bm{\theta}) =
+    \lvert \bm{\hat{q}}(\bm{\theta})
+         - \bm{q}_i
+    \rvert$,
+where $|\bm{x}|$ is the elementwise magnitude of the vector $\bm{x}$.
+
+The problem of parameterization is an inverse problem where an optimal parameterization produces ideal outcomes for the forward problem, i.e. difference between the predicted value and the reference value,
+$\epsilon_i(\bm{\theta}) = 0$.
+Since replication of results is typically not achievable, then the goal of parameterization becomes
+$\min_{\bm{\theta}} \epsilon_i(\bm{\theta})$
+for all $i$.  Typically, there does not exist an optimal parameterization, $\bm{\theta}^*$, which minimizes $\epsilon_i(\bm{\theta})$ for all $i < n$.  Requiring a prioritization of which material properties have a preference for fidelity in predictions.
+
+The typical approach to solving the inverse problem transforms the above problem into a scalar optimization problem amenable to derivative approaches.  A cost function $C$ which couples the individual objectives, $\epsilon_i$, along with a set of weights $\bm{w} = (w_1,...,w_n)$, to represent preferences, that is
+\begin{equation}
+    C(\bm{\theta}) = \sum_i^n w_i (\hat{q}_i(\bm{\theta}) - q_i)^2
+                   = \sum_i^n w_i \epsilon_i^2(\bm{\theta})
+\end{equation}
+
+It is clear that the selection of $\bm{w}$ uniquely determines $\bm{\theta}^*$.  However, the values of $w_i$ which will produce an acceptable potential are typically not known \emph{a priori}.  When the initial weighting scheme fails to give an acceptable results, $\bm{w}$ is changed in an \emph{ad hoc} approach until an acceptable parameterization is achieved.
+
+Since analytical solutions are intractable, numerical solutions are achieved by selecting an initial parameterization, $\bm{\theta}_0$, and using derivative-based optimization techniques to minimize the cost function.  If the $C(\bm{\theta})$
+
+
+
+\begin{equation}
+    \Theta = \Theta_0 \supset \Theta_1 \supset \hdots \supset \Theta_k = \Theta^{(p)}
+\end{equation}
+
+which produces due to Eq %\ref{eqn:def_Q} and \ref{eqn:def_E}
+
+\begin{equation}
+    \mathcal{E} = \mathcal{E}_0 \subset \mathcal{E}_1 \supset \hdots \supset \mathcal{E}_k = \mathcal{E}^{(p)}
+\end{equation}
+
+for $k < \infty$ iterations.  Since $\Theta \subset \mathbb{R}^p$ and $\mathcal{E} \subset \mathbb{R}^n$, we provide the following approach which uses Monte Carlo simulation in an approach which is inspired by Bayesian inference, although this approach does not use a Bayesian updating approach.  The goal of this approach is to produce an ensemble of $\bm{\theta}\in \Theta^{(p)}$ and describe this ensemble as a probability distribution which could be used as a starting point in uncertainty quantification propagation.
+
 \section{Comparison to Other Methods}
 
 In the case, where the Pareto front is continuous and convex.  Gradient-based optimization can be used efficiently.
@@ -34,7 +109,12 @@ Genetic algorithms
 \item Selection.  Select $N$ solution from $Q_t$ based on their fitness and copy them to $P_{t+1}$
 \item If the stopping criterion is satisfied, terminate the search and return to the current population, else set $t=t+1$ and go to step 2.
 \end{itemize}
+The concept of genetic algorithms were inspired by evolutionist theories explaining the origin of species\cite{holland1992_ga}.  In nature, weak and unfit speicies within their environment are faced with extinction by natural selection, while strong ones pass on their genes to future generations through reproduction.  In the long run, species carrying the correct combinatioon in their
+    genes become dominant in their population.
 
+In GA terminology, a solution vector $\bm{x}\in\bm{X}$ is called an individual or a chromosome.  Chromosomes are made of descrete units called genes.  Each gene controls on or more features of the chromosome.  Normally, a chromosome corresponds to a unique solution $\bm{x}$ in the solution space.  This requires a mapping mechanism between the solution space and chromosome.  GA operates with a collection of chromosomes, called a population.  As the search evolves, the poulation includes fitter and fitter positions, eventually it converges, meaning that it is dominated by a single solution.  Two operators are defined crossover and mutation.  In the crossover operator, two parent solutions are combined togehter to form offspring.  The mutation operator introduces random changes into the population.
+
+The first multi-objective GA, called vector evaluated GA (or VEGA), was proposed by Schaffer [5]. Afterwards, several multi-objective evolutionary algorithms were developed including Multi-objective Genetic Algorithm (MOGA) [6], Niched Pareto Genetic Algorithm (NPGA) [7], Weight-based Genetic Algorithm (WBGA) [8], Random Weighted Genetic Algorithm (RWGA)[9], Nondominated Sorting Genetic Algorithm (NSGA) [10], Strength Pareto Evolutionary Algorithm (SPEA) [11], improved SPEA (SPEA2) [12], Pareto-Archived Evolution Strategy (PAES) [13], Pareto Envelope-based Selection Algorithm (PESA) [14], Region-based Selection in Evolutionary Multiobjective Optimization (PESA-II) [15], Fast Non-dominated Sorting Genetic Algorithm (NSGA-II) [16], Multi-objective Evolutionary Algorithm (MEA) [17], Micro-GA [18], Rank-Density Based Genetic Algorithm (RDGA) [19], and Dynamic Multi-objective Evolutionary Algorithm (DMOEA) [20]. Note that although there are many variations of multi-objective GA in the literature, these cited GA are well-known and credible algorithms that have been used in many applications and their performances were tested in several comparative studies.
 \section{The Problem}
 
 Using the construction of an empirical potential as outlined in Chapter 2, we define an empirical interatomic potential, $\hat{V}$, which approximates the potential energy surface, $V$.
@@ -66,11 +146,81 @@ We replace the notion of $\theta$ being a deterministic value, and instead $\the
 \section{The Fitting Database}
 
 \section{An Iterative Procedure}
+We propose the following approach:
+%\begin{subequations}
+\begin{equation}
+	\Theta_k \rightarrow \hat{Q}_k(\Theta_k) \rightarrow \mathcal{E}_k(\Theta_k)
+\end{equation}
+\begin{equation}
+	\mathcal{E}_k(\Theta_k) \rightarrow \mathcal{E}_k^{(p)}(\Theta_k^{(p)})
+\end{equation}
+\begin{equation}
+	\mathcal{E}_k^{(p)}(\Theta_k^{(p)}) \rightarrow \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)})
+\end{equation}
+\begin{equation}
+	      \mathcal{E}_k^{(cp)}(\Theta_k^{(cp)}) \rightarrow \Theta_{k+1}
+\end{equation}
+%\end{subequations}
+% this paragraph has some notational abuse, but is used for the sake of clarity rather than making the notation mathematical rigorous.
+The notation $\rho(\bm{\theta})$ refers to the joint probability density function that $\bm{\theta} \in \Theta^{P}$.
+Intuitively, one can think of
+$\rho(\bm{\theta})\Delta\bm{\theta}$
+as the probability that a random variable drawn from $\rho(\bm{\theta})$ will fall within the infinitesimal compact set $[\bm{\theta},\bm{\theta}+\Delta\bm{\theta}]$
 
+Even if $\Theta$ is defined as compact, $\hat{Q}$ may not be bounded.  By construction $\hat{q}_i > 0 $, however $\hat{q}_i$ may not be bounded from above.  There exists $\bm{\theta} \in \Theta$ which produces pathological members of the Pareto set.  Specifically, there is exists $\bm{\theta} \in \Theta$ such that $\bm{\epsilon}(\theta) \in \mathcal{E}^(p)$, but produces an $\epsilon_i(\bm{\theta}) > \epsilon_{i,max}$ for at least one $i\in\{1,...,n\}$, where $\epsilon_{i,max}$ is an arbitrary performance requirement.
+
+We generalize Eq
+To estimate $\Theta^{(p)}$, we simplify the drawing of samples from a uniform distribution defined by hyperrectangles which defines $\Theta$The choice of
+\subsubsection{Kernel Density Estimate}
+
+The Kullbach-Leiber divergence\cite{kullback1951_kld} measures the divergence between two probability density functions $f(x)$ and $g(x)$,
+\begin{equation}\label{eq:kld}
+   D(f \parallel g) = \int f(x) \log \frac{f(x)}
+                                          {g(x)} dx
+\end{equation}
+is commonly used in statistics as a measure of similarity between two density distributions, and has the following properties: (1) self-similarity, $D(f \parallel f) = 0$, (2) self-identification, $D(f \parallel g) = 0$ only if $f=g$, and (3) positivity, $D(f \parallel g) \geq 0$ for all $f$ and $g$.
+
+The integral in Equation \ref{eq:kld} can be calculated from Monte Carlo\cite{hershey2007_kld_approx}, by drawing a sample $x_i$, from the statstical distribution of $f$ such that $\mathbb{E}\left[\log\frac{f(x)}{g(x)}\right] = D(f \parallel g)$.  Using $N$ i.i.d. samples $\left\{x_i\right\}_{i=1}^N$, we have
+\begin{equation}
+  \label{eq:kdmc}
+  D_{MC}(f \parallel g) = \frac{1}{N}\sum_i^N \log \frac{f(x)}{g(x)}
+      \rightarrow D(f \parallel g)
+\end{equation}
+as $n \rightarrow \infty$.  The variance of the estimation error is $\frac{1}{N}\mathrm{Var}_f\left[\log\frac{f}{g}\right]$.  To compute $D_{\mathrm{MC}}(f \parallel g)$, we need to generate samples $\left\{x_i\right\}_{i=1}^N$ from $f$.  Then for $1 \leq i \leq N$, evaluate $f(x_i)$ and $g(x_i)$ to calculate $D_{\mathrm{MC}}$.
 \section{Incorporation of Prior Knowledge}
 
 \section{Sampling and Filtering}
+\section{Methodology}
+To demonstrate the potential of this process to develop a working potential, a Coulumb-Buckingham potential\cite{lewis1985_pot_buck_oxides} is developed for magnesium oxide (MgO).
+This pair wise potential for atoms $i$ and $j$
+\begin{equation}
+    \label{eq:buck_eq}
+    V(r_{ij};A,\rho,C)
+        = \frac{Z_i Z_j}{4 \pi \varepsilon_0 r_{ij}}
+            + A \exp(-\frac{r_{ij}}{\rho})
+            - \frac{C}{r_{ij}^6}
+\end{equation}
+where $r_{ij} = \lVert \bm{r}_i - \bm{r}_j \rVert_2$ is the distance between the atoms $i$ and $j$, and $q_i$ are$q_i$ describe the charges of the atoms, and $A$, $B$, and $C$, are the parameters of the potential.
 
+The first term of the potential is the electrostatic potential energy, the second term is repulsive due to the Pauli exclusion principle, and the third term is an attractive van der Waals energy.
+
+We use the same relevant assumptions used in Lewis and Catlow\cite{lewis1985_pot_buck_oxides}, the Mg-Mg interactions are assumped to be purely coulombic, the Mg-O is considered to be the Born-Mayer form, $A \exp(-r/\rho)$, where the van der Waals term is ignored.
+
+The charge of the atoms is allowed to deviate from their formal charges, provided that $Z_{Mg} = - Z_{O}$, to preserve charge neutrality.
+\subsection{Reference Values}
+
+\subsection{Implementation}
+Implemented in Python using LAMMPS as the molecular dynamics engine as the calculator.  Parrellization is done through MPI.
+
+\subsection{More modern techniques}
+The development of the potentials have incorporated more modern techniques
+
+Frederiksen \emph{et al.} \cite{fredericksen2004_bayesian_fitting} introduces a Bayesian approach to potential parameterization.
+Robertson, Heine, and Payne \cite{robertson1993_glue_schemes} develops glue schemes
+
+Neural network approaches were pioneered by Behler and Parrinello \cite{behler2007_NN_potdev} and Sanville \emph{et al.} \cite{sanville2008_NN_potdev_si}.
+
+Genetic algorithm approach\cite{marques2008_ga_potdev} and \cite{hunger1998_ga_potdev}.
 \section{Kullbeck-Leiber Divergence}
 
 The Kullback-Leiber divergence\cite{kullback1951_kld}, $D_{KL}(\rho_1\vert\vert\rho_2)$, measures how one probability measures how one probability distribution, $\rho_1$, diverges from a second probability distribution function, $\rho_2$.
