@@ -5,6 +5,19 @@ The purpose of this chapter to introduce a cost-efficient algorithm to determine
 Our algorthm has the following goals: (1) to identify the strengths and weaknesses of solution of the Pareto optimal solutions, (2) to generate estimates of the Pareto optimal front in a serious of iteratively better approximations, and (3) to describe the candidate parameterizations through the use of a distribution function and use Monte Carlo sampling, but updating the distribution by keeping the Pareto dominated points.
 
 
+
+Figure 1 shows a schematic of the approach to the development of potentials outlined here. There are essentially four steps.
+(i) The identification of structures, properties and their values to be used in the potential fitting. The specific values can be taken from experiment, from higher fidelity calculation methods such as quantum chemical or density functional theory (DFT) calculations, or a combination thereof. Our approach in this step is similar to standard potential development approaches.
+ (ii) The use of ideas from Pareto optimization to develop an ensemble of rational potentials. The term ‘rational’ will be discussed in detail below, but involves the use of a simple algorithm to identify potential parameterizations that make sense to consider further. This is the central idea of our approach and is very different from a conventional potential fitting approach
+(iii) The analysis of the ensemble of rational potentials to identify features and clustering in both the high-dimensional parameter space and in the high-dimensional space of errors in the predictions of the properties.
+(iv) The down-selection and testing of a few parameterizations or a single parameterization of the potential for use in further simulations.
+We focus mainly on the second of these steps: the development of an ensemble of rational potentials. We do, however, briefly discuss the other three parts of the process. For concreteness, we illustrate their use in the development of potentials for MgO, a simple and archetype ionic material.
+
+
+\section{Constraints on the Optimization}
+
+In implementation of constraints, it is computationally efficient apply the constraints when the parameter is estimated from the probability distribution function.
+
 \emph{Vector Evaluated Genetic Algorithm (VEGA)}.  Schaffer proposed VEGA for finding multiple solutions to multiobjective problems.  He created VEGA to find and maintain multiple classification rules in a set covering problem.  VEGA tried to achieve this goal by selecting a fraction of the next generation using one of the objective functions.
 
 Fitness Sharing encourage the search in unexplored section of a Pareto front by artificially thinning solutions in densely populated area.  To achieve this goal, densely populated areas are identified and a penalty method is used to penalize the solutions located in such areas.  This approach was recommended by Goldberg and Richardson\cite{goldberg1987genetic} and used by Fonseca and Fleming\cite{fonseca1993multiobjective} to penalize clustered solutions.

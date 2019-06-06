@@ -2,34 +2,34 @@
 
 In the previous chapter, an overview of the different computational tools associated to atomistic simulation were presented to give some idea of interconnectivity and breath of atomistic simulations.  Within this chapter, we outline the Pareto approach to potential optimization within the context of more typical current appraoches to potential development.
 
-This chapter frames potential development using a broad mathematical treatment.  The purpose is to frame some of the problems in potential development in the proper context as to understand the limitations of typical approaches in potential development.  Parameterization is often approaches to the minimization of a scalar objective functions consisting of the weighted sum of square differences with respect to the prediction of a set of material properties.  When the gradient is continuously differentiable with respect to its parameters and the objective function is convex, the gradient approach is relatively efficient, even in high dimension.  For interatomic potentials, these conditions are most likely not guaranteed for even fairly simple formulae to represent the interactions between atoms.  This necessitates the implementation of global optimization approaches to the minimization, drastically increasing the computational time for even a single selection of weights.
+This chapter frames potential development using a broad mathematical treatment.  The purpose is to frame some of the problems in potential development in the proper context as to understand the limitations of typical approaches in potential development.  Parameterization is often approaches to the minimization of a scalar objective functions consisting of the weighted sum of square differences with respect to the prediction of a set of material properties.  When the gradient is continuously differentiable with respect to its parameters and the objective function is convex, a scalar minimization approaches are relatively efficient, even in high dimension.  For interatomic potentials, these conditions are most likely not guaranteed for even fairly simple formalisms.  When scalar cost function is not convex, combining derivative-based local optimization procedures with global optimization techniques increases the complexity of parameterization and computational time for the single selection of a weighting vector.
 
-Moreover, gradient approaches to optimization are not amenable to parallelization.  The approach starts at an initial condition and improves the estimate in an iterative manner.  As a result, the parallelization of the computational effort is limited by the dimensionality of the parameter space (length of the computation of the gradient) and limited to the number of simulations required to compute each material property.  This limits the processor utilization to $(M \times N)$, where $M$ is the number of simulations required to calculate the cost function, and $N$ is the length of parameter space.
+Moreover, gradient approaches to optimization are not amenable to parallelization.  Local optimization approach are dependent upon an initial estimate of the optimal parameter and improves the estimate in an iterative manner.  As a result, the parallelization of the computational effort is limited by the dimensionality of the parameter space (length of the computation of the gradient) and limited to the number of simulations required to compute each material property.  This limits the processor utilization to $(M \times N)$, where $M$ is the number of simulations required to calculate the cost function, and $N_P$ is the dimension of parameter space.
 
-A larger problem is the weighted least squares approach makes parameterization dependent upon the selection of weights, which determines the optimal parameterization.   The weights expresses the preferences of the potential developer which must be expressed \emph{a priori}.  Some methods have been developed to pre-determine weights which incorporate the magnitude and acceptable errors of the target properties and a rough sense of properties.  In practice, a initial choice of weights is made based on the experience of the potential developer and the weights varied with respect the magnitude of the target until an acceptable parameterization is achieved.
+A larger problem is the weighted least squares approach makes parameterization dependent upon the selection of weights and the choice of the initial condition, both which heavily influence the final result and must be express \emph{a priori}. A potential developer is asked to determine weights before understanding what the trade-off in performance is between alternatives.  Some methods have been developed to pre-determine weights, which incorporate the magnitude and acceptable errors of the target properties.  In practice, a initial choice of weights is made based on the experience of the potential developer, the weights are adjusted, and the optimization procedure repeated.  This process continues in an iterative fashion, until an acceptable parameterization is achieved.
 
-To address the issues of this approach, a novel approach to parameter optimization is taken which incorporates two pieces.  First, since gradient based scalar optimization is problematic, we recast the problem as a multi-objective optimization problem (MOO), where each of the subobjectives in the cost function are treated indpendently.  The concept of a single optimal parameterization is clearly an inappropriate representation since the objective functions are conflicting.  As a result, the solution to a MOO must be an ensemble of parameterizations; each optimal in it's own way.  This set of optimal potentials is defined as Pareto optimal.  Second, while the Pareto optimal can be estimated by varying the weights in the cost function in a systematic way, such an approach is likely inefficient due to the problems with gradient based optimization.  Instead, a sampling based approach is proposed.
+To address the issues of this approach, a novel approach to parameter optimization is taken which incorporates two pieces.  First, since gradient-based scalar optimization is problematic, we recast the problem as a multi-objective optimization problem (MOO), where each of the subobjectives in the cost function are treated indpendently.  The concept of a single optimal parameterization is an inappropriate representation, since the improvement in the prediction in one material property causes a degradation in the prediction of an other.  Each potential is optimal in its own way, a preference of one over an other is either subjective, or dependent upon informatin not encoded into the problem, such as post-selection simulations to predict material properties that it was not optimized for.  Instead, the solution to a MOO is an ensemble of parameterizations; each optimal in its own way.  This set of optimal potentials is defined as \emph{Pareto optimal surface}, and the set of parameterizations which produce these results are the \emph{Pareto optimal set}.  Second, while the Pareto set can be estimated by varying the weights in the cost function in a systematic way, such an approach is in efficient in the presence of local minima.  Instead, we propose that a weight-free, global-minimization approach based upon Monte Carlo sampling is a promising alternative to existing techniques.
 
 This chapter consists of three sections.  In the first section, we introduce the idea of a potential energy surface and how interatomic potentials can be thought of as computational inexpensive surrogate models, and we introduce the terminology of potential development as well as some broad concepts of potential optimization.
 
 Next, we build up the notation and terminology of general optimization from a broad mathematical standpoint, first covering the more familiar single-objective optimization.  In particular, we discuss the the current techniques to potential optimization which are applied to potential optimzation as well as some of the mathematical problems and issues of this approach.
 
-Finally, the problem of a parameterization is defined within the context of a MOO problem, with the solution of MOO being the set of parameters which produce the Pareto optimal set.  When the Pareto surface is convex and continuously differentiable, gradient based approaches can estimate the Pareto surface.  When these conditions do not exist, gradient based approaches produces erroneous results.  As a preview to the evolutionary method presended in chapter \ref{chap5}, we demonstrate how a random sampling based approach to optimization is likely a better approach to estimating a Pareto optimal surface when the potential developer has a high degree of uncertainty to the selection of a region of potential parameterizations or weighting vectors.  This is demonstrated through some sample calculations on the continuous, convex MOO  problem of Schaffer\cite{schaffer1984_pareto} and the discontinuous, nonconvex MOO problem of Kurasawe\cite{kursawe1001_pareto} and the  detail of these functions is contained in Appendex \ref{ap:pareto optimization_test}
+Finally, the problem of a parameterization is defined within the context of a MOO problem, with the solution of MOO being the set of parameters, the Pareto set, which produces nondominated results in objective space, Pareto optimal surface.  When the Pareto surface is convex and continuously differentiable, gradient based approaches can estimate the Pareto surface.  When these conditions do not exist, gradient based approaches produces erroneous results.  As a preview to the evolutionary method presended in chapter \ref{chap5}, we demonstrate how a random sampling based approach to optimization is likely a better approach to estimating a Pareto optimal surface when the potential developer has a high degree of uncertainty to the selection of a region of potential parameterizations or weighting vectors.  This is demonstrated through some sample calculations on the continuous, convex MOO  problem of Schaffer\cite{schaffer1984_pareto} and the discontinuous, nonconvex MOO problem of Kurasawe\cite{kursawe1991_pareto}.
 
 \section{Potential Energy Surfaces}
 
 To study the evolution of a system, such as kinetic properties and chemical reactions, it is necessary to calculate the energy for every atomic arrangement of interest.  The potential energy surface is the energy of a collection of atoms as a function of the positions of its nuclei, $\{\bm{R}\}$.
 A PES represents a mapping of the positions of the atoms of a material system to an energies, $V:\{\bm{R}\}\rightarrow E$, with $E\in\mathbb{R}$.
-Given an atomic arrangement $\bm{R}$, the evaluated potential surface $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, providing an approximation of the potential energy surface, so that the concept of a potential energy surface arises.
+Given an atomic arrangement $\bm{R}$, the evaluated potential surface $V(\bm{R})$ gives the height of the energy landscape for any atomic configuration, so that the concept of a potential energy surface arises.
 This creates an energy landscape which allows materials systems to viewed from a topological perspective, which allows the PES to describe the evolution of a system as it moves from one atomic configuration to another atomic configuration.
 
-To describe empirical potentials, we first start with a a mathematical description of configuration space both from a crystallographic perspective, but how this crystallgraphic perspective can be translated into other representation common with empirical potentials.
+To describe empirical potentials, we first start with a a mathematical description of configuration space both from a crystallographic perspective, but how this crystallgraphic perspective can be translated into other representations common with empirical potentials.
 
 \section{Configuration Space}
-In solid materials, atoms are typically represented as infinite crystalline solids, with th atomic positions placed within a representative unit volume.
+In solid materials, atoms are typically represented as infinite crystalline solids with atomic positions embedded within the representative unit volume.
 This representative unit is referred to as a unit cell, which defines that boundaries, the volume, the lattice positions of each atom.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
   \includegraphics{chapter3/unit_cell}
   \caption{Depiction of the lattice vectors which bound the the unit cell depicted in blew.}
@@ -65,12 +65,12 @@ Thus, the geometry for a system with $N$ atoms can be described as
 	where the $\bm{r}_i$ is defined in an coordinate system defined by the lattice vectors..
 \subsection{Empirical Interatomic Potentials}
 
-While the actual PES for any given material system is certainly not analytical, simulations based on solving the Kohn-Sham(KS) equation of density functional theory (DFT) can provide energy calculations of sufficient accuracy for many systems.  However, the computational bottleneck associated in solving for the charge density, energy levels, and wavefunctions of the KS equation limits its adoption as a viable energy calculator to systems consisting of more than a few hundred atoms.
+While the actual PES for any given material system is certainly not analytical, simulations based on solving the Kohn-Sham(KS) equations of density functional theory (DFT) can provide energy calculations of sufficient accuracy for many systems.  However, the computational bottleneck associated in solving for the charge density, energy levels, and wavefunctions of the KS equation limits its adoption as a viable energy calculator to systems consisting of more than a few hundred atoms.
 
-In contrast, the use of empirical interatomic potentials (EIP) in molecular dynamics simulations can routinely comprise of millions of timesteps on millions of atoms.  In \emph{ab initio} simulations, the solution to the electronic structure of the system is used to calculate the energies of atomic configurations and the forces on the atoms required to evolve the system. In contrast, EIPs have an analytical formalisms consisting of formulae which represent the relevant physics of the system.  This simplification in calculation allows energies and forces to be calculated quickly.
+In contrast, the use of empirical interatomic potentials (EIP) in molecular dynamics simulations can routinely comprise of millions of timesteps on millions of atoms.  In \emph{ab initio} simulations, the solution to the electronic structure of the system is used to calculate the energies of atomic configurations and the forces on the atoms required to evolve the system. In contrast, EIPs have an analytical formalisms consisting of formulae which represent the relevant physics of the system.  This simplification in calculation allows energies and forces drastically improved computational efficiency at the expense of simulation fidelity.
 
 The goal of developing a interatomic potential, $\hat{V}$, is identify a computationally efficient surrogate model, which models the potential energy surface, $V$.  The use of a hat over a variable indicates that the quantity is an approximation of the actual value; this notation is used to identify approximating quantities.
-Since energy is a scalar value, $V$ and $\hat{V}$ are functions in the same measure space that assigns energies to atomic configuration (e.g. ${V:\{\bm{R}\}\rightarrow \mathbb{R}}$ and ${\hat{V}:\{\bm{R}\} \rightarrow \mathbb{R}}$, we can then approximating relationship by the addition of a difference term $\epsilon$
+Since energy is a scalar value, $V$ and $\hat{V}$ are functions in the same space that assigns energies to atomic configuration (e.g. ${V:\{\bm{R}\}\rightarrow \mathbb{R}}$ and ${\hat{V}:\{\bm{R}\} \rightarrow \mathbb{R}}$, we can then approximating relationship by the addition of a difference term $\epsilon$
 \begin{equation}\label{eq:pes_approximation}
     V(\bm{R}) = \hat{V}(\bm{R}) + \epsilon(\bm{R})
 \end{equation}
@@ -94,7 +94,7 @@ The total energy of a potential of $N$ atoms with an interaction described by th
 \end{equation}
 Based upon this expansion, we can classify certain potentials into three classes: pair-potentials, three-body potentials, and many-body potentials.
 
-The first term $V_1$ is the one body term, due to an external field or boundary conditions, which is typically ignored in classical potentials.  The second term $V_2$ is the pair potential, the interaction of the term is dependent the upon the distance between two atoms $\bm{r}_i$ and $\bm{r}_j$, and it is common to represent the distance between the two atoms as $r_{ij}=\lVert \bm{r}_i - \bm{r}_j \rVert^2$.  The three-body term potential $V_3$ arises when the interaction interaction of a pair of atoms is modified by the presence of a third.  In these cases, the pair-potential is augmented with the three-body terms to express angular dependence, with $\theta_{ijk}$ typically represnting the angle formed by atoms $j$ and $k$ around the central atom $i$.  Few potentials imploy four body terms due to dramatic expansion in terms required to describe the interaction.  Instead, a many body interation is used to reflect the local environment around the atom $i$.
+The first term $V_1$ is the one body term, due to an external field or boundary conditions, which is typically ignored in classical potentials.  The second term $V_2$ is the pair potential, the interaction of the term is dependent the upon the distance between two atoms $\bm{r}_i$ and $\bm{r}_j$, and it is common to represent the distance between the two atoms as $r_{ij}=\lVert \bm{r}_i - \bm{r}_j \rVert^2$.  The three-body term potential $V_3$ arises when the interaction interaction of a pair of atoms is modified by the presence of a third.  In these cases, the pair-potential is augmented with the three-body terms to express angular dependence, with $\theta_{ijk}$ typically represnting the angle formed by atoms $j$ and $k$ around the central atom $i$.  Few potentials imploy four body terms due to dramatic expansion in terms required to describe the interaction.  Instead, a many-body interation is used to reflect the local environment around the atom $i$.
 
 \begin{figure}[h]
   \centering
@@ -103,9 +103,9 @@ The first term $V_1$ is the one body term, due to an external field or boundary 
 		\label{fig:lj_potential}
 \end{figure}
 
-A set of equations, collectively referred to as a formalism, compromises an analytical potential, which decomposes the energy of an atomic configuration into the individual contributions of their atomic contributions.
-One analytical formalism can be used to describe different chemical compositions with similar underlying physics.  A process of parameterization specializes these functional forms to the specific composition of chemical species, through a process.
-Let $\hat{V}(\bm{R}:\bm{\theta})$ represent an empirical interatomic potential  parameterized by a vector of parameters, $\bm{\theta}=(\theta_1,...,\theta_n)$.  With the approximate parameters, $\hat{V}(\bm{R}:\bm{\theta})$ approximates $V(\bm{R})$.
+A set of equations, collectively referred to as a formalism, compromises an analytical potential, which decomposes the energy of an atomic configuration into the individual contributions of the terms.
+One analytical formalism can be used to describe different chemical compositions with similar underlying physics.  A process of parameterization specializes these functional forms to the specific composition of chemical species, through a process known as parameterization.
+If $\hat{V}(\bm{R}:\bm{\theta})$ represents an empirical interatomic potential and is parameterized by a vector of parameters, $\bm{\theta}=(\theta_1,...,\theta_n)$, then $\hat{V}(\bm{R}:\bm{\theta})$ approximates $V(\bm{R})$.
 
 The selection of parameters for the Lennard-Jones (LJ)\cite{lennardjones1924_lj_pot} potential demonstrates simple process for the selection of parameters. LJ approximate the interaction between a pair of neutral atoms, such as a noble gas.  A common expression the LJ potential is
 \begin{equation}
@@ -335,7 +335,7 @@ To determine the estimate $\bm{\Theta}^*$ is determined the following algorithm.
 The convergence of this algorithm can be drastically improved by updating the probability distribution based upon the results of previous simulations.  In chapter 5, we discuss this process in more detail.
 
 \subsection{Computational and Performance Comparison}
- The performance of these algorithms were tested against the well known problems of Schaffer\cite{schaffer1984_pareto} and Kurasawe\cite{kursawe1001_pareto} to demonstrate the relative performance computational cost of these approaches.  Both of these problem only have two objective functions, which makes visualization of the concepts more concrete.
+ The performance of these algorithms were tested against the well known problems of Schaffer\cite{schaffer1984_pareto} and Kurasawe\cite{kursawe1991_pareto} to demonstrate the relative performance computational cost of these approaches.  Both of these problem only have two objective functions, which makes visualization of the concepts more concrete.
 
  awe can produce as many samples to evaluate for performance against the fitting database to produce $\bm{q}.$  When a large enough amount of samples are evaluated,
  It is a generic solution and the iterative approach of generating new populations is akin to previous solutions.
@@ -344,10 +344,11 @@ The convergence of this algorithm can be drastically improved by updating the pr
  The ultimate goal of a multi-objective optimization algorithm is to identify solution in the Pareto optimal set.  However, identifiying the entire Pareto optimal set, for multi-objective problems, is impossible to its size.  Proof of solution optimality is computationally infeasible.  Therefore, a practical approach is achieve successively better approximations of the Pareto surface that represent the Pareto set as well as possible.
 
  The first of the test optimization function of a smooth convex multi-objective optimization problem described by Schaffer\cite{schaffer1984_pareto}.  Here the multi-objective function $F:\mathbb{R} \rightarrow \mathbb{R}^2$.
+
  \begin{equation}
- \begin{aligned}
-   &\min_{x}
-       \begin{aligned}
+ \begin{aligned}[t]
+   &\min_{x} \quad
+      &\begin{aligned}[t]
             &f_1(x) = x^2 \\
             &f_2(x) = (x-2)^2 \\
        \end{aligned}
@@ -355,34 +356,63 @@ The convergence of this algorithm can be drastically improved by updating the pr
  \end{equation}
 
 The second test optimization problem of Kurasawe.
-begin{equation}
-\begin{aligned}
+\begin{equation}
+\begin{aligned}[t]
   &\min_{\bm{x}}
-    \begin{aligned}[t]
-      &f_(\bm{x}) = \sum_{i=1}^2
+    &\begin{aligned}[t]
+      f_1(\bm{x}) &= \sum_{i=1}^2
           \left[
             -10 \exp\left(-0.2 \sqrt{x_i^2} + x_{i+1^2}\right)
           \right] \\
-      &f_x(\bm{x}) = \sum_{i=1}^3 \left[ \vert|x_{i} \vert|^{0.8} + 5\sin(x_i^3)\right] \\
+      f_2(\bm{x}) &= \sum_{i=1}^3 \left[ \vert|x_{i} \vert|^{0.8} + 5\sin(x_i^3)\right] \\
     \end{aligned}
-  &\text{subject to} \\
-    \begin{aligned}[t]
-      &-5 \leq x_i \leq -5 \\
-      & 1 \leq i \leq 3 \\
+  \\
+  &\text{subject to}
+    &\begin{aligned}[t]
+		      -5 &\leq x_i \leq -5 \\
+      		 1 &\leq i   \leq  3 \\
     \end{aligned}
   \end{aligned}
 \end{equation}
 
+\begin{figure}[h]
+	\centering
+  \includegraphics{chapter3/kurasawe_cg}
+  \caption{Schematic of a Pareto front for the differences, $\epsilon_1$ and $\epsilon_2$, between predicted and actual values for two arbitrary material properties.  The Pareto surface separates regions which are feasible and unfeasible.  Since points in the unfeasible region represent regions of unobtainable accuracy, the Pareto surface forms a boundary of the best possibilities with tradeoffs occurring on the convex hull. }
+  \label{fig:kurasawe_cg}
+\end{figure}
 
-\begin{table}
-\caption{Computational comparison between gradient methods and simulation methods against the Kurasawe MOO problem.-+++++}
-\label{table:kurasawe}
-\begin{tabularx}{6.5 in}{c c c c}
-	\hline
-  & & CG method & MC method & KDE method \\
-	\hline
-	Function Evaluations &1053132 &100000 &100000
-	Pareto points & 22 & 311
-	\hline
-\end{tabularx}
+\begin{figure}[h]
+	\centering
+  \includegraphics{chapter3/kurasawe_mc}
+  \caption{Schematic of a Pareto front for the differences, $\epsilon_1$ and $\epsilon_2$, between predicted and actual values for two arbitrary material properties.  The Pareto surface separates regions which are feasible and unfeasible.  Since points in the unfeasible region represent regions of unobtainable accuracy, the Pareto surface forms a boundary of the best possibilities with tradeoffs occurring on the convex hull. }
+  \label{fig:kurasawe_mc}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+  \includegraphics{chapter3/kurasawe_kde}
+  \caption{Schematic of a Pareto front for the differences, $\epsilon_1$ and $\epsilon_2$, between predicted and actual values for two arbitrary material properties.  The Pareto surface separates regions which are feasible and unfeasible.  Since points in the unfeasible region represent regions of unobtainable accuracy, the Pareto surface forms a boundary of the best possibilities with tradeoffs occurring on the convex hull. }
+  \label{fig:pareto_convex}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+  \includegraphics{chapter3/kurasawe_comparison}
+  \caption{Schematic of a Pareto front for the differences, $\epsilon_1$ and $\epsilon_2$, between predicted and actual values for two arbitrary material properties.  The Pareto surface separates regions which are feasible and unfeasible.  Since points in the unfeasible region represent regions of unobtainable accuracy, the Pareto surface forms a boundary of the best possibilities with tradeoffs occurring on the convex hull. }
+  \label{fig:kurasawe_comparison}
+\end{figure}
+
+\begin{table}[ht]
+	\caption{Computational comparison between gradient methods and simulation methods against the Kurasawe MOO problem}
+	\label{table:kurasawe}
+	\centering
+	 \begin{tabular}{cccc}
+		 \hline
+		 d & CG method & MC method & KDE method \\
+		 \hline
+		 Function Evaluations & 1053132 & 100000 & 10000 \\
+ 		 Pareto points & 22 & 311 & 508 \\
+		 \hline
+	 \end{tabular}
 \end{table}

@@ -73,7 +73,15 @@
 
 % Begin Main Part of Document %
 \begin{document}
-
+%% helps against most Overfull hboxes, from
+%% dctt, Axel Reichert, Message-ID: <a84us0$plqcm$7@ID-30533.news.dfncis.de>
+\tolerance 1414
+\hbadness 1414
+\emergencystretch 1.5em
+\hfuzz 0.3pt
+\widowpenalty=10000
+\vfuzz \hfuzz
+\raggedbottom    
 
  % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
  % Remember - You MUST get a .bst file that matches the Journal in your
