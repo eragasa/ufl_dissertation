@@ -1,168 +1,109 @@
-\chapter{Applications to Covalently Bonded Materials}\label{chapter:pareto_Si}
+\chapter{APPLICATIONS TO NICKEL EMBEDDED ATOM POTENTIALS}
 
-\section{Potential Formalism}
-The Stillinger-Weber potential\cite{stillinger1985_sw} is a combination of a two-body ($\phi_2$) and three-body ($\phi_3$) terms, which is a function of the interatomic distances ($r_{ij}$,$r_{ik}$) from a central atom $i$ and the angle ($\theta_{ijk}$).
+The aim of this chapter is to apply the earlier described methods and tools involved in developing potentials for metallic systems.  The defining difference between metals and nonmetals is the lack of an energy gap between ground and excited states.  Metallic systems are normally characterized as a system existing within a sea of delocalized electrons.
+
+\section{Insights from Quantum Mechancial Techniques}
+
+In the development of the Finnis-Sinclair method, the second-moment tight-binding(3)
+%Ercolessi F, Adams JB. Europhys Lett 1994;26:583.
+%Mishin Y, Farkas D, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 1999;59:3393
+%Baskes MI, Asta M, Srinivasan SG. Philos Mag A 2001;81:991
+%Mishin Y, Mehl MJ, Papaconstantopoulos DA, Voter AF, Kress JD. Phys Rev B 2001;63:224106
+%Mishin Y, Mehl MJ, Papaconstantopoulos DA. Phys Rev B 2002;65:224114
+%Li Y, Siegel DJ, Adams JB, Liu XY. Phys Rev B 2003;67:125101
+%Zope RR, Mishin Y. Phys Rev B 2003;68:024102
+%Mishin Y. Acta Mater 2004;52:1451
+\section{Embedded Atom Model}
+
+For metallic systems, the most common potential forms are those of the Finnis-Sinclar method\cite{finnis1984_fs} and the embedded atom model (EAM) \cite{daw1983_eam,daw1984_eam}.
+Both of these approaches have similar formalisms which combine a pair-potential function and an energy functional dependent upon the electron density contributions from an atoms neighbors with the total energy of the system $V$ being described as
 
 \begin{equation}
-    E = \sum_{i<j}\varepsilon \phi_2 (r_{ij})
-        +\sum_{j<k}\varepsilon \phi_3 (r_{ij},r_{ik},\theta_{ijk})
+  V=\sum_{i<j}\phi_{s_i s_j}(r_{ij})
+	+\sum_{i}F_{s_i}(\bar{\rho}_{i})
 \end{equation}
 
-where
+The first term is the summation over all neighbors of a pair potential of a pair potential energy($\phi_{ij}$) between two atoms, $i$ and $j$, with the chemical species, $s_i$ and $s_j$.
+The second term is the embedding energy ($F_i$) necessary to place the atom $i$ at its position in an electron gas density ($\bar{\phi}_i$) influenced by all the neighbors of the atom.
+In EAM, the host electron density is given by the sum of the contributions $\rho_i$ is represented by the sum of the contributions $\rho_{s_j}(r)$ from all neighboring atoms $j$.
+\begin{equation}
+	\bar{\rho}_i = \sum_{j \neq i} \rho_{s_j}(r_{ij})
+\end{equation}
+
+In the Finnis-Sinclair potential, $F_{s_i}(\bar{\rho})=-\sqrt{\bar{\rho}_i}$
+
+\section{Approaches to EAM Potential Development}
+
+The original formulation of the EAM represented the reepulsion between the atomic cores (nuclei and inner electron shells), represented by a power law or an Born-Mayer type exponential function.  In these cases, the pair potential, $\phi$, is purely repulsive, while the embedding energy $F$ was attractive.
+Later EAM pair potentials used Morse Functions[10,19,20], which has a distinct energy well, while the embedding function in these cases serves as a corrective term.
+
+In either case, the electron density function and the pair potential are given as analytic functions of the radial separation of two atoms $r_{ij}$ with fitted parameters.  The embedding function is sometimes specified as having a specific functional form, or determined by fitting the embedding function to an equation of state such as Rose \emph{et al}[21].
+
+For Nickel, Johnson and Oh\cite{johnson1989_eam_embedded_bjs}, Voter-Chen[19,23], Angelo \emph{et al}[20] have used parametric functional forms, where Ercolessi and Adams[24] and Mishin \emph{25} implemented cubic-spline approaches, which do not specify an analytical functional form.
+
+In early potential development, the parameters are adjusted to match properties such cohesive energy, lattice parameters, elastic properties, and vacancy formation energies.  With additional computational power, stacking fault energies, phase order differences, and surface energies to fit to important relevant environments thought to be important to produce transferrable potentials.
+
+\section{Development of an EAM potential}
+
+Even when a potential has an analytical functional form. EAM potentials are specified in a functional form which is dependent a specific code format which precalculates evaluation of the $\phi(r_{ij})$, $\rho(r_{ij})$, and $F(\bar{\rho})$.  Specifics of this calculation are provided in Appendex \ref{appendix:setfl}.
+
+\subsection{Pair Potential}
+
+\subsection{Density Function}
+
+\subsection{Embedding Function}
+
+\subsubsection{Analytical EAM Embedding Functions}
+
+\subsubsection{Fitting of an Equation of State}
+
+A common approach to determining the equation of state is through an equation of state.
+The bulk modulus $B_0 = -V\left( \frac{\delta P}{\delta V} \right)_{P=0}$
+A variety of potential formalisms have been explored.
+
+
+
+Mishin\cite{mishin2004_eam_NiAl} and Purja Pun and Mishin\cite{purjapun2009_eam_NiAl} use the following density function (\verb|density_mishin2004|):
 
 \begin{equation}
-    \phi_2(r_{ij})=A_{ij} \left[
-        B_{ij}
-        \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{p_{ij}}
-        - \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{q_{ij}}
-    \right]
-    \exp\left(\frac{\sigma_{ij}}{r_{ij}-a_{ij}\sigma_{ij}}\right)
+\label{eq:density_mishin2004}
+	\rho(r) = A_0 (r-r_0)^y e^{-\gamma (r-r_0)}(1+B_0 e^{-\gamma (r-r_0} + C0,
 \end{equation}
+Mishin sets $A_{0}$ so that the equilibrium electron density for the FCC crystal is unity, but can arbitrarily set to any number under allowable transformations of pair potential.
+
+which is mollified by the function $\psi(x) = x^4 / (1+x^4)$, such that the mollified density function is
 
 \begin{equation}
-    \phi_3(r_{ij},r_{ik},\theta_{ijk}) =
-        \lambda_{ijk}
-        \epsilon_{ijk}
-        \left[
-            \cos(\theta_{ijk}) - \cos(\theta_{0,ijk})
-        \right]
-        \exp\left(\frac{\gamma_{ij}\sigma_{ij}}
-                       {r_{ij}-a_{ij}\sigma_{ij}}
-            \right)
-        \exp\left(\frac{\gamma_{ik}\sigma_{ik}}
-                       {r_{ik}-a_{ik}\sigma_{ik}}
-            \right)
+    \bar{\rho}(r) = \psi \left(\frac{r-r_c}{h}\right)\rho(r)
 \end{equation}
 
-The $A$, $B$, $p$, and $q$ parameters only apply to the two-body interactions.
-The $lambda$, $theta_0$ parameters are used only for three-body interactions.
-The $\varepsilon$,$\sigma$, and $a$ parameters shared between the terms.
-
-In order to compare the performance of the potentials developing using this software package, we use the original parameterization of Stillinger and Weber (SW)\cite{stillinger1985_sw}, Vink \emph{et al}(VMWM)\cite{vink2001_sw_Si}, and Pizzagalli \emph{et al}\cite{pizzagalli2013_sw_Si}
-
-\begin{table}[h]
-	\centering
-	\caption{Table of parameters for the reference potentials, and the lower and upper bounds used to define the uniform distribution}
-	\label{table:sw_parameters_ref}
-	\begin{tabular}{c c c c}
-		\hline
-		Parameter & SW & VBWM & PG \\
-		\hline
-		$\epsilon$ & 2.1686 & 1.64833 & 1.04190 \\
-		$\sigma$ &   2.0951 & 2.0951 & 2.128117 \\
-		$a$ &       1.80 & 1.80 & 1.80 \\
-		$\lambda$ & 21.0 & 31.5 & 31.0 \\
-		$\gamma$ & 1.20 & 1.20 & 1.1 \\\
-		$A$ & 7.049556277 & 7.049556277 & 19.0 \\
-		$B$ & 0.602224558 & 0.6022245584 & 0.65 \\
-		$p$ & 4.0 & 4.0 & 3.5 \\
-		$q$ & 0.0 & 0.0 & 0.0 \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\section{Methodology}
-
-Here we repeat the process outlines in Chapter.
-
-For the development of a new potential, we use a subset of the reference values from Pizzagalli \emph{et al} \cite{pizzagalli2013_sw_Si}.
-
-\begin{table}[htbp]
-	\centering
-	\caption{Fitting database for Si, reference values taken from Pizzagalli \emph{et al}\cite{pizzagalli2013_sw_Si}}
-	\label{table:si_fitting_db}
-	\begin{tabular}{c c c}
-		\hline
-		Property & Units & Value \\
-		\hline
-		$E_c$ 		& eV 	& -4.63 \\
-		$a_0$ 		& \AA 	&  5.43 \\
-		$C_{11}$ 	& GPa 	& 166 \\
-		$C_{12}$ 	& GPa 	& 64 \\
-		$C_{44}$ 	& GPa 	& 80 \\
-		$B$ 		& GPa 	& 99 \\
-		$E_v$ 		& eV 	& 3.6 \\
-		\hline
-	\end{tabular}
-\end{table}
-
-\section{Results and Discussion}
-
-\subsection{Analysis of Prediction Performance}
-\subsubsection{Univariate QOI analysis}
-To analyze the performance of our ensemble of potentials, an univariate inspection of the probability density functions for each of the QOIs can provide insight on the performance of the potential formalism.
-Figure \ref{fig:Si_qoi_B} shows the evolution of the predicted values of the bulk modulus for Silicon, $B$.  The typical evolution on how these parameter optimization process evolves an ensemble of potentials.
-These curves are the probability density function, estimate using a kernel density estimate with the Silverman bandwidth estimation.
-In early iterations, the uncertainty reduction in predictions is quite large, but in later iterations the estimates for the Pareto optimal ensemble improves, the probability density function increases around the target value.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=5in]{chapter9/qoi_plots/Si_dia_B}
-	\caption{Evolution of the prediction of the bulk modulus, $B$, for Silicon.}
-	\label{fig:Si_qoi_B}
-\end{figure}
-
-In a scalar optimization approach, the existance of local minima make the identification of the optimal parameterization as local minima becomes a basin of attraction in a gradient descent approach.
-Even when global optimization techniques are used, the potential developer is not aware if the existence of local minima and cannot evaluate the region of these parameterizations, would be an area of interest.
-In contrast, the Pareto optimization approach does not look for a single optimal parameterization but a ensemble of candidate parameters, which product Pareto optimal predctions.
-Instead, these regions become basins of attractions for candidate potentials, which manifests itself in regions of elevated probability.
-for identifying candidate parameters is the presence of multiple regions of parameterization becomes apparent upon visual inspection of the distribution of QOI predctions.
-
-In Figure \ref{fig:Si_qoi_a0}, the probability density plot for the predictions of the lattice parameter, $a_0$ shows a bimodal distribution; the candidate potentials have two peaks which indicate an elevated probability distribution due a high concentration of predictions in those regions.
-Simular to the evolution of predictions for the bulk modulus, initial iterations have a broad proability distribution which indicates a high level of uncertainty, while the later iterations concentrate the predictions.
-In this situation, one peak centered around the target value of $a_0=5.43$ \AA.  The second peak becomes more pronounced in later iterations indicate a second population of potentials which predict a lattice parameter of $~5.0$ \AA.
-While potential developers are interested in getting the lattice parameters correct, the second peaks contains potentials which are not dominated by the potentials in the first peak, and must have better predictions in other material properties.
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=5in]{chapter9/qoi_plots/Si_dia_a0}
-	\caption{Evolution of the the prediction of the lattice parameter, $a_0$, for Si.}
-	\label{fig:Si_qoi_a0}
-\end{figure}
-
-Prediction for the cohesive energy $E_c$ of the system is the material property which shows an atypical distribution; Figure \ref{fig:Si_qoi_E_coh} shows the evolution of those predictions.
-In early iterations ($i=1$ and $i=2$), the probability density functiosn resemble a normal distribution with peaks approximately $-4.0$ eV/\AA, which is significantly higher than the target value of $-4.63$ eV/\AA.
-The candidate parameterizations continue to concentrate their probability density into a smaller region, but does so in an unexpected way.
-The tail end probabilities continue to reduce markedly, but by the fifth iteration ($i=5$), a probability density function takes a significantly different shape.
-Instead of having a peak, there is a region of elevated probability that is relatively constant over the range $-4.5 \text{\AA} < E_c < -3.6 \text{\AA}$.
-At the final iteration ($i=20$), a clear mode develops at $E_c=-4.3$ \AA with a shoulder at $E_c=-3.6$ \AA.
-The distribution of potentials conveys important information to the potential developer; the majority of the potentials predicting a cohesive energy larger than the target values means that choosing to get the cohesive energy corrent likely means markedly lower fidelity in predicting the other target material properties.
-
-\begin{figure}
-	\centering
-	\captionsetup{justification=centering,margin=1in}
-	\includegraphics[width=5in]{chapter9/qoi_plots/Si_dia_E_coh}
-	\caption{Evolution of the prediction of the cohesive energy, $E_c$ for Si.}
-	\label{fig:Si_qoi_E_coh}
-\end{figure}
-\subsubsection{Bivariate QOI objective analysis}
-In moving towards the selection of a potential in a multi-objective space, it is useful examine the problem through a series of bi-objective plots.
-
-\subsubsection{Multivariate QOI objective analysis}
-
-\subsection{Analysis of parameter space}
-\subsection{Selection of Potentials}
-
-Both the Akaike information criterion (AIC)\cite{akaike1998_aic} and the Bayesian information criterion (BIC) \cite{schwarz1978_bic}
-are estimators of the relative quality of statistical models for a given set of data.
-Both of these criteria are penalized for using a more complicated model.  The AIC or BIC of a model is written in the form $[2\log(\hat{L}+kp]$, where $\hat{L}$ is a likelihood function, $p$ is the number of parameters in the model, and $k$ is $2$ for AIC and $\log(n)$ for BIC.
-Given a collection of models for data, bot h the AIC and BIC estimates the quality of each model relative to the other models, providing a mechanism for model selection.
-ddhe Akaike information criterion (AIC) \cite{akaike1998_aic} is an estimator of the relative quality of statistical models for a given set of data.   Given a collections of models for the data, AIC estimates the quality of each model relative to other models, providing a mechanism for model selection.
+\subsection{Pair Potential Functions}
 
 
-\begin{figure}
-	\centering
-	\captionsetup{justification=centering,margin=1in}
-	\includegraphics{chapter9/aic_bic_plot}
-	\caption{Identification of the number of }
-	\label{fig:Si_Ec_a0_aic_bic}
-\end{figure}
+The Ni pair potential takes the form of a generalized LJ potential as in Mishin\cite{mishin2004_eam_NiAl}
 
-\begin{figure}[hbt]
-	\centering
-	\captionsetup{justification=centering,margin=1in}
-	\includegraphics[width=5in]{chapter9/gmm_parallel_plot}
-	\caption{Parallel plot}
-	\label{fig:Si_gmm_parallel_plot_2_qoi}
-\end{figure}
+\begin{equation}
+\label{eq:pair_mishin2004}
+\end{equation}
 
-\subsection{Validation of Potentials}
+\section{Generalized Stacking Fault in FCC}
+The generalized stacking fault in FCC metals describe the the slip of \{111\} planes of the face centered cubic cell in the <112> direction, which represents the energy
+In the early works of Frenkel and Mackenzie describe this motion as a function of the macroscopically measured shear modulus, the Burgers vector and the interplanar spacing of the \{111\} planes.
+
+Rice[3] unstable stacking faults and stable stacking faults
+
+Vitek\cite{vitek1966_gsf,vitek1968_gsf} develops the notion of the generalized stacking fault, which cannot be measured experimental except at a single point knows as the intrinsic stacking fault $\gamma_{ISF}$
+
+Calculation of unstable stacking faults\cite{sun1990_eam_esf,sun1993_eam_esf,farkas1997_eam_usf} was done with EAM potentials, while DFT has been used for the calcualtion of the GSF curve [14,15,16]
+
+Zimmerman takes the approach of creating a simulation of the FCC crystal oriented in the <111> direction, with the basal plane formed by the <112> and the <111> direction.  For the ease of creating the stacking fault, the <112> direction is chosen on the x-axis, and the <110> is chosen for the y-axis, and the z-axis on the <111>.  To create the stacking fault, the lower half remains fixed, while the upperhalf is displaced in the <112> direction in small increments.  Zimmerman uses 6000 atoms consisting of 30 {111} planes.  After lateral displacement, the atoms are allowed to relax laterally (in the <111> direction) except for three {111} planes at the top and bottom.  This method is used in [11-13]
+
+To create a surrogate model, we use the atomic simulation enviornment (ASE)
+
+\subsection{Density Functional Theory}
+
+
+
+\subsection{Molecular Dynamics}
+
+First generate a simulation cell of a representative fcc bulk with \hkl[1 1 2] in the x direction, \hkl[-1 1 0] in the y direction, and \hkl[-1 -1 1] in the z-direction, which was adapted from the script of Spear\cite{spear2012_lammps_gsf}.

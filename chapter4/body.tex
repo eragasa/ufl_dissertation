@@ -1,18 +1,12 @@
 \chapter{PROBABILITY METHODS}
 \label{chapter:probability_methods}
 
+Due to heavy use of simulation methodology involves in this work, a discussion of probability and simulation concepts to clarify terminology and notation.  What follows is a necessarily brief introduction to probability theory in a more rigorous sense, we refer the reader to classic textbooks of Rudin\cite{rudin1987_realanalysis} for a rigorous treatment of measure theory and Chung\cite{chung2001_probabilitytheory} for a measure theory construction of probability.
+
 \section{Probability}
-
 The discussion of the probability methods used in this work starts with the probability construction by Kolmogorov, which builds probability as a measure of sets, but adapted to the particular necessities of probability.
-This section clarifies terminology used throughout as this work, which at some points it is more convenient to talk about continuous probability distribution functions, and at other times using the notation for the probability of sets.
-What follows is a necessarily brief introduction to probability theory in a more rigorous sense, we refer the reader to classic textbooks of Rudin\cite{rudin1987_realanalysis} for a rigorous treatment of measure theory and Chung\cite{chung2001_probabilitytheory} for a measure theory construction of probability.
 
-Let $(\Omega,\mathcal{F},\mathbb{P}$ be a measure space with $\mathbb{P}(\Omega)=1$.  
-Then $(\Omega,\mathcal{F},\mathbb{P}$ is a probability space, with sample space $\Omega$, event space $\mathcal{F}$, and probabilty measure $\mathbb{P}$.
-
-A random variable $X$ is a variable whose possible values are outcomes of a random phenemon.  As a function, a random variable is required to be measurable, which rules out pathological issues.
-
-The underlying foundation of any probability  distribution is the sample space, which is the set of all probable outcomes denoted as $\Omega$.  The realization of an outcome is denoted $\omega \in \Omega$.
+Let $(\Omega,\mathcal{F},\mathbb{P}$ be a measure space with $\mathbb{P}(\Omega)=1$.  Then $(\Omega,\mathcal{F},\mathbb{P}$ is a probability space, with sample space $\Omega$, event space $\mathcal{F}$, and probabilty measure $\mathbb{P}$.  The underlying foundation of any probability  distribution is the sample space, which is the set of all probable outcomes denoted as $\Omega$.  The realization of an outcome is denoted $\omega \in \Omega$.
 
 The events for the measure space are defined in such a way that a probability measure can be assigned.  This allows to assign probability measures on complex events to characterize groups of outcomes.  The collection of all such events is a $\sigma$-algebra $\mathcal{F}$ of subsets of $\Omega$.  Not every subset of the sample space $\Omega$ must be considered an event, the $\sigma$-algebra restricts $\mathcal{F}$ to subsets of $\Omega$ for which $\mathbb{P}$ can be asssigned.
 
@@ -21,12 +15,7 @@ The probability measure, $\mathbb{P}$, a function which maps $\mathbb{P}:\mathca
 The triplet $(\Omega,\mathcal{F},\mathbb{P})$ is the probability measure space.
 
 \subsection{Random Variable}
-A random variable has a probability distribution, which specificies the probability falls in.  Specifically, $X:\Omega\rightarrow\mathbb{R}$.  If a random variable $X:\Omega \rightarrow \mathbb{R}$ is defined on the probability space $(\Omega,\mathcal{F},\mathbb{P})$.  Then the probability of an event $A$ occuring is $\{\omega:X(\omega)=A\}$ which is denoted as $\mathbb{P}(X=A)$.
-
-A probability density function for a random variable $X$ has a density $f_X$, where $f_X$ is a non-negative function:
-\begin{equation}
-  \mathbb{P}[a \leq X \leq b]=\int_{a}^{b}f_{X}(x)dx
-\end{equation}
+A random variable $X$ is a variable whose possible values are outcomes of a random phenemon.  As a function, a random variable is required to be measurable, which rules out pathological issues.  A random variable has a probability distribution, which specificies the probability falls in.  Specifically, $X:\Omega\rightarrow\mathbb{R}$.  If a random variable $X:\Omega \rightarrow \mathbb{R}$ is defined on the probability space $(\Omega,\mathcal{F},\mathbb{P})$.  Then the probability of an event $A$ occuring is $\{\omega:X(\omega)=A\}$ which is denoted as $\mathbb{P}(X=A)$.
 
 \subsection{Probability Density Function}
 
@@ -36,13 +25,37 @@ For example, the uniform distribution
 
 \subsection{Joint Probability Density Function}
 
+\section{Interpretation of Probabilities}
+
+The meaing of probabilities assigned to potential values of a random variable is not of probability theory itself, but instead related to philosophical context over the interpretation of probability.  In most scientific application, the probability interpretation is physical in nature, in which probabilities are objective and an event's probability is the limit of its relative frequency as the number of samples becomes large.  This interpretation supports the statistical needs and inference requirements for experimental scientists since probabilities can be found by a repeatable objective process (e.g. experiments), and are thus devoid of opinion.  Within this context, probabilities are \emph{aleatory}.  Uncertainty is irreducible and inherent to to the physical process observed.
+
+For finite temperature simulation above $0$ K, molecular dynamics simulations allow sampling from themodynamic ensembles.  Although the simulations are replicable since time-integration and the empirical potential are deterministic.  Sampling from the time-series or by randomly assigning initial velocities, allows molecular dynamics to model aleatory uncertainty associated with a model.
+
+Within this work, probabilities are evidentiary and can be assigned to any problem statement, even when no random process is involved, as a way to represent subjective plausibility, or to the degree in which the statement is supported by available evidence.  Evidential probabilities here are considered to be degrees of belief, such as the Laplace interpretation where probabilities are defined in disposition to gamble at certain odds\cite{laplace}.  Here, conherent subjective belief systems follow the laws of probability\cite{ramsey_probability,definetti_probability}.  Here, uncertainty is \emph{epistemic} and is based on current evidence, but is mutable based upon receiving new observations\cite{ramsey2016truth,definetti1980_foresight,jaynes2003_probability}.  This philsophical interpretation is more closely associatiated with Bayesian inference.
+
+In practice, the uncertainty associated with any problem has both \emph{aleatory} and \emph{epistemic} components.  Within this context, the field of uncertainty quantification\cite{oberkamph} in involved the quantitative characterization and reduction of uncertainties in both computational and real world applications.  The difficulty of applying Bayesian frameworks to potential development is the evidence is constrained to the size of the dataset, a parameterized potential likely produced biases due to the inevitable tradeoffs in assigning preferences in predicting various material properties.  Moreover, the inability to define the uncertainities associated target properties frustrates standard VVUQ and Bayesian approaches.
+
+ Neither of these interpretation is particularly useful for our application.  Here, the probability distribution should be interpreted as propensities.  In the propensity theory of probability, is the probability of an event to produce an outcome of a certain kind, or to yield a long-run relative frequency of such an outcome.  Propensities are not relative frequencies, but the purported causes of the observed stable relative frequencies.
+
+Regardless the choice in the interpretation of the meaning of probabilities, the mathematics works the same.
+
+Formally, a continuous random variable is a random variable whose cumulative distribution function (CDF) is continuous everywhere\cite{bertsekas2002_probabilitytheory}.  More practically, random variables of interest can be defined by a probability density function (PDF), which characterize the CDF.
+
+\subsection{Functions of Random Variables}
+A new random variable can be defined by applying a measurable function to the outcomes of a a real-random variable $X$.  That is $Y=f(X)$.  Then the cumulative distribution of $Y$ can be defined as $F_Y(y)$
+A probability density function for a random variable $X$ has a density $f_X$, where $f_X$ is a non-negative function:
+\begin{equation}
+  \mathbb{P}[a \leq X \leq b]=\int_{a}^{b}f_{X}(x)dx
+\end{equation}
+
+
 \subsection{Sampling from a Distribution}
 
 In this section, we discuss the general concept of sampling using the technique of inverse transform sampling as a method for pseudo random number generation.  Inverse sampling samples from a uniform distribution, $u_i=U(0,1)$, and interprets it as a probability, and then returns the largest number x from the domain of the distribution $\mathbb{P}(X)$ such that $\mathbb{P}(-\infty<X<x) \leq u_i$.
 
 Computationally, this method involves computing the CDF and inverting the function, which is known as the quantile function.i
 
-Note that for a discrete distribution, computing the CDF is not in general too difficult: we simply add up the individual probabilities for the various points of the distribution. 
+Note that for a discrete distribution, computing the CDF is not in general too difficult: we simply add up the individual probabilities for the various points of the distribution.
 For a continuous distribution, however, we need to integrate the probability density function (PDF) of the distribution, which is impossible to do analytically for most distributions (including the normal distribution).
 
 
@@ -64,6 +77,28 @@ If $X$ admits a density $f(x)$, then the expected value is defined as
 
 In the previous section, we have discussed
 
+\section{Sampling}
+
+\subsection{Multivariate Sampling}
+\label{section:multivariate_sampling}
+
+\section{Bayesian Inference}
+\label{section:bayes}
+
+Let $\hat{\bm{X}}$ be a sample population with the observed data points, $\hat{x}_i \in \hat{\bm{X}}$.
+
+The \emph{prior distribution} is the probability distribution before any data is observed.  If $\bm{\theta}$ is a vector of parameters for the distribution of $X$.   Since this distribution is dependent upon \emph{a priori} information, the prior distribution might not be easily determined.  In this case, a non-informative distribution can be used to as an initial estimate, which is updated based upon newer observations.
+
+The \emph{sampling distribution} is the distribution of the observed data conditional on its parameters, $f(\bm{X})$
+
+\subsection{Uninformative Distributions}
+\label{section:bayes_prior}
+A prior proabability distribution of a certain  quantity is the probability distribution that would express one's beliefs about this quantity before some evidence is taken into consideration.
+
+Since the posterior density $f_{post}$ is proportional to $L(x)f_{prior}$, the maximimum likelihood will match the maximum posterior if the maximum of the likelihood is a maximum of the prior distribution.  Since a uniform prior means that the prior is constant, we get that the posterior is proportional to the likelihood, so they have the same maxima.
+
+An in-depth discussion about the choice of uniform priors are
+
 \subsection{Parametric Estimation}
 
 
@@ -74,7 +109,7 @@ In the previous section, we have discussed
 \subsection{Kernel Density Estimation}
 
 \subsubsection{}
-Let $(x_1,x_2,...,x_n)$ be a univariate and identically distributed sample drawn from some distribution with an unknown density $f$.  
+Let $(x_1,x_2,...,x_n)$ be a univariate and identically distributed sample drawn from some distribution with an unknown density $f$.
 The goal is to estimate the shape of this function $f$.  The kernel density estimator is
 \begin{equation}
   \hat{f}_h(x)=\frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)
@@ -99,7 +134,12 @@ The chosen bandwith is important because it has a strong influenjce on the bound
 \emph{Silverman Method}
 
 \emph{Chiu Method}
+
 \section{Bayesian Estimation}
+The essential difference between Bayesian and frequentist approaches to probability is how probability is used.  In a Frequentist arppoach, probability is used to model processes from observed samples.  In this case, all uncertainty is treated as \emph{aleatory}.  Aleatory uncertainty is irreducible, in that there will always be variability in the underlying variables.  For example, flipping a coin and predicting "heads" or "tails" is aleatory uncertainty.  The uncertainty we are observing is random, it is part of the natural process of what we are observing.
+
+Bayesian approaches allows modelling not only of \emph{aleatory} uncertainty, but \emph{epistemic} uncertainty.  Epistemic uncertainty is reflects the limited knowledge we have on a system.   This type of uncertainty of reducible.
+
 
 \section{Sampling}
 

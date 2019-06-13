@@ -1,57 +1,76 @@
 \chapter{AN EVOLUTIONARY ALGORITHM FOR GENERATING PARETO EFFICIENT POTENTIALS}
+\label{chapter:methodology}
 
 The purpose of this chapter to introduce a cost-efficient algorithm to determine the appropriate trade-offs between concurrent minimization problems associated with several critera.
 
 Our algorthm has the following goals: (1) to identify the strengths and weaknesses of solution of the Pareto optimal solutions, (2) to generate estimates of the Pareto optimal front in a serious of iteratively better approximations, and (3) to describe the candidate parameterizations through the use of a distribution function and use Monte Carlo sampling, but updating the distribution by keeping the Pareto dominated points.
 
+In the development of this evolutionary algorithm, some of the techniques used in genetic algorithims and evolutionary algorithms are consciously not implemented.  In GA techniques, the population samples are fixed and evolve based upon criteria, which in our case might be spurious.  The end state of this algorithm is identify probability distributions which produce Pareto optimal results, which could be used follow up efforts to integrate this algorithm into existing and well-defined UQ methodologies.
+
+\begin{figure}[ht]
+	\centering
+  \includegraphics[width=0.8\textwidth]{chapter5/fig_pareto_schematic}
+  \caption{Schematic of the approach taken to potential development.}
+  \label{fig:pareto_schematic}
+\end{figure}
 
 
-Figure 1 shows a schematic of the approach to the development of potentials outlined here. There are essentially four steps.
+Figure \ref{fig:pareto_schematic} shows a schematic of the approach to the development of potentials outlined here. There are essentially four steps.
 (i) The identification of structures, properties and their values to be used in the potential fitting. The specific values can be taken from experiment, from higher fidelity calculation methods such as quantum chemical or density functional theory (DFT) calculations, or a combination thereof. Our approach in this step is similar to standard potential development approaches.
  (ii) The use of ideas from Pareto optimization to develop an ensemble of rational potentials. The term ‘rational’ will be discussed in detail below, but involves the use of a simple algorithm to identify potential parameterizations that make sense to consider further. This is the central idea of our approach and is very different from a conventional potential fitting approach
 (iii) The analysis of the ensemble of rational potentials to identify features and clustering in both the high-dimensional parameter space and in the high-dimensional space of errors in the predictions of the properties.
 (iv) The down-selection and testing of a few parameterizations or a single parameterization of the potential for use in further simulations.
-We focus mainly on the second of these steps: the development of an ensemble of rational potentials. We do, however, briefly discuss the other three parts of the process. For concreteness, we illustrate their use in the development of potentials for MgO, a simple and archetype ionic material.
+We focus mainly on the second of these steps: the development of an ensemble of rational potentials. We do, however, briefly discuss the other three parts of the process.
 
 
-\section{Constraints on the Optimization}
+\section{Incorporation of Prior Information}
 
-In implementation of constraints, it is computationally efficient apply the constraints when the parameter is estimated from the probability distribution function.
+In taking a new approach to potential optimization, we recall the fundamental challenge, which is the multi-objective optimization problem of minimizing the errors in a large number, $N_Q$, of QOIs, in this case the absolute difference between the predicted material properties, $\bm{q}$, and the target values, $q_i$.  If  $\hat{V}(\bm{\theta})$ is an interatomic potential parameterized by the vector $\bm{\theta} = (\theta_1,...,\theta_{N_P})$ with $N_P$ parameters, then predicted material properties becomes $\hat{\bm{q}}(\bm{\theta}) = (\hat{q}_1,...\hat{q}_{N_Q})$.  Using the absolute loss function for our choice of objective functions, then the problem becomes the minimization of  $\bm{L}(\bm{\theta}) = (|\hat{q}_1-q_1|,...|\hat{q}_{N_Q}-q_{N_Q}|)$, simulatenously.  The optimization problem we thus face is minimizing each objective function in $N_Q$ target properties described by a fixed functional form with $N_P$ parameters.  That is, both error space and parameter space typically have high dimension.
 
-\emph{Vector Evaluated Genetic Algorithm (VEGA)}.  Schaffer proposed VEGA for finding multiple solutions to multiobjective problems.  He created VEGA to find and maintain multiple classification rules in a set covering problem.  VEGA tried to achieve this goal by selecting a fraction of the next generation using one of the objective functions.
 
-Fitness Sharing encourage the search in unexplored section of a Pareto front by artificially thinning solutions in densely populated area.  To achieve this goal, densely populated areas are identified and a penalty method is used to penalize the solutions located in such areas.  This approach was recommended by Goldberg and Richardson\cite{goldberg1987genetic} and used by Fonseca and Fleming\cite{fonseca1993multiobjective} to penalize clustered solutions.
-\begin{equation}
-    dz(\bm{x}_1,\bm{x}_2)
-    = \sqrt{\sum_{k=1}^{K}  \left(\frac{z_k(\bm{x_1})-z_k(\bm{x_2})}
-                                       {z_{k}^{max}-z_{k}^{min}}
-                            \right)^{2}
-      }
-\end{equation}
+\subsection{Prior distribution}
 
-based on these distances, calculate a niche count for each solution $\bm{x}\in\bm{X}$ as
-\begin{equation}
-  nc(\bm{x}_1,t)=\sum_{\bm{x}_2\in\bm{X},r(\bm{x}_2,t)=r(\bm{x}_1,t)}
-      \max\left\{ \frac{\sigma_{share}-dz(\bm{x}_1,\bm{x}_2)}
-                       {\sigma_{share}},0
-          \right\}
-\end{equation}
-where $\sigma_{share}$ is the niche size by defining a neighborhood of solutions in the objective space.  Solutions in the same neighborhood contribute to each other's nich count.  Therefore, a solution in a crowded neighborhood will have a higher niche count, reducing the probability of selecting that solution from being culled from the survivor set.
+For existing formalisms, one can incorporate parameter information from existing potentials.  For each parameter, define an uppper and lower bound to define the uniform distribution.  Having a uniform prior means that the probability density is constant over its support defined as $\theta_{i}^{\text{min}} \leq \theta_i \leq \theta_{i}^{\text{max}}.$  A uniform prior doesn't favor any particular value of $\theta_i$, since it supposes that all values in the range are equally likely.
 
-\section{Visualization}
-This problem is dealt with in discussions about visualization and and analysis of the large amounts of data generated from a posteriori approaches to solving these problems.
-Edgeworth 1881
-Koopmans 1951
-Kuhn Tucker 1951
-Pareto 1896, 1906
-\section{Treatment}
+In the case, where the initial parametric uncertainty cannot be bound.  The Jefferies prior is another approach for representing ignorance in priors for continuous variables.
+Strictly speaking, the use of uniform priors are optimal and we logically can show that our prior information for $\bm{theta}$ must be identical over it's support.  However, complete ignorance about the probability for a parameter may not be true.
+
+Based upon application, different probability distribution functions to represent prior knowledge.  For example, a known potential
+
+\subsection{Parametric Constraints}
+
+As demonstrated in \ref{ch:potential_development}, scalarization techniques to implement inequality and equality constraints requires defining the Lagrangian for the constrained optimization problem, which complicates the implementation process.
+
+simply defining upper and lower bounds for each parameter, and sampling from a uniform distribution between these bounds; such a distribution is known as an uninformed, or vague, distribution.  In doing this, we may be able to apply some constraints, such as the values of certain parameters are strictly positive.
+
+\subsection{Qoi Constraints}
+
+\section{Probabilistic Optimization}
+
+\subsection{Inadeuqacy of a Bayesian Appproach}
+In a Bayesian approach, the Bayes estimator is an estimator that minimizes the posterior expected value of a loss function, (i.e. the posterior expected losss).
+
+\subsection{Sampling distribution}
+The process described here combines Popper's propensity interpretation of probability with Bayesian concepts in which to refine our distribution function.  The process described here uses many concepts and notation from Bayesian inference, covered in section \ref{section:bayes}, but is adapted for our process here.  Popper noted that the outcome of a physical experiment is produced by a certain set of "generating conditions". When an experiment is repeated, we really perform another experiment with a similar set of generating conditions. To say that a set of generating conditions has propensity $p$ of producing the outcome $E$ means that those exact conditions, if repeated indefinitely, would produce an outcome sequence in which $E$ occurred with limiting relative frequency $p$. For Popper then, a deterministic experiment would have propensity $0$ or $1$ for each outcome, since those generating conditions would have the same outcome on each trial. In other words, non-trivial propensities (those that differ from $0$ and $1$) only exist for genuinely indeterministic experiments.
+
+Here the prior distribution function are the propensities associated that a particular parameterization is Pareto optimal.  In the deterministic approach outlined \ref{ch:potential_development}, in
+  Bayesian optimization is a scalar minimization of an objective function, such as as the cost function, $C(\bm{theta})$ defined in Chapter \ref{ch:potential_development} .
+
+
+In our case, the prior distribution are generating set of conditions, which defines
+
+In scalar optimization problems, random sampling are ubiquituous for global minimization, including techniques such as simulated annealing[20], genetic algorithms[21], tabu search [22]–[24], and multi start[25].  Although these approaches require a large number of samples, they do not require a priori knowledge of the objective function to achieve the global mimima..  Here we take the approach of generating a large number of parameter sets through random sampling of the parameter space, and algorithmically determining if these candidate potentials are optimal in a multi-objective optimization sense.  The algorithmic approach we take is centered on the idea of Pareto optimality.
+
+The sampling distribution, which is defined as the likelihood in Bayesian literature, is the distribution of the material properties conditional on the parameters, i.e. $p(\hat{\bm{q}}|\\bm{\theta})$.  Instead of analytically determining $p(\bm{\hat{q}}|\bm{\theta})$, we sample from the prior distribution of $\bm{\theta}$.  To determine the sampling distribution, treat $\bm{\theta}$ as the random variable $\bm{\Theta}$   Since $\bm{q}(\bm{\theta})$ is non-analytic, a representative sample is constructed from which the probability distribution can be estimated.  Ini
+In a sampling process, constraints on the parameter space are incorporated into the sampling procedure, by rejecting
+
+Accounting for equality constraints requires modification of the sampling procedure.  A typical technique used in simulation methdology comes from drawing random variates from a standard multi-variate normal distribution, as discussed in \ref{section:multivariate_sampling}  By definition, an equality constraint imposes a correlation coefficient of unity to an off-diagonal term, which breaks Cholesky decomposition of the covariance matrix.
 
 Our treatment of the mapping of the empirical potential is treated as a bijective mapping into two measure spaces.
 
 Let us define parameter space with the probability measure space $(\Theta,\mathcal{F}(\Theta),\mathbb{P})$.
 
 Then we define the error space of the structure property relationships with the probability measure space $(\mathcal{E},\mathcal{F}(\mathcal{E})),\mathbb{Q})$.
-
 
 To solve forward problems, the parameters of a potential, $\bm{\theta}$ is known \emph{a priori}, are used in conjunction of a set of atomic arrangements in a simulation cell with periodic boundary conditions to predict $n$ material properties, $\bm{q} = (q_1,...q_n)$.  These predictions depend not only on the atomic arrangements but also on the parameterization, denoted
 $\bm{\hat{q}}(\bm{\theta}) =
@@ -79,7 +98,11 @@ It is clear that the selection of $\bm{w}$ uniquely determines $\bm{\theta}^*$. 
 
 Since analytical solutions are intractable, numerical solutions are achieved by selecting an initial parameterization, $\bm{\theta}_0$, and using derivative-based optimization techniques to minimize the cost function.  If the $C(\bm{\theta})$
 
+\subsection{Partitioning}
 
+As the number of free parameters increase, the size of the sampling space increases exponentially.
+
+Partitioning is the task of decomposing the parameterization problem into subproblems.  Decomposition is performed to reduce the problem size.  This concept is common in the the development of multi-component potentials.   For example, in alloy potentials a potential parameterization can be used in  As identified by Martinez \emph{et al.},
 
 \begin{equation}
     \Theta = \Theta_0 \supset \Theta_1 \supset \hdots \supset \Theta_k = \Theta^{(p)}
@@ -93,41 +116,6 @@ which produces due to Eq %\ref{eqn:def_Q} and \ref{eqn:def_E}
 
 for $k < \infty$ iterations.  Since $\Theta \subset \mathbb{R}^p$ and $\mathcal{E} \subset \mathbb{R}^n$, we provide the following approach which uses Monte Carlo simulation in an approach which is inspired by Bayesian inference, although this approach does not use a Bayesian updating approach.  The goal of this approach is to produce an ensemble of $\bm{\theta}\in \Theta^{(p)}$ and describe this ensemble as a probability distribution which could be used as a starting point in uncertainty quantification propagation.
 
-\section{Comparison to Other Methods}
-
-In the case, where the Pareto front is continuous and convex.  Gradient-based optimization can be used efficiently.
-
-Gradient based optimizers are efficient at finding local minima for high dimensional, non-linearly constrained, convex problems; however, gradient methods have problems dealing with noisy or discontinuous functions, and are not designed to handle multi-modal problems or discrete or mixed descrete-continuous design variables.  In these cases, there are different options available to the potential developer including: multiple restarts of the gradient based optimizer for different initial conditions, which requires multiple guesses at initial starting parameterizations, $\bm{\theta}_0$; systematically searching the design space by varying the weighting vector $\bm{w}$, and using a gradient free minimizer.
-
-The use of the gradient minimization methods used in
-Additionally, in order to understand the tradeoffs in parameterization, it necessary to vary the vector of weights.
-
-To demonstrate the problem with gradient based approaches,
-To demonstrate the problem with the cost function approach, the Kurasawe multi-objective optimization problem\cite{kurasawe1991_pareto}.
-When we cast the potential optimization problem from a single objective optimization problem to a multiple objective optimization problem, the problem becomes more difficult.  In order to explore the optimal parameterization space,
-However, in previous literature genetic algorithms are used to optimize potentials.
-
-Our algorthm has the following goals: (1) to identify the strengths and weaknesses of solution of the Pareto optimal solutions, (2) to generate estimates of the Pareto optimal front in a serious of iteratively better approximations, and (3) to describe the candidate parameterizations through the use of a distribution function and use MCMC sampling, but updating the distribution using culling of the Pareto distribution.
-
-\section{Genetic Algorithm}
-
-Genetic algorithms are a popular meta-heuristic that is particularly well-suited for this class of problems.  Traditional GA are customized to accomodate multi-objective problems by using specialized fitness functions and introducing methods to promote solution diversity.  The use of evolutionary algorithms in the development of classical potentials is not new, and numerous optimization approaches such as gradient-based approaches, genetic algorithms, and neural networks have been developed.
-Genetic algorithms
-
-\begin{itemize}
-\item  Set $t=1$.  Randomly generate N soluitions to form the first population, $P_1$.  Evaluate the fitness of solutions in $P_1$
-\item Crossover
-\item Mutation
-\item Fitness assessment
-\item Selection.  Select $N$ solution from $Q_t$ based on their fitness and copy them to $P_{t+1}$
-\item If the stopping criterion is satisfied, terminate the search and return to the current population, else set $t=t+1$ and go to step 2.
-\end{itemize}
-The concept of genetic algorithms were inspired by evolutionist theories explaining the origin of species\cite{holland1992_ga}.  In nature, weak and unfit speicies within their environment are faced with extinction by natural selection, while strong ones pass on their genes to future generations through reproduction.  In the long run, species carrying the correct combinatioon in their
-    genes become dominant in their population.
-
-In GA terminology, a solution vector $\bm{x}\in\bm{X}$ is called an individual or a chromosome.  Chromosomes are made of descrete units called genes.  Each gene controls on or more features of the chromosome.  Normally, a chromosome corresponds to a unique solution $\bm{x}$ in the solution space.  This requires a mapping mechanism between the solution space and chromosome.  GA operates with a collection of chromosomes, called a population.  As the search evolves, the poulation includes fitter and fitter positions, eventually it converges, meaning that it is dominated by a single solution.  Two operators are defined crossover and mutation.  In the crossover operator, two parent solutions are combined togehter to form offspring.  The mutation operator introduces random changes into the population.
-
-The first multi-objective GA, called vector evaluated GA (or VEGA), was proposed by Schaffer [5]. Afterwards, several multi-objective evolutionary algorithms were developed including Multi-objective Genetic Algorithm (MOGA) [6], Niched Pareto Genetic Algorithm (NPGA) [7], Weight-based Genetic Algorithm (WBGA) [8], Random Weighted Genetic Algorithm (RWGA)[9], Nondominated Sorting Genetic Algorithm (NSGA) [10], Strength Pareto Evolutionary Algorithm (SPEA) [11], improved SPEA (SPEA2) [12], Pareto-Archived Evolution Strategy (PAES) [13], Pareto Envelope-based Selection Algorithm (PESA) [14], Region-based Selection in Evolutionary Multiobjective Optimization (PESA-II) [15], Fast Non-dominated Sorting Genetic Algorithm (NSGA-II) [16], Multi-objective Evolutionary Algorithm (MEA) [17], Micro-GA [18], Rank-Density Based Genetic Algorithm (RDGA) [19], and Dynamic Multi-objective Evolutionary Algorithm (DMOEA) [20]. Note that although there are many variations of multi-objective GA in the literature, these cited GA are well-known and credible algorithms that have been used in many applications and their performances were tested in several comparative studies.
 \section{The Problem}
 
 Using the construction of an empirical potential as outlined in Chapter 2, we define an empirical interatomic potential, $\hat{V}$, which approximates the potential energy surface, $V$.
@@ -248,3 +236,60 @@ Since early iterations are more likely to cause changes in the set approximating
 However, it becomes increasingly more difficult to identify further Pareto-optimal solutions later in the simulation.
 As a result, the distribution becomes more stationary.
 However, since this integral is evaluated by Monte Carlo estimation, the KDE estimate of the distributions from the sample population will have small divergences betweem, $\rho_i(x)$ and $\rho_{i-1}(x)$.
+
+\section{Stopping Conditions}
+
+There is nothing in probabilty theory which could telll us where to to determine optimal stopping criteria, e.g. whether to accept the current population of parameters or continue with the process.
+
+\section{Selection of Potentials}
+
+The situation of appraising inference vs decision arises, when we start applying probability theory to our problem.  One can think about our methdology as an optimization problem, which maximizes the distribution of $\bm{\Theta}^*$, by systematically reducing the epistemic uncertainty of our probability distribution.  Here, probability theory determines the state of knowledge about the distribution of parameters which produces Pareto optimal results; it does not tell the potential developer which parameter is the best, or even which region of parameterizations are the best.
+
+This methdology can only solve the inference problem; it can give us only a probability distribution which represents the final state of knowledge with all available prior information and data taken into account.  As elucidated in the chapter with application to specific systems, the job is not ended at this point.  An essential problem which is still missing in this design of this methodology is a set of rules which converts the final probability assignment into a definative selection of potentials.
+
+
+
+\section{Constraints on the Optimization}
+
+In implementation of constraints, it is computationally efficient apply the constraints when the parameter is estimated from the probability distribution function.
+
+\emph{Vector Evaluated Genetic Algorithm (VEGA)}.  Schaffer proposed VEGA for finding multiple solutions to multiobjective problems.  He created VEGA to find and maintain multiple classification rules in a set covering problem.  VEGA tried to achieve this goal by selecting a fraction of the next generation using one of the objective functions.
+
+Fitness Sharing encourage the search in unexplored section of a Pareto front by artificially thinning solutions in densely populated area.  To achieve this goal, densely populated areas are identified and a penalty method is used to penalize the solutions located in such areas.  This approach was recommended by Goldberg and Richardson\cite{goldberg1987genetic} and used by Fonseca and Fleming\cite{fonseca1993multiobjective} to penalize clustered solutions.
+\begin{equation}
+    dz(\bm{x}_1,\bm{x}_2)
+    = \sqrt{\sum_{k=1}^{K}  \left(\frac{z_k(\bm{x_1})-z_k(\bm{x_2})}
+                                       {z_{k}^{max}-z_{k}^{min}}
+                            \right)^{2}
+      }
+\end{equation}
+
+based on these distances, calculate a niche count for each solution $\bm{x}\in\bm{X}$ as
+\begin{equation}
+  nc(\bm{x}_1,t)=\sum_{\bm{x}_2\in\bm{X},r(\bm{x}_2,t)=r(\bm{x}_1,t)}
+      \max\left\{ \frac{\sigma_{share}-dz(\bm{x}_1,\bm{x}_2)}
+                       {\sigma_{share}},0
+          \right\}
+\end{equation}
+where $\sigma_{share}$ is the niche size by defining a neighborhood of solutions in the objective space.  Solutions in the same neighborhood contribute to each other's nich count.  Therefore, a solution in a crowded neighborhood will have a higher niche count, reducing the probability of selecting that solution from being culled from the survivor set.
+
+
+\section{Genetic Algorithm}
+
+Genetic algorithms are a popular meta-heuristic that is particularly well-suited for this class of problems.  Traditional GA are customized to accomodate multi-objective problems by using specialized fitness functions and introducing methods to promote solution diversity.  The use of evolutionary algorithms in the development of classical potentials is not new, and numerous optimization approaches such as gradient-based approaches, genetic algorithms, and neural networks have been developed.
+Genetic algorithms
+
+\begin{itemize}
+\item  Set $t=1$.  Randomly generate N soluitions to form the first population, $P_1$.  Evaluate the fitness of solutions in $P_1$
+\item Crossover
+\item Mutation
+\item Fitness assessment
+\item Selection.  Select $N$ solution from $Q_t$ based on their fitness and copy them to $P_{t+1}$
+\item If the stopping criterion is satisfied, terminate the search and return to the current population, else set $t=t+1$ and go to step 2.
+\end{itemize}
+The concept of genetic algorithms were inspired by evolutionist theories explaining the origin of species\cite{holland1992_ga}.  In nature, weak and unfit speicies within their environment are faced with extinction by natural selection, while strong ones pass on their genes to future generations through reproduction.  In the long run, species carrying the correct combinatioon in their
+    genes become dominant in their population.
+
+In GA terminology, a solution vector $\bm{x}\in\bm{X}$ is called an individual or a chromosome.  Chromosomes are made of descrete units called genes.  Each gene controls on or more features of the chromosome.  Normally, a chromosome corresponds to a unique solution $\bm{x}$ in the solution space.  This requires a mapping mechanism between the solution space and chromosome.  GA operates with a collection of chromosomes, called a population.  As the search evolves, the poulation includes fitter and fitter positions, eventually it converges, meaning that it is dominated by a single solution.  Two operators are defined crossover and mutation.  In the crossover operator, two parent solutions are combined togehter to form offspring.  The mutation operator introduces random changes into the population.
+
+The first multi-objective GA, called vector evaluated GA (or VEGA), was proposed by Schaffer [5]. Afterwards, several multi-objective evolutionary algorithms were developed including Multi-objective Genetic Algorithm (MOGA) [6], Niched Pareto Genetic Algorithm (NPGA) [7], Weight-based Genetic Algorithm (WBGA) [8], Random Weighted Genetic Algorithm (RWGA)[9], Nondominated Sorting Genetic Algorithm (NSGA) [10], Strength Pareto Evolutionary Algorithm (SPEA) [11], improved SPEA (SPEA2) [12], Pareto-Archived Evolution Strategy (PAES) [13], Pareto Envelope-based Selection Algorithm (PESA) [14], Region-based Selection in Evolutionary Multiobjective Optimization (PESA-II) [15], Fast Non-dominated Sorting Genetic Algorithm (NSGA-II) [16], Multi-objective Evolutionary Algorithm (MEA) [17], Micro-GA [18], Rank-Density Based Genetic Algorithm (RDGA) [19], and Dynamic Multi-objective Evolutionary Algorithm (DMOEA) [20]. Note that although there are many variations of multi-objective GA in the literature, these cited GA are well-known and credible algorithms that have been used in many applications and their performances were tested in several comparative studies.
