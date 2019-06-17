@@ -14,16 +14,13 @@ The probability measure, $\mathbb{P}$, a function which maps $\mathbb{P}:\mathca
 
 The triplet $(\Omega,\mathcal{F},\mathbb{P})$ is the probability measure space.
 
-\subsection{Random Variable}
-A random variable $X$ is a variable whose possible values are outcomes of a random phenemon.  As a function, a random variable is required to be measurable, which rules out pathological issues.  A random variable has a probability distribution, which specificies the probability falls in.  Specifically, $X:\Omega\rightarrow\mathbb{R}$.  If a random variable $X:\Omega \rightarrow \mathbb{R}$ is defined on the probability space $(\Omega,\mathcal{F},\mathbb{P})$.  Then the probability of an event $A$ occuring is $\{\omega:X(\omega)=A\}$ which is denoted as $\mathbb{P}(X=A)$.
+\subsection{Probability Measures for Continuous Variables}
 
-\subsection{Probability Density Function}
+\subsubsection{PDF}
 
-For example, the uniform distribution
+\subsubsection{CDF}
 
-\subsection{Probability Density Function}
-
-\subsection{Joint Probability Density Function}
+\subsubsection{JPDF}
 
 \section{Interpretation of Probabilities}
 
@@ -41,25 +38,11 @@ Regardless the choice in the interpretation of the meaning of probabilities, the
 
 Formally, a continuous random variable is a random variable whose cumulative distribution function (CDF) is continuous everywhere\cite{bertsekas2002_probabilitytheory}.  More practically, random variables of interest can be defined by a probability density function (PDF), which characterize the CDF.
 
-\subsection{Functions of Random Variables}
-A new random variable can be defined by applying a measurable function to the outcomes of a a real-random variable $X$.  That is $Y=f(X)$.  Then the cumulative distribution of $Y$ can be defined as $F_Y(y)$
-A probability density function for a random variable $X$ has a density $f_X$, where $f_X$ is a non-negative function:
-\begin{equation}
-  \mathbb{P}[a \leq X \leq b]=\int_{a}^{b}f_{X}(x)dx
-\end{equation}
+\section{Random Variable}
+A random variable $X$ is a variable whose possible values are outcomes of a random phenemon.  As a function, a random variable is required to be measurable, which rules out pathological issues.  A random variable has a probability distribution, which specificies the probability falls in.  Specifically, $X:\Omega\rightarrow\mathbb{R}$.  If a random variable $X:\Omega \rightarrow \mathbb{R}$ is defined on the probability space $(\Omega,\mathcal{F},\mathbb{P})$.  Then the probability of an event $A$ occuring is $\{\omega:X(\omega)=A\}$ which is denoted as $\mathbb{P}(X=A)$.
 
+\subsection{Expectation of a Random Variable}
 
-\subsection{Sampling from a Distribution}
-
-In this section, we discuss the general concept of sampling using the technique of inverse transform sampling as a method for pseudo random number generation.  Inverse sampling samples from a uniform distribution, $u_i=U(0,1)$, and interprets it as a probability, and then returns the largest number x from the domain of the distribution $\mathbb{P}(X)$ such that $\mathbb{P}(-\infty<X<x) \leq u_i$.
-
-Computationally, this method involves computing the CDF and inverting the function, which is known as the quantile function.i
-
-Note that for a discrete distribution, computing the CDF is not in general too difficult: we simply add up the individual probabilities for the various points of the distribution.
-For a continuous distribution, however, we need to integrate the probability density function (PDF) of the distribution, which is impossible to do analytically for most distributions (including the normal distribution).
-
-
-\subsection{Expectation}
 If $X$ is a random variable with a finite number of outcomes, $\{x_1,x_2,...,x_k\}$ occurs with the probabilities $\{p_1,p_2,...p_k\}$.  Then the expectation of $X$ is defined as
 \begin{equation}
   \mathbb{E}[X]=\sum_{i=1}^{k}x_i p_i
@@ -73,16 +56,32 @@ If $X$ admits a density $f(x)$, then the expected value is defined as
   \mathbb{E}[X]=\int_{\mathbb{R}}x f_{X}(x) dx
 \end{equation}
 
-\section{Estimation of a Distribution}
+\subsection{Functions of Random Variables}
+A new random variable can be defined by applying a measurable function to the outcomes of a a real-random variable $X$.  That is $Y=f(X)$.  Then the cumulative distribution of $Y$ can be defined as $F_Y(y)$
+A probability density function for a random variable $X$ has a density $f_X$, where $f_X$ is a non-negative function:
+\begin{equation}
+  \mathbb{P}[a \leq X \leq b]=\int_{a}^{b}f_{X}(x)dx
+\end{equation}
 
-In the previous section, we have discussed
+\subsection{Sampling a Random Variable}
 
-\section{Sampling}
+In this section, we discuss the general concept of sampling using the technique of inverse transform sampling as a method for pseudo random number generation.  Inverse sampling samples from a uniform distribution, $u_i=U(0,1)$, and interprets it as a probability, and then returns the largest number x from the domain of the distribution $\mathbb{P}(X)$ such that $\mathbb{P}(-\infty<X<x) \leq u_i$.
+
+Computationally, this method involves computing the CDF and inverting the function, which is known as the quantile function.
+
+Note that for a discrete distribution, computing the CDF is not in general too difficult: we simply add up the individual probabilities for the various points of the distribution.  For a continuous distribution, however, we need to integrate the probability density function (PDF) of the distribution, which is impossible to do analytically for most distributions (including the normal distribution).
 
 \subsection{Multivariate Sampling}
 \label{section:multivariate_sampling}
 
-\section{Bayesian Inference}
+\section{Estimating Probability Distribution Functions}
+
+\subsection{Parameteric Distributions}
+
+\subsection{Non-parameteric Distributions}
+
+
+\subsection{Bayesian Inference}
 \label{section:bayes}
 
 Let $\hat{\bm{X}}$ be a sample population with the observed data points, $\hat{x}_i \in \hat{\bm{X}}$.
@@ -99,15 +98,34 @@ Since the posterior density $f_{post}$ is proportional to $L(x)f_{prior}$, the m
 
 An in-depth discussion about the choice of uniform priors are
 
+\section{Density Estimation}
+
 \subsection{Parametric Estimation}
 
+If $X$ is a random variable, then a parametric model for the probability distribution function of $x \in X$ implements are restricted set of functions, $f(x;w)$, where $w$ are the parameters of the probability distribution function $p(x)=f(x;w)$.
 
+This work only concerns itself with with two parametric probability distribution functions: the uniform distribution and the multivariate distribution function.  The uniform distribution is defined by the lower bound $a$ and the upper bound $b$ of the probability distribution function, which is constrained by its use to define an uninformative prior distribution to incorporate \emph{a priori} information.
+
+Maximum Likelihood Estimator
+
+The second probability distribution is the Normal distribution, where the MLE estimators for is the meand and variance.
+
+The advantages of parameteric distributions are (1) dependence of the function $f$ on a few parameters makes density estimation from well-known MLE estimation straightfoward, (2) the models are compact which makes them memory efficient and less demanding computationally, (3) since parametric distributiosn make strong \emph{a priori} assumptions about the underlying distributions, they deliver excellent results if these assumptions are not violated.  The strong \emph{a priori} assumptions makes it difficult to express ignorance when an inappropriate model is chosen to model data which violates those assumptions.
 
 \subsection{Non-parametric Estimation}
- Fusce eget tempus lectus, non porttitor tellus. Aliquam molestie sed urna quis convallis. Aenean nibh eros, aliquam non eros in, tempus lacinia justo. In magna sapien, blandit a faucibus ac, scelerisque nec purus. Praesent fermentum felis nec massa interdum, vel dapibus mi luctus. Cras id fringilla mauris. Ut molestie eros mi, ut hendrerit nulla tempor et. Pellentesque tortor quam, mattis a scelerisque nec, euismod et odio. Mauris rhoncus metus sit amet risus mattis, eu mattis sem interdum.
+Non-parametric methods on the other hand make only weak, general prior assumptions about the data, such as smoothness, $f(x;w)$ is constructed over the the training data $X$, the construction involves no or few parameters to be either estimated or "learned".
+
+few or no parameters to fit => “learning” is easy
+very flexible: can fit (almost) any data well
+requires virtually no prior knowledge
+
+expensive in memory and CPU (must store all data)
+not much opportunity to incorporate prior knowledge
+
+Expectation Maximization
 
 \subsection{Kernel Density Estimation}
-
+%% https://nic.schraudolph.org/teach/ml03/ML_Class4.pdf
 \subsubsection{}
 Let $(x_1,x_2,...,x_n)$ be a univariate and identically distributed sample drawn from some distribution with an unknown density $f$.
 The goal is to estimate the shape of this function $f$.  The kernel density estimator is
@@ -135,11 +153,18 @@ The chosen bandwith is important because it has a strong influenjce on the bound
 
 \emph{Chiu Method}
 
+\section{Mixture Models}
+
 \section{Bayesian Estimation}
 The essential difference between Bayesian and frequentist approaches to probability is how probability is used.  In a Frequentist arppoach, probability is used to model processes from observed samples.  In this case, all uncertainty is treated as \emph{aleatory}.  Aleatory uncertainty is irreducible, in that there will always be variability in the underlying variables.  For example, flipping a coin and predicting "heads" or "tails" is aleatory uncertainty.  The uncertainty we are observing is random, it is part of the natural process of what we are observing.
 
 Bayesian approaches allows modelling not only of \emph{aleatory} uncertainty, but \emph{epistemic} uncertainty.  Epistemic uncertainty is reflects the limited knowledge we have on a system.   This type of uncertainty of reducible.
 
+\section{Kullbach Leiber Divergence}
+
+\subsection{AIC vs BIC}
+
+\section{Dimensionality Reduction Methods}
 
 \section{Sampling}
 
@@ -173,3 +198,32 @@ Requirements for kernel
 Monte Carlo methods are a broad class of computational algorithms which are dependent upon random sampling to obtain numerical results.
 The essential aspect of these approaches is to use randomness to solve problems which might be deterministic in principle.
 Monte Carlo simulations sample from a probability distribution for each variable to produce an arbitrarily large number of possible outcomes, and  the results are analyzed to get probabilities of different outcomes occuring.
+
+\section{Normal Distribution}
+
+Let $X$ be a random variable defined by a multivariate random variable defined by $\bm{\mu}$
+
+\section{Kernel Density Estimate}
+
+\section{Gaussian Mixture Models}
+%% https://brilliant.org/wiki/gaussian-mixture-model/
+
+Gaussian mixture models (GMM) are a probabilistic model for representing normally distributed subpopulations within an overall population. Mixture models in general don't require knowing which subpopulation a data point belongs to, allowing the model to learn the subpopulations automatically. Since subpopulation assignment is not known, this constitutes a form of unsupervised learning.
+
+A Gaussian mixture model is parameterized by two types of values, the mixture component weights and the component means and covariances.  For a Gaussian mixture model with $K$ components, the $k$th component has a a mean $\mu_k$ and $\sigma_k$ for the univariate case.  
+
+For the $d$-dimensional multivariate case, these are replaced by the vector $\bm{\mu}_k \in \mathbb{R}^d$ and the variance-covariance matrix
+
+If the number of components $K$ is known, expectation maximum
+
+\section{Model Validation}
+
+\subsection{Resampling}
+%% https://nic.schraudolph.org/teach/ml03/ML_Class6.pdf
+\subsubsection{Test Set Method}
+\subsubsection{Cross Validation}
+\subsection{Analytic}
+\subsubsection{AIC}
+\subsubsection{BIC}
+
+
