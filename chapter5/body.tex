@@ -1,5 +1,5 @@
 \chapter{AN EVOLUTIONARY ALGORITHM FOR GENERATING PARETO EFFICIENT POTENTIALS}
-\label{chapter:methodology}
+\label{ch:methodology}
 
 The purpose of this chapter to introduce a cost-efficient algorithm to determine the appropriate trade-offs between concurrent minimization problems associated with several critera.
 
@@ -55,7 +55,7 @@ The process described here combines Popper's propensity interpretation of probab
 
 Here the prior distribution function are the propensities associated that a particular parameterization is Pareto optimal.  In the deterministic approach outlined \ref{ch:potential_development}, $\bm{\Theta}^*$ is the Pareto set.  Here $\bm{\Theta}$ is a random variable, with $\bm{\theta} \in \bm{\Theta}$ being a single realization of that random variable defined by the prior probability distribution function, which is our current best estimate that the probability distribution function produces parameterizations in the Pareto set.  The prior density function is the generator of parameterizations, which can then be used into computational experiments which are then amenable to frequentist approaches to density estimation.
 
-The sampling distribution, which is defined as the likelihood in Bayesian literature, is the distribution of the material properties conditional on the parameters, i.e. $p(\hat{\bm{q}}|\\bm{\theta})$.  Instead of analytically determining $p(\bm{\hat{q}}|\bm{\theta})$, we sample from the prior distribution of $\bm{\theta}$.  To determine the sampling distribution, treat $\bm{\theta}$ as the random variable $\bm{\Theta}$.   Since $\bm{q}(\bm{\theta})$ is non-analytic, a representative sample is constructed from which the probability distribution can be estimated.  In the context of Popper, the prior distribution is not useful other than in which to conduct computational experiments. 
+The sampling distribution, which is defined as the likelihood in Bayesian literature, is the distribution of the material properties conditional on the parameters, i.e. $p(\hat{\bm{q}}|\bm{\theta})$.  Instead of analytically determining $p(\bm{\hat{q}}|\bm{\theta})$, we sample from the prior distribution of $\bm{\theta}$.  To determine the sampling distribution, treat $\bm{\theta}$ as the random variable $\bm{\Theta}$.   Since $\bm{q}(\bm{\theta})$ is non-analytic, a representative sample is constructed from which the probability distribution can be estimated.  In the context of Popper, the prior distribution is not useful other than in which to conduct computational experiments.
 
 The process of sampling by generating variates of a probability distribution function was covered in Chapter \ref{ch:probability},
 In a sampling process, constraints on the parameter space are incorporated into the sampling procedure, by rejecting

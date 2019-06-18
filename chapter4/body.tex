@@ -1,5 +1,5 @@
 \chapter{PROBABILITY METHODS}
-\label{chapter:probability_methods}
+\label{ch:probability}
 
 Due to heavy use of simulation methodology involves in this work, a discussion of probability and simulation concepts to clarify terminology and notation.  What follows is a necessarily brief introduction to probability theory in a more rigorous sense, we refer the reader to classic textbooks of Rudin\cite{rudin1987_realanalysis} for a rigorous treatment of measure theory and Chung\cite{chung2001_probabilitytheory} for a measure theory construction of probability.
 
@@ -40,6 +40,12 @@ Formally, a continuous random variable is a random variable whose cumulative dis
 
 \section{Random Variable}
 A random variable $X$ is a variable whose possible values are outcomes of a random phenemon.  As a function, a random variable is required to be measurable, which rules out pathological issues.  A random variable has a probability distribution, which specificies the probability falls in.  Specifically, $X:\Omega\rightarrow\mathbb{R}$.  If a random variable $X:\Omega \rightarrow \mathbb{R}$ is defined on the probability space $(\Omega,\mathcal{F},\mathbb{P})$.  Then the probability of an event $A$ occuring is $\{\omega:X(\omega)=A\}$ which is denoted as $\mathbb{P}(X=A)$.
+
+Formally, a random variable is particular type of measurable function.  However, there is an important difference which maybe more philosophical than mathematical due to the difference in the underlying domains.  A random variable operates on a set of outcomes or processes defined by $\Omega$, while deterministic variables does not.  This isn't a mathematical difference as the underlying domains are just sets, and the $\sigma$-algebra and measures provide the relevant mathematical structure.
+
+For a probability space, even if a specific random process isn't mentioned, there is an implied assumption that such a random process exists.  Otherwise, there would be no need for probability to have its own language.
+
+A random variable can only be evaluated by performing an unpredictable experiment.  That is, you don't choose which $\omega \in \Omega$ to choose.  If you did choose a specific $\omega$, the you aren't evaluating a random variable, you're just evaluating a measurable function.
 
 \subsection{Expectation of a Random Variable}
 
@@ -210,7 +216,7 @@ Let $X$ be a random variable defined by a multivariate random variable defined b
 
 Gaussian mixture models (GMM) are a probabilistic model for representing normally distributed subpopulations within an overall population. Mixture models in general don't require knowing which subpopulation a data point belongs to, allowing the model to learn the subpopulations automatically. Since subpopulation assignment is not known, this constitutes a form of unsupervised learning.
 
-A Gaussian mixture model is parameterized by two types of values, the mixture component weights and the component means and covariances.  For a Gaussian mixture model with $K$ components, the $k$th component has a a mean $\mu_k$ and $\sigma_k$ for the univariate case.  
+A Gaussian mixture model is parameterized by two types of values, the mixture component weights and the component means and covariances.  For a Gaussian mixture model with $K$ components, the $k$th component has a a mean $\mu_k$ and $\sigma_k$ for the univariate case.
 
 For the $d$-dimensional multivariate case, these are replaced by the vector $\bm{\mu}_k \in \mathbb{R}^d$ and the variance-covariance matrix
 
@@ -225,5 +231,3 @@ If the number of components $K$ is known, expectation maximum
 \subsection{Analytic}
 \subsubsection{AIC}
 \subsubsection{BIC}
-
-

@@ -4,7 +4,21 @@
 
 \section{Future Work}
 
+\subsection{Removal of Pathological Potentials}
+
+\subsection{Scalability and Stability of Numerical Algorithms}
+A common problem in these numerical algorithms comes from ill-condition matrices and the use of numerical algorithms in scikit-learn.  Even though all variance-covariance matrices are by definition positive definitive, an ill-conditioned matrix can cause the algorithms to to fail.  The Cholesky decomposition should be replaced with the single value decomposition
+
+\subsection{Algorithms to Prevent Population Crowding}
+
+\subsection{Evolve distribution away from dominated regions}
+
+\subsection{Dimensionality Reduction Methods}
+
+\subsection{UQ quantification applications}
+
+
 \section{Robustness of Potentials}
 Sensitive analysis.  Many models use cutoff-radii as an additional parameter to be determined by the fitting process.  Because of the nature of the stacking fault, the GSF energy must depend upon non-nearest neighbor interactions.
-However, a slight alteration of the cutoff-radius was found to have a dramatic impact on the behavior of EAM potentials by Zimmerman.%\cite{Zimmerman2000_Ni_gsf}.  
+However, a slight alteration of the cutoff-radius was found to have a dramatic impact on the behavior of EAM potentials by Zimmerman.%\cite{Zimmerman2000_Ni_gsf}.
 He sugests that parameterizeed models should be only slightly sensitive to a change of value for any of it's parameters.  High sensitivity indicates the possibility of unphysical behavior of a model.  This issue should be address when creating a potential to be used in simulations that involve stacking faults.
