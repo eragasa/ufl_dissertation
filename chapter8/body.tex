@@ -106,7 +106,9 @@ Incorporating the ranges of parameterizations from Table \ref{tbl:sw_parameters_
 
 \begin{table}[ht]
 	\centering
-	\caption{Initial proabibilty distribution for parameters.  A uniform distribution, $U(a,b)$ with lower bound, $a$, and upper bound, $b$, is used as an uninformative prior distribution.  Scalar values indicate equality constraints.}
+	\caption{Initial proabibilty distribution for parameters.  
+	         A uniform distribution, $U(a,b)$ with lower bound, $a$, and upper bound, $b$, is used as an uninformative prior distribution.  
+		 Scalar values indicate equality constraints.}
 	\label{tbl:sw_parameters_initial}
 	\begin{tabular}{c c c c}
 		\hline
@@ -118,10 +120,10 @@ Incorporating the ranges of parameterizations from Table \ref{tbl:sw_parameters_
 		$\lambda$  & $U(20,32)$    & $U(20,32)$    & $U(20,32)$   \\
 		$\gamma$   & $U(1.0,2.0)$  & $U(1.0,2.0)$  & $U(1.0,2.0)$ \\
 		$A$        & $U(6.0,20.0)$ & $U(6.0,20.0)$ &$U(6.0,20.0)$ \\
-    $B$        & $U(0.5,1.5)$  & $U(0.5,1.5)$  & $U(0.5,1.5)$ \\
-    $p$        & 4.0           & 3.5           & $U(3.0,4.4)$ \\
+                $B$         & $U(0.5,1.5)$  & $U(0.5,1.5)$  & $U(0.5,1.5)$ \\
+                $p$         & 4.0           & 3.5           & $U(3.0,4.4)$ \\
 		$q$        & 0.0           & 0.0           & $U(0.0,1.0)$ \\
-    $\cos(\theta_{0ijk})$ & 1/3 & 1/3 & 1/3 \\
+                $\cos(\theta_{0ijk})$ & 1/3 & 1/3 & 1/3 \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -130,23 +132,21 @@ Incorporating the ranges of parameterizations from Table \ref{tbl:sw_parameters_
 
 An iterative strategy is evolve the random variable $\bm{\Theta}_0(\Omega)$ using the recursive algorithm, defined in Chapter \ref{ch:methodology} and used in Chapter \ref{ch:ionic_MgO} to develop an buckingham potential for the MgO system.  Since the topics contained this chapter has more probability topics than the previous chapter, we define the process and notation which simplies discussion later in this chapter.
 
-At the beginning of the process, a prior probability distribution function, $p_{\Theta_N}(\bm{\theta})$, is estimated based based upon the Pareto optimal population of previous iteration, $\hat{\bm{\Theta}}_{N-1}^*$.
+At the beginning of the process, a prior probability distribution function, $p_{\Theta_N}(\bm{\theta})$, is estimated based based upon the Pareto optimal population of previous iteration, 
+$\hat{\bm{\Theta}}_{N-1}^*$.
 In the first iteration ($N=1$), the prior is defined by a vector of indepedent uniform random variables of the free parameters.
 The probability distribution $p_{\bm{\Theta}_N}(\bm{\theta})$ describes the random variable $\bm{\Theta}_{N}(\Omega)$.
 The notation $\bm{\Theta}$ refers the sequence of independent and identically distributed (IID) samples of $\bm{\theta}(\omega) \in \bm{\Theta}(\Omega)$,
 \begin{subequations}
   \begin{align}
      \bm{\Theta}
-       &= (\bm{\theta}(\omega_1),
-           ...,
-           \bm{\theta}(\omega_M))
-      \label{eq:si_theta_seq_1} \\
-       &= (\bm{\theta}_i,
-           ...,
-           \bm{\theta}_M)
-      \label{eq:si_theta_seq_2}
+       &= (\bm{\theta}(\omega_1), ...,\bm{\theta}(\omega_M)) 
+	  \label{eq:si_theta_seq_1} \\
+       &= (\bm{\theta}_i,...,\bm{\theta}_M) 
+	  \label{eq:si_theta_seq_2}
   \end{align}
 \end{subequations}
+
 for $M$ samples.
 The techniques for generating this sequence was described in Chapter \ref{ch:probability}.
 
@@ -173,11 +173,12 @@ In the next step, we define the conditions for optimality in $Q$.
 First, we filter out points which are not Pareto optimal.  In addition to filtering non-Pareto optimal points, we pathological parameterizations by eliminating outliers.  To identify outliers, we score each potential by the sum of errors rescaled by the QOI target value,
 \begin{equation}
   \label{eq:si_outlier_filter}
-  C(\bm{\theta}) = \sum_{i=1}^{N_Q}\frac{\epsilon_i(\bm{\theta})}{q_i}^2
+	C(\bm{\theta}) = \sum_{i=1}^{N_Q}\frac{\epsilon_{i}(\bm{\theta})}
+	                                      {q_i}^2
 \end{equation}
 The determination of the number of potentials remove is subjective.  If too many potentials are removed, then this filter becomes too aggressive and behaves as a global scalar optimization algorithm to minimize \label{eq:si_outlier_filter}.  If too many outliers are kept, then variance-covariance matrix used to determine the bandwidth of the kernel density estimate spreads the PDF density in pathological directions, drastically increasing the number of samples required to identify new Pareto optimal potentials.  Here 5\% of the worst performing potentials are eliminated defined by Equation \ref{eq:si_outlier_filter}, which appears to be an appropriate value of this problem.
 
-When these filters are applied the resulting set is
+When these filters are applied, the resulting set is
 \begin{subequations}
   \begin{align}
      \hat{\bm{Q}}^*
@@ -385,42 +386,44 @@ We now generalize the approach from 2D case to an application more generally app
 
 To accomplish this, let us define the different components in Equation \ref{eq:gmm}.  Each data point is represented by a the vector $\bm{x}$,
 \begin{equation}
-\label{eq:gmm_input_vector_all}
-    \bm{x} = (\theta_1,...,\theta_{N_P},\hat{q}_1,...\hat{q}_{N_Q})
+	\label{eq:gmm_input_vector_all}
+        \bm{x} = (\theta_1,...,\theta_{N_P},\hat{q}_1,...\hat{q}_{N_Q})
 \end{equation}
 The mean for each component $k$ $\bm{\mu}_k$ has the same shape as $\bm{x}$,
 \begin{equation}
-\label{eq:gmm_output_mean_all}
-    \bm{\mu} = (\theta_{k,1},...,\theta_{k,N_P},\hat{q}_{k,1},...\hat{q}_{k,N_Q})
+	\label{eq:gmm_output_mean_all}
+	\bm{\mu} = (\theta_{k,1},...,\theta_{k,N_P},\hat{q}_{k,1},...\hat{q}_{k,N_Q})
 \end{equation}
 The variance covaraiance matrix from cluster $k$ then becomes
 \begin{equation}
-\label{eq:gmm_output_mean_all}
-  \bm{\Sigma}_k
-  = \left(
-      \begin{array}{c|c}
-        \bm{\Sigma}_{k,\bm{\theta},\bm{\theta}} & \bm{\Sigma}_{k,\bm{\theta},\bm{q}} \\
-        \hline
-        \bm{\Sigma}_{k,\hat{\bm{q}},\bm{\theta}}     & \bm{\Sigma}_{k,\bm{\hat{q}},\bm{\hat{q}}}
-      \end{array}
-    \right)
-  = \left(
-      \begin{array}{ccc|ccc}
-           \Sigma_{k,\theta_1,\theta_1}  & \dots  & \Sigma_{k,\theta_1,\theta_{N_P}}
-          &\Sigma_{k,\theta_1,\hat{q}_1} & \dots  & \Sigma_{k,\theta_1,\hat{q}_{N_Q}} \\
-           \vdots                        & \ddots &
-          &\vdots                        & \ddots & \\
-           \Sigma_{k,\theta_{N_P},\theta_1} &     & \Sigma_{k,\theta_{N_P},\theta_{N_P}}
-          &\Sigma_{k,\theta_{N_P},\hat{q}_1} &     & \Sigma_{k,\theta_{N_P},\hat{q}_{N_Q}} \\
-        \hline
-        \Sigma_{k,\hat{q}_{N_Q},\theta_{N_P}}  & \dots  & \Sigma_{k,\hat{q}_1,\theta_{N_P}}
-       &\Sigma_{k,\hat{q}_1,\hat{q}_1} & \dots  & \Sigma_{k,\hat{q}_1,\hat{q}_{N_Q}} \\
-        \vdots                        & \ddots &
-       &\vdots                        & \ddots & \\
-        \Sigma_{k,\hat{q}_{N_Q},\theta_1} &     & \Sigma_{k,\hat{q}_1,\theta_1}
-       &\Sigma_{k,\hat{q}_{N_Q},\hat{q}_1} &     & \Sigma_{k,\hat{q}_{N_Q},\hat{q}_{N_Q}}
-      \end{array}
-    \right)
+	\label{eq:gmm_output_mean_all}
+	\bm{\Sigma}_k
+	= 
+	\left(
+	    \begin{array}{c|c}
+		    \bm{\Sigma}_{k,\bm{\theta},\bm{\theta}} & \bm{\Sigma}_{k,\bm{\theta},\bm{q}} \\
+		    \hline
+		    \bm{\Sigma}_{k,\hat{\bm{q}},\bm{\theta}}     & \bm{\Sigma}_{k,\bm{\hat{q}},\bm{\hat{q}}}
+	    \end{array}
+       \right)
+       = 
+       \left(
+	      \begin{array}{ccc|ccc}
+		   \Sigma_{k,\theta_1,\theta_1}  & \dots  & \Sigma_{k,\theta_1,\theta_{N_P}}
+		  &\Sigma_{k,\theta_1,\hat{q}_1} & \dots  & \Sigma_{k,\theta_1,\hat{q}_{N_Q}} \\
+		   \vdots                        & \ddots &
+		  &\vdots                        & \ddots & \\
+		   \Sigma_{k,\theta_{N_P},\theta_1} &     & \Sigma_{k,\theta_{N_P},\theta_{N_P}}
+		  &\Sigma_{k,\theta_{N_P},\hat{q}_1} &     & \Sigma_{k,\theta_{N_P},\hat{q}_{N_Q}} \\
+		\hline
+		\Sigma_{k,\hat{q}_{N_Q},\theta_{N_P}}  & \dots  & \Sigma_{k,\hat{q}_1,\theta_{N_P}}
+	       &\Sigma_{k,\hat{q}_1,\hat{q}_1} & \dots  & \Sigma_{k,\hat{q}_1,\hat{q}_{N_Q}} \\
+		\vdots                        & \ddots &
+	       &\vdots                        & \ddots & \\
+		\Sigma_{k,\hat{q}_{N_Q},\theta_1} &     & \Sigma_{k,\hat{q}_1,\theta_1}
+	       &\Sigma_{k,\hat{q}_{N_Q},\hat{q}_1} &     & \Sigma_{k,\hat{q}_{N_Q},\hat{q}_{N_Q}}
+	      \end{array}
+       \right)
 \end{equation}
 where
 $\Sigma_{k,\bm{\theta}, \bm{\theta}}$ is the covariance matrix for the parameters,
@@ -468,7 +471,7 @@ Table \ref{tbl:sw_all_gmm_parameters} contains the mean ($\mu$) and standard dev
 
 \begin{table}[ht]
 	\centering
-	\caption{QOI information for each constituent distribution, $k$, in the full GMM model.  The $\mu$ and $\sigma$ are provided for each $k$}
+	\caption{QOI information for each constituent distribution, $k$, in the full GMM model.  The $\mu$ and $\sigma$ are provided for each $k$.}
   \label{tbl:sw_all_gmm_parameters}
   \begin{tabular}{ccccccccccc}
     \hline
@@ -542,26 +545,26 @@ If $k$ is chosen to be sufficiently high, the variance of the parameters as well
 
 Unlike Chapter \ref{ch:ionic_MgO}, our options here are no longer individual potentials but described by a normal probability distribution for each constituitive options.  For an empirical interatomic potentials where the mean $\mu_{k,\hat{\bm{q}}}$ is sufficently close to the the target QOI values.  A one sample Hotelling's $t$-squared squared ($t^2$) could be used.  However, since none of the distributions identified are likely to contain $\mu_{k,\hat{\bm{q}}}$
 \begin{table}[ht]
-\centering
-\caption{$p$-value type scoring for each constituent distribution, $k$, in the full GMM model.  Each $q$ is tested to determine is in the normal distribution, $N(\bm{\mu}_{k,q},\bm{\Sigma_{k,q}})$
-\label{tbl:sw_all_gmm_qois}
-\begin{tabular}{ccccccccc}
-\hline
-$k$ & $E_C$ & $a0$ & $c_{11}$ & $c_{12}$ & $c_{44}$ & $B$ & $E_v$ & total \\
-    & eV/atom & \AA & GPa & GPa & GPa & GPa & eV & \\
-\hline
-0 & 0.0046 & 0.2843 & 0.4365 & 0.4913 & 0.3572 & 0.4777 & 0.0001 & 0.9314\\
-1 & 0.0000 & 0.0068 & 0.4811 & 0.4807 & 0.3515 & 0.4934 & 0.0000 & 0.9121\\
-2 & 0.0000 & 0.0000 & 0.4935 & 0.4036 & 0.4852 & 0.3879 & 0.0073 & 0.9055\\
-3 & 0.0001 & 0.0000 & 0.4768 & 0.4991 & 0.4472 & 0.4896 & 0.0003 & 0.9261\\
-4 & 0.0000 & 0.0000 & 0.4812 & 0.4546 & 0.2975 & 0.4791 & 0.0044 & 0.8969\\
-5 & 0.4876 & 0.0013 & 0.4975 & 0.4880 & 0.4890 & 0.4909 & 0.4926 & 0.9826\\
-6 & 0.0002 & 0.0000 & 0.4188 & 0.3038 & 0.4752 & 0.2902 & 0.0005 & 0.8494\\
-7 & 0.0289 & 0.0005 & 0.4997 & 0.4952 & 0.4816 & 0.4973 & 0.0327 & 0.9382\\
-8 & 0.0001 & 0.2590 & 0.4892 & 0.4932 & 0.4758 & 0.4993 & 0.0001 & 0.9497\\
-9 & 0.0029 & 0.0046 & 0.4937 & 0.4796 & 0.4825 & 0.4945 & 0.0204 & 0.9330\\
-\hline
-\end{tabular}
+	\centering
+	\caption{The $p$-value type scoring for each constituent distribution, $k$, in the full GMM model. Each $q$ is tested to determine is in the normal distribution, $N(\bm{\mu}_{k,q}, \bm{\Sigma}_{k,q})$}
+	\label{tbl:sw_all_gmm_qois}
+	\begin{tabular}{ccccccccc}
+		\hline
+		$k$ & $E_C$ & $a0$ & $c_{11}$ & $c_{12}$ & $c_{44}$ & $B$ & $E_v$ & total \\
+		    & eV/atom & \AA & GPa & GPa & GPa & GPa & eV & \\
+		\hline
+		0 & 0.0046 & 0.2843 & 0.4365 & 0.4913 & 0.3572 & 0.4777 & 0.0001 & 0.9314\\
+		1 & 0.0000 & 0.0068 & 0.4811 & 0.4807 & 0.3515 & 0.4934 & 0.0000 & 0.9121\\
+		2 & 0.0000 & 0.0000 & 0.4935 & 0.4036 & 0.4852 & 0.3879 & 0.0073 & 0.9055\\
+		3 & 0.0001 & 0.0000 & 0.4768 & 0.4991 & 0.4472 & 0.4896 & 0.0003 & 0.9261\\
+		4 & 0.0000 & 0.0000 & 0.4812 & 0.4546 & 0.2975 & 0.4791 & 0.0044 & 0.8969\\
+		5 & 0.4876 & 0.0013 & 0.4975 & 0.4880 & 0.4890 & 0.4909 & 0.4926 & 0.9826\\
+		6 & 0.0002 & 0.0000 & 0.4188 & 0.3038 & 0.4752 & 0.2902 & 0.0005 & 0.8494\\
+		7 & 0.0289 & 0.0005 & 0.4997 & 0.4952 & 0.4816 & 0.4973 & 0.0327 & 0.9382\\
+		8 & 0.0001 & 0.2590 & 0.4892 & 0.4932 & 0.4758 & 0.4993 & 0.0001 & 0.9497\\
+		9 & 0.0029 & 0.0046 & 0.4937 & 0.4796 & 0.4825 & 0.4945 & 0.0204 & 0.9330\\
+		\hline
+	\end{tabular}
 \end{table}
 
 
