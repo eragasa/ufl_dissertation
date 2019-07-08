@@ -60,6 +60,11 @@ In order to compare the performance of the potentials, we use the original param
 	\end{tabular}
 \end{table}
 
+\subsection{Structres}
+\label{sub:software_structure}
+
+
+
 \section{Methodology}
 
 For the development of a new potential, we use a subset of the reference values from Pizzagalli \emph{et al} \cite{pizzagalli2013_sw_Si} listed in Table \ref{table:si_fitting_db}.  These properties include the cohesive energy ($E_c$), the lattice parameter ($a_0$), the four independent components of the elastic tensor for an isotropic material ($C_{11}$, $C_{12}$, $C_{44}$), the bulk and shear modulus ($B$, $G$), and the vacancy formation energy ($E_v$).
@@ -106,8 +111,8 @@ Incorporating the ranges of parameterizations from Table \ref{tbl:sw_parameters_
 
 \begin{table}[ht]
 	\centering
-	\caption{Initial proabibilty distribution for parameters.  
-	         A uniform distribution, $U(a,b)$ with lower bound, $a$, and upper bound, $b$, is used as an uninformative prior distribution.  
+	\caption{Initial proabibilty distribution for parameters.
+	         A uniform distribution, $U(a,b)$ with lower bound, $a$, and upper bound, $b$, is used as an uninformative prior distribution.
 		 Scalar values indicate equality constraints.}
 	\label{tbl:sw_parameters_initial}
 	\begin{tabular}{c c c c}
@@ -132,7 +137,7 @@ Incorporating the ranges of parameterizations from Table \ref{tbl:sw_parameters_
 
 An iterative strategy is evolve the random variable $\bm{\Theta}_0(\Omega)$ using the recursive algorithm, defined in Chapter \ref{ch:methodology} and used in Chapter \ref{ch:ionic_MgO} to develop an buckingham potential for the MgO system.  Since the topics contained this chapter has more probability topics than the previous chapter, we define the process and notation which simplies discussion later in this chapter.
 
-At the beginning of the process, a prior probability distribution function, $p_{\Theta_N}(\bm{\theta})$, is estimated based based upon the Pareto optimal population of previous iteration, 
+At the beginning of the process, a prior probability distribution function, $p_{\Theta_N}(\bm{\theta})$, is estimated based based upon the Pareto optimal population of previous iteration,
 $\hat{\bm{\Theta}}_{N-1}^*$.
 In the first iteration ($N=1$), the prior is defined by a vector of indepedent uniform random variables of the free parameters.
 The probability distribution $p_{\bm{\Theta}_N}(\bm{\theta})$ describes the random variable $\bm{\Theta}_{N}(\Omega)$.
@@ -140,9 +145,9 @@ The notation $\bm{\Theta}$ refers the sequence of independent and identically di
 \begin{subequations}
   \begin{align}
      \bm{\Theta}
-       &= (\bm{\theta}(\omega_1), ...,\bm{\theta}(\omega_M)) 
+       &= (\bm{\theta}(\omega_1), ...,\bm{\theta}(\omega_M))
 	  \label{eq:si_theta_seq_1} \\
-       &= (\bm{\theta}_i,...,\bm{\theta}_M) 
+       &= (\bm{\theta}_i,...,\bm{\theta}_M)
 	  \label{eq:si_theta_seq_2}
   \end{align}
 \end{subequations}
@@ -398,7 +403,7 @@ The variance covaraiance matrix from cluster $k$ then becomes
 \begin{equation}
 	\label{eq:gmm_output_mean_all}
 	\bm{\Sigma}_k
-	= 
+	=
 	\left(
 	    \begin{array}{c|c}
 		    \bm{\Sigma}_{k,\bm{\theta},\bm{\theta}} & \bm{\Sigma}_{k,\bm{\theta},\bm{q}} \\
@@ -406,7 +411,7 @@ The variance covaraiance matrix from cluster $k$ then becomes
 		    \bm{\Sigma}_{k,\hat{\bm{q}},\bm{\theta}}     & \bm{\Sigma}_{k,\bm{\hat{q}},\bm{\hat{q}}}
 	    \end{array}
        \right)
-       = 
+       =
        \left(
 	      \begin{array}{ccc|ccc}
 		   \Sigma_{k,\theta_1,\theta_1}  & \dots  & \Sigma_{k,\theta_1,\theta_{N_P}}
