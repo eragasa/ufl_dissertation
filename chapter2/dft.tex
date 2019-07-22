@@ -1,0 +1,124 @@
+The properties of a system may be obtained by solving the quantum mechanical (QM) wave equation which governs the system dynamics.  For non-relativistic system, this equation is the Schrodinger equation.  For all but the simplest systems, this approach in an impossible task in practice; the resulting many body problem has only been solved for a limited number of system.  Within this chapter we outline the many body problem and its intractibility before considering the Hohenberg-Kohn-Sham formulation of density functional theory (DFT).  This reformulates quantum mechanics, using electron density as the fundamental quantity to solve, rather than the many-electron wavefuction.  This takes the $N$-body problem and recasts it into $N$ single-body problems; which is a dramatic simplification.
+
+We then approach higher order models which reduces computational intensity by looking at classical empirical potentials and their role in both molecular dynamics and lattice dynamics.
+
+% http://cmt.dur.ac.uk/sjc/thesis_prt/node21.html
+\section{The Many-Body Problem}
+
+The Hamiltonian for a real material is defined by the presence of interacting nuclei and electrons:
+\begin{equation}
+	\mathcal{H} = \sum_i \frac{P_i}{2M_i}
+	    + \sum_\alpha \frac{p_\alpha}{2m}
+	    + \frac{1}{2} \sum_{ij} \frac{Z_i Z_j e^2}{r_{ij}}
+	    + \frac{1}{2} \sum_{\alpha\beta} \frac{e^2}{r_{\alpha\beta}}
+	    - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
+\end{equation}
+The first terms are kinetic energy terms, the latter terms are the nuclei-nuclei, electron-electron, and nuclei-electron interactions.
+Ideally, the Schr\"{o}dinger equation, $H\Psi=E\Psi$ could be solved providing the total wavefunction $\Psi(\bm{r}_i,\bm{r_\alpha})$ and associated eigenvalues $E(\Psi)$.
+Except for the simplest of systems, this approach is impossible computationally.
+
+The Born-Oppenheimer approximation\cite{born1927_bo} simplifes calculation; the kinetic energy is ignored since the heavy nulclei move more slowly than electrons.  For the remaining interaction terms of the Hamiltonian, the nuclear positions are clamped in space, the electron-nuclei interactions are not removed, since the electrons are still influenced by the Coulomb potential of the nuclei.  This allows us to factor the wavefunction as
+\begin{equation}
+	\Psi(\bm{R}_i,\bm{r}_\alpha) = \Xi(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i),
+\end{equation}
+where $\Xi(\bm{R}_i)$ describes the nuclei, and $\Phi(\bm{r}_\alpha;\bm{R}_i)$ describes the electrons parameterized by the clamped position of $\bm{R}_i$.  In turn, the Hamiltonian is solveable as two Schr\"{o}dinger's equations.  The first equation contains the electronic degrees of freedom.
+\begin{equation}
+\label{eq:BO_electronic}
+     H_{e}\Phi(\bm{r}_\alpha;\bm{R}_i)=U(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i)
+\end{equation}
+where
+\begin{equation}
+	H_e = \sum_\alpha \frac{p_\alpha}{2m}
+	      + \frac{1}{2} \sum_{ij} \frac{Z_i Z_j e^2}{r_{ij}}
+	      + \frac{1}{2} \sum_{\alpha\beta} \frac{e^2}{r_{\alpha\beta}}
+	      - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
+\end{equation}
+Eqn. \ref{eq:BO_electronic} gives the energy $U(\bm{R}_i)$ which depends on the clamped coodinates of $\bm{R}_i$.  The electronic effects are contained in $U(\bm{R}_i)$ and are incorporated into the second equation which the motion of the nuclei
+\begin{equation}
+\label{eq:BO_nuclei}
+    H_n\Xi(\bm{R}_i)=E\Xi(\bm{R}_i)
+\end{equation}
+where
+\begin{equation}
+\label{eq:H_n}
+    H_n = \sum_i \frac{P_i}{2m_i} + U(\bm{R_i})
+\end{equation}
+Direct solution of the Schr{\"o}dinger equation for the electrons in a molecule is demanding because of the Coulomb repulsion between them.
+
+\section{Hartree and Hartree Fock Methods}
+
+The Hartree method\cite{hartree1928_hartree,slater1928_hartree,gaunt1928_hartree} applies the variational principle to a product \emph{ansatz} of orthogonal wave functions, known as the Hartree product, to represent the ground state function:
+\begin{equation}
+\label{eq:hartree}
+	\Psi(\bm{x}_1,\bm{x}_2,...,\bm{x}_N)=\psi_1(\bm{x}_1)\psi_2(\bm{x}_2)...\psi_n(\bm{x}_n)
+\end{equation}
+where $\bm{x_i}$ is the set of space-spin coordinates, $\bm{x}_i=\{\bm{r}_i,\omega\}$ with $\omega \in \{\alpha,\beta\}$ being a spin-coordinate.
+However, since electrons are fermions they must follow the Pauli exclusion principle, and must be anti-symmetric under exchange of any of the space-spin coordinates.  The Hartree product does not satisfy the anti-symmetry principle\cite{slater1930_antisymmetry,fock1930_antisymmetry}, which can be demonstrated with a two particle system.  For a two-particle system, the anti-symmetric property can be described as
+\begin{equation}
+\label{eq:antisymmetry}
+	\Psi(\bm{x}_1,\bm{x}_2) = -\Psi(\bm{x}_2,\bm{x}_1)
+\end{equation}
+which Equation \ref{eq:hartree} clearly fails.
+
+The Hartree-Fock method often assumes that the exact, $N$-body wave function of the system can be approximated by a single Slater determinant from a system of electrons.  By invoking the variational method, one can derive a set of $N$-coupled equations for the $N$ spin orbitals.  A solution of these equations yields the Hartree-Fock wave function and energy of the system.
+
+\section{Density Functional Theory}
+
+Density Functional Theory (DFT) is a simplification of the many body electron function by relating the wave function of the system of interest to the electron density of the system, where theoretical underpinning are established by the Hohenberg-Kohn theorems\cite{hohenberg1964_dft}.
+
+The first Hohenberg-Kohn theorem establishes that the external potential $v_{ext}(\bm{r})$, and hence the total energy, is a unique functional of the electron density $n{\bm{r}}$.
+
+Here, the energy functional $E[n(\bm{r})]$ is written in terms of the external potential $V_{ext}(r)$,
+\begin{equation}
+	\label{eq:hk_functional}
+	E[n(\bm{r})] = F_{HK}[n(\bm{r})]+\int V_{ext}(\bm{r})n(\bm{r})d\bm{r}
+\end{equation}
+where $F_{HK}[n(\bm{r})]$ is unknown, but otherwise a function of the electron density $n(\bm{r})$.  Correspondingly, a Hamiltonian can be written such that electron wave function $\Psi_0$ also gives the ground state $E[n(\bm{r})]=\bra{\Psi}\hat{H}\ket{\Psi}$, where $n_0(\bm{r})$ is the ground state electron density.  This Hamiltonian is
+\begin{equation}
+	\hat{H}
+	= \hat{F} + \hat{V}_{ext}
+	= [\hat{T} + \hat{V}_{ee}] + \hat{V}_{ext}
+\end{equation}
+Here, the electron operator $\hat{F}$ can be decomposed into  $\hat{T}$ is the kinetic energy operator and  $\hat{V}_{ee}$ is the electron-electron operator.
+$\hat{V}_ext$ is the external potential.
+For all $N$ electron systems, $\hat{F}$ is that same, so $\hat{H}$ is completely defined by the number of electrons $N$ and the external potential $v_{ext}(\bm{r})$.
+
+If are two different potentials $v_{ext,1}(\bm{r})$ and $v_{ext,2}(\bm{r})$, that give rise to the same density $n_0(\bm{r})$.  The associated Hamiltonians $H_1$ and $H_2$ will have different groundstate wavefunctions, ($\Psi_1$ and $\Psi_2$) and ground state energies ($E_1^0$ and $E_2^0$).  The application of the variational principle with Equation \ref{eq:hk_functional} leads to the inequality
+\begin{align}
+	E_1^0 < \bra{\Psi_2}\hat{H}_1\ket{\Psi_2}
+	      &= \bra{\Psi_2}\hat{H}_2\ket{\Psi_2} \\
+	      &= E_2^0
+				  + \int
+					  n_0(\bm{r})[v_{ext,1}(\bm{r})
+						            -v_{ext,2}(\bm{r})]
+					d\bm{r}
+\end{align}
+An equivalent inequality can be made with the subscript exchanged, leads to an apparent contradiction.  As a result, the ground state density $n_0(\bm{r})$ uniquely determines the external potential $v_{ext}{(\bm{r})}$.  The electrons determine the positions of the nuclei in the system, and also all groundstate electronic properties because $v_{ext}(\bm{r})$ and $N$ completely define $\hat{H}$.
+
+The second Hohenberg-Kohn theorem defines an energy functional and proves that the correct ground electron density also minimizes this energy functional.  This establishes a one-to-one correspondence between between the ground state electron density $n_0(\bm{r})$ and the corresponding ground-state wavefunction $\Psi_0$.
+
+
+\section{Kohn-Sham Equations}
+
+\section{The Exchange Correlation Term}
+
+In Kohn-Sham DFT, only the exchange-correlation energy, $E_{XC}$, as a functional of the electron spin densities $n(\bm{r})$ must be approximated.
+The local density approximation is discussed by Kohn and Sham\cite{kohn1965_dft} in the introduction of the Kohn-Sham equations.
+In the LDA, the exchange energy per particle in each spatial point is taken as the exchange energy per particle from a uniform electron gas with a density equivalent to the density in this same point\cite{ceperley1980_lda}.
+Later LDA take similar approaches, \cite{vosko1980_lda_vwm, perdew1981_lda_pz, perdew1992_lda_pw}.
+
+\begin{equation}
+	E_{xc}^{LDA}[n]=\int n(\bm{r})e_{xc}^{hom}(n(\bm{r}))d\tau
+\end{equation}
+The generalized gradient approximation(GGA)\cite{langreth1983_gga_1,becke1988_gga_2} introduces a gradient correction
+\begin{equation}
+	E_{xc}^{GGA}[n]=\int n e_x^{LDA} F_{xc}^{GGA}(n,s)_{n=n(\bm{r})}d\tau,
+\end{equation}
+where
+\begin{equation}
+	s =\left.
+	       \frac{\lvert\nabla n\rvert}{2k_F n}
+	   \right\rvert_{n=n(\bm{r})}
+\end{equation}
+
+\section{Molecular Dynamics}

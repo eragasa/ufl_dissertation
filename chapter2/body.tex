@@ -1,193 +1,113 @@
-\chapter{THE MANY BODY PROBLEM AND ATOMISTIC METHODS}
+\chapter{MOLECULAR DYNAMICS}
+\label{ch:md}
 \hfuzz=20pt
 \vfuzz=20pt
 \hbadness=20000
 \vbadness=\maxdimen
-The properties of a system may be obtained by solving the quantum mechanical (QM) wave equation which governs the system dynamics.  For non-relativistic system, this equation is the Schrodinger equation.  For all but the simplest systems, this approach in an impossible task in practice; the resulting many body problem has only been solved for a limited number of system.  Within this chapter we outline the many body problem and its intractibility before considering the Hohenberg-Kohn-Sham formulation of density functional theory (DFT).  This reformulates quantum mechanics, using electron density as the fundamental quantity to solve, rather than the many-electron wavefuction.  This takes the $N$-body problem and recasts it into $N$ single-body problems; which is a dramatic simplification.
 
-We then approach higher order models which reduces computational intensity by looking at classical empirical potentials and their role in both molecular dynamics and lattice dynamics.
-
-% http://cmt.dur.ac.uk/sjc/thesis_prt/node21.html
-\section{The Many-Body Problem}
-
-The Hamiltonian for a real material is defined by the presence of interacting nuclei and electrons:
-\begin{equation}
-	\mathcal{H} = \sum_i \frac{P_i}{2M_i}
-	    + \sum_\alpha \frac{p_\alpha}{2m}
-	    + \frac{1}{2} \sum_{ij} \frac{Z_i Z_j e^2}{r_{ij}}
-	    + \frac{1}{2} \sum_{\alpha\beta} \frac{e^2}{r_{\alpha\beta}}
-	    - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
-\end{equation}
-The first terms are kinetic energy terms, the latter terms are the nuclei-nuclei, electron-electron, and nuclei-electron interactions.
-Ideally, the Schr\"{o}dinger equation, $H\Psi=E\Psi$ could be solved providing the total wavefunction $\Psi(\bm{r}_i,\bm{r_\alpha})$ and associated eigenvalues $E(\Psi)$.
-Except for the simplest of systems, this approach is impossible computationally.
-
-The Born-Oppenheimer approximation\cite{born1927_bo} simplifes calculation; the kinetic energy is ignored since the heavy nulclei move more slowly than electrons.  For the remaining interaction terms of the Hamiltonian, the nuclear positions are clamped in space, the electron-nuclei interactions are not removed, since the electrons are still influenced by the Coulomb potential of the nuclei.  This allows us to factor the wavefunction as
-\begin{equation}
-	\Psi(\bm{R}_i,\bm{r}_\alpha) = \Xi(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i),
-\end{equation}
-where $\Xi(\bm{R}_i)$ describes the nuclei, and $\Phi(\bm{r}_\alpha;\bm{R}_i)$ describes the electrons parameterized by the clamped position of $\bm{R}_i$.  In turn, the Hamiltonian is solveable as two Schr\"{o}dinger's equations.  The first equation contains the electronic degrees of freedom.
-\begin{equation}
-\label{eq:BO_electronic}
-     H_{e}\Phi(\bm{r}_\alpha;\bm{R}_i)=U(\bm{R}_i)\Phi(\bm{r}_\alpha;\bm{R}_i)
-\end{equation}
-where
-\begin{equation}
-	H_e = \sum_\alpha \frac{p_\alpha}{2m}
-	      + \frac{1}{2} \sum_{ij} \frac{Z_i Z_j e^2}{r_{ij}}
-	      + \frac{1}{2} \sum_{\alpha\beta} \frac{e^2}{r_{\alpha\beta}}
-	      - \sum_{i\alpha} \frac{Z_i e^2}{r_{i\alpha}}
-\end{equation}
-Eqn. \ref{eq:BO_electronic} gives the energy $U(\bm{R}_i)$ which depends on the clamped coodinates of $\bm{R}_i$.  The electronic effects are contained in $U(\bm{R}_i)$ and are incorporated into the second equation which the motion of the nuclei
-\begin{equation}
-\label{eq:BO_nuclei}
-    H_n\Xi(\bm{R}_i)=E\Xi(\bm{R}_i)
-\end{equation}
-where
-\begin{equation}
-\label{eq:H_n}
-    H_n = \sum_i \frac{P_i}{2m_i} + U(\bm{R_i})
-\end{equation}
-Direct solution of the Schr{\"o}dinger equation for the electrons in a molecule is demanding because of the Coulomb repulsion between them.
-
-\section{Hartree and Hartree Fock Methods}
-
-The Hartree method\cite{hartree1928_hartree,slater1928_hartree,gaunt1928_hartree} applies the variational principle to a product \emph{ansatz} of orthogonal wave functions, known as the Hartree product, to represent the ground state function:
-\begin{equation}
-\label{eq:hartree}
-	\Psi(\bm{x}_1,\bm{x}_2,...,\bm{x}_N)=\psi_1(\bm{x}_1)\psi_2(\bm{x}_2)...\psi_n(\bm{x}_n)
-\end{equation}
-where $\bm{x_i}$ is the set of space-spin coordinates, $\bm{x}_i=\{\bm{r}_i,\omega\}$ with $\omega \in \{\alpha,\beta\}$ being a spin-coordinate.
-However, since electrons are fermions they must follow the Pauli exclusion principle, and must be anti-symmetric under exchange of any of the space-spin coordinates.  The Hartree product does not satisfy the anti-symmetry principle\cite{slater1930_antisymmetry,fock1930_antisymmetry}, which can be demonstrated with a two particle system.  For a two-particle system, the anti-symmetric property can be described as
-\begin{equation}
-\label{eq:antisymmetry}
-	\Psi(\bm{x}_1,\bm{x}_2) = -\Psi(\bm{x}_2,\bm{x}_1)
-\end{equation}
-which Equation \ref{eq:hartree} clearly fails.
-
-The Hartree-Fock method often assumes that the exact, $N$-body wave function of the system can be approximated by a single Slater determinant from a system of electrons.  By invoking the variational method, one can derive a set of $N$-coupled equations for the $N$ spin orbitals.  A solution of these equations yields the Hartree-Fock wave function and energy of the system.
-
-\section{Density Functional Theory}
-
-Density Functional Theory (DFT) is a simplification of the many body electron function by relating the wave function of the system of interest to the electron density of the system, where theoretical underpinning are established by the Hohenberg-Kohn theorems\cite{hohenberg1964_dft}.
-
-The first Hohenberg-Kohn theorem establishes that the external potential $v_{ext}(\bm{r})$, and hence the total energy, is a unique functional of the electron density $n{\bm{r}}$.
-
-Here, the energy functional $E[n(\bm{r})]$ is written in terms of the external potential $V_{ext}(r)$,
-\begin{equation}
-	\label{eq:hk_functional}
-	E[n(\bm{r})] = F_{HK}[n(\bm{r})]+\int V_{ext}(\bm{r})n(\bm{r})d\bm{r}
-\end{equation}
-where $F_{HK}[n(\bm{r})]$ is unknown, but otherwise a function of the electron density $n(\bm{r})$.  Correspondingly, a Hamiltonian can be written such that electron wave function $\Psi_0$ also gives the ground state $E[n(\bm{r})]=\bra{\Psi}\hat{H}\ket{\Psi}$, where $n_0(\bm{r})$ is the ground state electron density.  This Hamiltonian is
-\begin{equation}
-	\hat{H}
-	= \hat{F} + \hat{V}_{ext}
-	= [\hat{T} + \hat{V}_{ee}] + \hat{V}_{ext}
-\end{equation}
-Here, the electron operator $\hat{F}$ can be decomposed into  $\hat{T}$ is the kinetic energy operator and  $\hat{V}_{ee}$ is the electron-electron operator.
-$\hat{V}_ext$ is the external potential.
-For all $N$ electron systems, $\hat{F}$ is that same, so $\hat{H}$ is completely defined by the number of electrons $N$ and the external potential $v_{ext}(\bm{r})$.
-
-If are two different potentials $v_{ext,1}(\bm{r})$ and $v_{ext,2}(\bm{r})$, that give rise to the same density $n_0(\bm{r})$.  The associated Hamiltonians $H_1$ and $H_2$ will have different groundstate wavefunctions, ($\Psi_1$ and $\Psi_2$) and ground state energies ($E_1^0$ and $E_2^0$).  The application of the variational principle with Equation \ref{eq:hk_functional} leads to the inequality
-\begin{align}
-	E_1^0 < \bra{\Psi_2}\hat{H}_1\ket{\Psi_2}
-	      &= \bra{\Psi_2}\hat{H}_2\ket{\Psi_2} \\
-	      &= E_2^0
-				  + \int
-					  n_0(\bm{r})[v_{ext,1}(\bm{r})
-						            -v_{ext,2}(\bm{r})]
-					d\bm{r}
-\end{align}
-An equivalent inequality can be made with the subscript exchanged, leads to an apparent contradiction.  As a result, the ground state density $n_0(\bm{r})$ uniquely determines the external potential $v_{ext}{(\bm{r})}$.  The electrons determine the positions of the nuclei in the system, and also all groundstate electronic properties because $v_{ext}(\bm{r})$ and $N$ completely define $\hat{H}$.
-
-The second Hohenberg-Kohn theorem defines an energy functional and proves that the correct ground electron density also minimizes this energy functional.  This establishes a one-to-one correspondence between between the ground state electron density $n_0(\bm{r})$ and the corresponding ground-state wavefunction $\Psi_0$.
-
-
-\section{Kohn-Sham Equations}
-
-\section{The Exchange Correlation Term}
-
-In Kohn-Sham DFT, only the exchange-correlation energy, $E_{XC}$, as a functional of the electron spin densities $n(\bm{r})$ must be approximated.
-The local density approximation is discussed by Kohn and Sham\cite{kohn1965_dft} in the introduction of the Kohn-Sham equations.
-In the LDA, the exchange energy per particle in each spatial point is taken as the exchange energy per particle from a uniform electron gas with a density equivalent to the density in this same point\cite{ceperley1980_lda}.
-Later LDA take similar approaches, \cite{vosko1980_lda_vwm, perdew1981_lda_pz, perdew1992_lda_pw}.
-
-\begin{equation}
-	E_{xc}^{LDA}[n]=\int n(\bm{r})e_{xc}^{hom}(n(\bm{r}))d\tau
-\end{equation}
-The generalized gradient approximation(GGA)\cite{langreth1983_gga_1,becke1988_gga_2} introduces a gradient correction
-\begin{equation}
-	E_{xc}^{GGA}[n]=\int n e_x^{LDA} F_{xc}^{GGA}(n,s)_{n=n(\bm{r})}d\tau,
-\end{equation}
-where
-\begin{equation}
-	s =\left.
-	       \frac{\lvert\nabla n\rvert}{2k_F n}
-	   \right\rvert_{n=n(\bm{r})}
-\end{equation}
-
-\section{Molecular Dynamics}
-Molecular dynanmics (MD) is a simulation approach where the time evolution of aset of interacting atoms is followed by numerically solving their equations of motion.  In MD, the behavior of atoms follow Newtonian mechanics:
+Molecular dynanmics (MD) is a simulation approach where the time evolution of a set of interacting atoms is followed by numerically solving their equations of motion.  In MD, the behavior of atoms follow Newtonian mechanics:
 \begin{equation}
 	  \label{eq:newton_eom}
-    \bm{M}\frac{d^2\bm{R}(t)}{dt^2} = \bm{F}(\bm{R}(t))
+    \bm{M}\frac{\mathrm{d}^2\bm{R}(t)}
+		           {\mathrm{d} t^2}
+		=
+		\bm{F}(\bm{R}(t))
 \end{equation}
-where $t$ is time, $\bm{R}(t) = (\bm{r}_1(t),...,\bm{r}_N(t))$ represents the forces on the $N$ atoms, and $\bm{M}$ is the mass matrix with the mass of each atom $i$ set across across the diagonal.
+where $t$ is time,
+$\bm{R} = (\bm{r}_1,...,\bm{r}_{N_\alpha})$ represents the position $\bm{r}_\alpha \in \mathbb{R}^3$ of each atom $\alpha$ for $N_\alpha$ atoms,
+$\bm{F} = (\bm{f}_1,...,\bm{f}_{N_\alpha})$ are forces $\bm{f}_\alpha$ acting on each atom,
+and $\bm{M}$ is the diagonal mass matrix with the mass of each atom $\alpha$.
 The total energy is conserved, even if the kinetic energy and potential energy can change dynamically.
 
-The potential $V$ maps interatomic configurations $\bm{R}$ to provide the potential energy of a system $E_P$.  To evolve a system of atoms, the force $\bm{F}$ is given by the gradient of the potential $F(\bm{r}(t))=-\nabla V(\bm{R}(t))$, which can then be substituted into Equation \ref{eq:newton_eom}.
-
+The potential $V$ maps interatomic configurations $\bm{R}$ to provide the potential energy of a system $E_P$.  To evolve a system of atoms, the forces $\bm{F}$ is given by the gradient of the potential for each atom $\alpha$,
+\begin{equation}
+	\label{eq:calc_forces_from_potential}
+	 \bm{f}_\alpha
+	 =
+	 -\nabla_{\bm{r}_\alpha} V(\bm{R}_\alpha),
+\end{equation}
+ which can then be substituted into Equation \ref{eq:newton_eom}.
 
 \section{Numerical Integration}
-A dynamical simulation computes atomic position of each atom $i$ as a function of time given their initial positions $\bm{r}_i(t=0)$ and velocities $\bm{v}_i(t=0)$.  Since Newton's equation of motion is 2nd order differential equation, an initial conditions needs to specify both positions and velocities of all atoms at the initial condition.
+A dynamical simulation computes the trajectory $\bm{r}_\alpha(t)$ of each atom $\alpha$ as a function of time, given the initial position $\bm{r}_\alpha(t=0)$ and velocity $\bm{v}_\alpha(t=0)$.  Since Newton's equation of motion is a 2nd order differential equation, an initial condition needs to specify both positions and velocities of all atoms at the initial condition.
 
-To solve the equation of motion computationally, time is typically descretized uniformlyby incrementing $t$ by $\Delta t$.  A naive implementation of an integration scheme would use the forward Euler algoirthm which is a truncated Taylor series expansion,
+To evolve the equation of motion numerically, time is typically descretized uniformly by incrementing $t$ by the time step $\Delta t$.  A naive implementation of an integration scheme would use the forward Euler algorithm, which is a truncated Taylor series expansion,
 \begin{equation}
 	\bm{r}(t+\Delta t)
 	=
 	\bm{r}(t)
-	+ \frac{d \bm{r}(t)}{dt} \Delta t
-	+ \frac{1}{2} \frac{d^2 \bm{r}(t)}{dt^2} \Delta t^2
+	+ \frac{\mathrm{d} \bm{r}(t)}
+	       {\mathrm{d}t}
+		\Delta t
+	+ \frac{1}{2}
+	  \frac{\mathrm{d}^2 \bm{r}(t)}
+		     {\mathrm{d}t^2}
+		\Delta t^2
 \end{equation}
-This is approach is not time-reversible, does not conserve volume in phase space, and suffers from energy drift\cite{allen1987_md}.
+This is approach is not time-reversible and suffers from energy drift\cite{allen1987_md}.
 
-Instead, the Verlet algorithm begins by approximating
+A mathematical process is time-reversible if the time reversed process satisfies the same dyamical equations as the original process.  The equations are invariant when e.g. $\Delta t < 0$.  Physically speaking, symmetry of the physical laws under time reversal imples the conversation of entropy.  When the numerical algorithm is not time-reversible then the energy drift is corresponds to a heat flow in or out of the system.
+
+%In molecular dynamics, the Hamiltonian $H$ is seperable, and can be written in the form
+%\begin{equation}
+%	\label{eq:md_hamiltonian}
+%	H(p,q) = T(p) + V(q)
+%\end{equation}
+%with $T$ being the kinetic energy, $V$ is the potential energy, and $(p,q)$ are canonical coordinates include both the position $q$ and $p$ momentum coordinates.  Here the Euler algorithm is a first order integrator
+
+Instead, molecular dynamics require the use of a numerical integrator that provide better numerical stability and provides time-reversibility.  As an example, we discuss the Verlet integration scheme\cite{verlet1967_integrator}.  While the Euler algorithm is a 1st order forward difference Taylor expansion to order one,  Verlet integration is a 2nd order central difference equation:
 \begin{equation}
-	\frac{d^2 r(t)}
-	     {dt^2}
-	= \frac{\bm{r}(t+\Delta t) - 2\bm{r}(t) + \bm{r}(t-\Delta t)}
+	\frac{\mathrm{d}^2 r(t)}
+	     {\mathrm{d}t^2}
+	= \frac{\bm{r}(t+\Delta t)
+	          - 2\bm{r}(t)
+		        + \bm{r}(t-\Delta t)}
 	       {\Delta t^2}
 \end{equation}
 Thus,
 \begin{equation}
-  \frac{\bm{r}(t+\Delta t) - 2\bm{r}(t) + \bm{r}(t-\Delta t)}
+  \frac{\bm{r}(t+\Delta t)
+	      - 2\bm{r}(t)
+				+ \bm{r}(t-\Delta t)}
 	     {\Delta t^2}
 	=
-	- \frac{1}{m} \frac{dU(\bm{r}(t))}{d\bm{r}}
+	- \frac{1}
+	       {m}
+		\frac{\mathrm{d} V(\bm{r}(t))}
+		     {\mathrm{d} \bm{r}}
 \end{equation}
 \begin{equation}
 	\bm{r}(t+\Delta t)
-	     = 2\bm{r}(t) - \bm{r}(t-\Delta t) - \Delta t \frac{1}{m} \frac{dU(\bm{r}(t))}{d\bm{r}}
+	=
+	2\bm{r}(t)
+	- \bm{r}(t-\Delta t)
+	- \frac{1}{m}
+		\frac{\mathrm{d} V(\bm{r}(t))}
+		     {\mathrm{d} \bm{r}}
+		\Delta t
 \end{equation}
 
 \section{Empirical Interatomic Potentials}
 %The interatomic potential $U(\bm{R}_i)$ derived from the Born-Oppenheimer approximation is derived from a quantum-mechanical perspective.
-The computational cost of \emph{ab initio} such as DFT can provide accurate structural energies and forces.  However, the computational cost to compute $V(\bm{R}_i)$  makes the scientific inquiry of systems limited to short simulation times and small number of atoms.
+The computational cost of \emph{ab initio} techniques such as density functional theory (DFT)\cite{hohenberg1964_dft,kohn1965_dft} can provide accurate structural energies and forces.    \emph{Ab initio} methods are are numerical methods to solvve the elctronic Schr\"odinger equation given the position of the nuclei $\bm{R}$ and the number of electrons.  These calculations provide useful information such as electron densities, energies, and other properties. However, the computational cost to compute $V(\bm{R}_i)$  limits DFT to either static calculations or short simulation times on systems containing a small number of atoms.
 An empirical interatomic potential $\hat{V}(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $V(\bm{R}_i)$, and provide computational efficiency by eliminating electronic structure calculations.
 
 Over the last few decades, a large number of potentials have been developed to descibe various bonding types and environments.
-To take representative examples, the Lennard Jones was developed for the van der Waals interactions of noble gases, pair potentials such as the Buckingham potential can be used for ionic solids, the embedded atom model (EAM) was developed for metallic systems, the Assisted Model Building with Energy Refinement (AMBER) for biomolecules, the Tersoff potential for covalently bonded materials.
-To deal with bonding and chemical environments for heterogenous materials like metal/metal oxide interfaces have led to extensions such as MEAM, REBO, COMB, and ReaxFF.
+To take representative examples, the Lennard Jones potential\cite{lennardjones1924_lj_pot} was developed for the van der Waals interactions of noble gases, pair potentials such as the Buckingham potential\cite{buckingham1938} can be used for ionic solids\cite{catlow1977_buckingham}, the embedded atom model (EAM)\cite{daw1983_eam,daw1984_eam} was developed for metallic systems,
+the Assisted Model Building with Energy Refinement (AMBER)\cite{cornell1995_potential_amber} for biomolecules,
+the Tersoff potential\cite{tersoff1988_potential_1,tersoff1988_potential_2} for covalently bonded materials.
+To deal with bonding and chemical environments for heterogenous materials like metal/metal oxide interfaces have led to extensions such as MEAM\cite{baskes1992_potential_meam},  REBO\cite{brenner1990_potential_rebo},  COMB\cite{liang2003_potential_comb},
+and ReaxFF\cite{vanduin2001_reaxff}.
 
 The topic of empirical potentials and their development is covered in detail in Chapter \ref{ch:potential_development}.
 
 \section{Energy Minimization}
 
-Function optimization is a calculation that pervades much of numerical analysis.  In the context of material systems, the function to be optimized (in this case minimization) is the energy of a system.  The energy landscape of material may posseses many minima, or conformational substates.  The goal of energy minimization is to find the local energy minimum, which is the atomic configuration corresponding with the bottom of the energy well for that phase.
+Function optimization is a calculation that pervades much of numerical analysis.  In the context of material systems, the function to be optimized (in this case minimized) is the energy of a system.  The energy landscape of a material may posseses many minima, or conformational substates.  The goal of energy minimization is to find the local energy minimum, which is the atomic configuration corresponding to the bottom of the energy well for that phase.
 
-Physically, energy minimization corresponds to an instantaneous freezing of the system; a static structure in which the forces between atoms have been eliminated at $0 K$
+Physically, energy minimization corresponds to an instantaneous freezing of the system; a static structure in which the forces between atoms have been eliminated at $0 \mathrm{K}$.
 
-Starting with different configuration of atoms, may lead to different energies.  Each of these energies correspond to a different phase of the material.  The lowest energy phase, the energy at this local minimum maybe much higher than the energy of the global minimum.  The atomic configuration of the global minimum is the ground state configuration.  Other configurations are non-equilibrium phases of the material system at $0$ K which corresponds to the local minimum of that phase.
+Starting with different configuration of atoms, may lead to different energies.  Each of these energies corresponds to a different phase of the material.  The lowest energy phase corresponds to the thermodynamically stable phase at $0 \mathrm{K}$.  Other atomic configurations are non-equilibrium phases of the material system at $0$ K which corresponds to the local minimum of that phase.
 
 \section{Thermodynamic Ensembles}
   The statistical ensembles for molecular dynamics simulations can be defined by examination of the ideal gas law:
@@ -195,32 +115,49 @@ Starting with different configuration of atoms, may lead to different energies. 
   \label{eq:ideal_gas_law}
     PV = N k_B T
   \end{equation}
+  where pressure ($P$), volume ($V$), and temperature ($T$), and the number of atoms ($N$) are the state variables of the system.  Each of the state variables is definable in a molecular dynamics simulation.
 
-  The left hand of the equation is the potential energy, $E_P$, which is balanced by the right hand of the equation, which is the kinetic energy $E_K$ of the system.  Pressure ($P$), volume ($V$), and temperature ($T$), and the number of atoms ($N$) are the state variable of the system.  Each of the state variables is definable in a molecular dynamics simulation.
-
-  The simplest state variables to obtain are the number of atoms and volume.  These are defined by the number of atoms in the simulation cell, and the volume of that unit cell.  Calculation of temperature is discussed in its regulation in Section \ref{sec:nvt_ensemble} through the use of thermostat algorithms.  Likewise, the calculation of pressure is presented with barostat algorithms in Section \ref{sec:npt_ensemble}.
+  The simplest state variables to obtain are the number of atoms and volume.  These are defined by the number of atoms in the simulation cell, and the volume of that unit cell.  Calculation of temperature and its regulation is discussed in Section \ref{sec:nvt_ensemble} through the use of thermostat algorithms.  Likewise, the calculation of pressure is presented with barostat algorithms in Section \ref{sec:npt_ensemble}.
 
   In MD simulations, it is often necessary or desireable to study a system under the conditions of constant pressure or constant temperature.  The ensembles most typically used for molecular dynamics, are the microcanonical (NVE), canonical (NPT), and isothermal-isobaric (NPT).
 
   In this section, the NVE is first discussed, and the other ensembles are discussed as modification of the equations of motion for the NVE ensemble.  The purpose of this section is to provide a broad overview of the topic.
 
-Simulations of the canonical ensemble introduces the regulation of temperature.  Problems with temperature rescaling approaches are discussed.  Two types of thermostats are discussed ones involving the stochastic approach of Langevin dynamics, and the Nose-Hoover thermostat\cite{hoover1985_npt} which modifies the equations of motion.
+Simulations of the canonical ensemble introduce the regulation of temperature.  Problems with temperature rescaling approaches are discussed.  Two types of thermostats are discussed ones involving the stochastic approach of Langevin dynamics, and the Nose-Hoover thermostat\cite{hoover1985_npt} which modifies the equations of motion.
 
 The isothermal-isobaric (NPT) introduces regulation of pressure.  The discussion here is limited to the approach of Parrinello and Rahman\cite{parrinello1981_barostat}.
 
 \subsection{NVE}
 Molecular dynamics can be expressed in Hamiltonian form to specifically express conserved quantities\cite{allen1987_md}, which can then be used to derive the equations of motion,
 \begin{equation}
-	\frac{d \bm{r}}{dt}=\frac{\partial H(\bm{r},\bm{p}}){\partial \bm{p}},
-	\frac{d \bm{p}}{dt}=\frac{\partial H(\bm{r},\bm{p}}){\partial \bm{r}}
+	\frac{\mathrm{d} \bm{r}}
+	     {\mathrm{d} t}
+	=
+	\frac{\partial H(\bm{r},\bm{p})}
+	     {\partial \bm{p}},
+	\quad
+	\frac{\mathrm{d} \bm{p}}
+	     {\mathrm{d} t}
+	=
+	\frac{\partial H(\bm{r},\bm{p})}
+	     {\partial \bm{r}}
 \end{equation}
 
-Integration of the classical equations of motion (by Verlet) for a system leads as $t \rightarrow \infty$ to a trajectory mapping a microcanonical ensemble of microstates.  The microcanonic or isenthalpic ensemble.  Without regulation of temperature or volume, this is result which molecular dynamics simulation provides.
+Integration of the classical equations of motion (e.g. Verlet integration) for a system leads as {$t \rightarrow \infty$} to a trajectory produces an ensemble of microstates: the microcanonical, canonical or isenthalpic ensemble.  Without regulation of temperature or volume, molecular dynamics simulation produces the microcanonical ensemble.
 
   The independent variables of the microcanonical enseble ($N$, $V$, and $E$) are extensive, which means they should be conserved during the simulation,
 \begin{equation}
-	\frac{dH}{dt}=\frac{\partial H(\bm{r},\bm{p})}{\partial \bm{r}} \frac{d\bm{r}}{dt}
-							 +\frac{\partial H(\bm{r},\bm{p})}{\partial \bm{p}} \frac{d\bm{p}}{dt}=0
+	\frac{\mathrm{d} H}
+	     {\mathrm{d} t}
+	=
+	\frac{\partial H(\bm{r},\bm{p})}
+	     {\partial \bm{r}} \frac{d\bm{r}}{dt}
+	+
+	\frac{\partial H(\bm{r},\bm{p})}
+	     {\partial \bm{p}}
+	\frac{\mathrm{d} \bm{p}}
+	     {\mathrm{d} t}
+	= 0
 \end{equation}
 
   The other state variables are not conserved ($P$, $T$, and the chemical potential $\mu$), and should fluctuate around well-defined average values.
@@ -228,17 +165,17 @@ Integration of the classical equations of motion (by Verlet) for a system leads 
 
 \subsection{NVT and Thermostats}
 \label{sec:nvt_ensemble}
-The microcanonical ensemble where the energy is kept constant is not often used because experiments where energy is kept constant; this does not correspond with conditions under which most experiments are performed.  Regulation of the temperature is motivated by the need to match experimental conditions, study temperature-dependent processes,
+The microcanonical ensemble where the energy is kept constant is not often used because this does not correspond with conditions under which most experiments are performed.  Regulation of the temperature is motivated by the need to match experimental conditions and to study temperature-dependent processes,
 
 A canonical ensemble (NVT) is the statistical ensemble that represents the possible states of a mechanical system in thermal equilibrium with a heat bath at a fixed temperature.  The principal thermodynamic variable of the canonical ensemble is temperature.  The ensemble also depends on the number of particles in the system, and the system's volume.
 
-A modification of the Newtonian equations of motion to generate a thermodynamic ensemble at a constant temperature is a thermostat.  Thermostats in molecular dynamics provide a mechanism of regulating the simulation temperature $T_0$.  In NVT simulation, themostating modifies the translation velocity of the particles.
+A modification of the Newtonian equations of motion to generate a thermodynamic ensemble at a constant temperature is a thermostat.  Thermostats in molecular dynamics provide a mechanism of regulating the simulation temperature $T_0$.  In NVT simulations, themostating modifies the translation velocity of the particles.
 
-A short discussion of thermostats is provided here.  For a more detailed description, see H\"{u}nenberger\cite{hunenberger2005_thermostats}, Allen and Tildesley \cite{allen1987_md}, and Tadmor and Miller \cite{tadmor2011_md}
+A short discussion of thermostats is provided here.  For a more detailed description, see H\"{u}nenberger\cite{hunenberger2005_thermostat}, Allen and Tildesley \cite{allen1987_md}, and Tadmor and Miller \cite{tadmor2011_md}
 
-The use of a thermostat requires the definition of an instaneous temperature which is compared to the temperature of the heat bath which the system is coupled to $T_0$.
+In thermostatting, the instaneous temperature $\mathcal{T}$ is compared to the temperature of the heat bath $T$ which the system is coupled to.
 
-From the equipartition theorem provides the quantitative prediction, such as the average kinetic and potential energies of a system.  The equipartition theorem gives the average values of the individual components of energy.  The average kinetic energy $K$ of a system is related to its macroscopic temperature $T$ through
+The equipartition theorem provides the quantitative prediction, for the average kinetic and potential energies of a system.  The equipartition theorem gives the average values of the individual components of energy.  The average kinetic energy $K$ of a system is related to its macroscopic temperature $T$ through
 \begin{equation}
   K
   =
@@ -258,38 +195,43 @@ The instanteous temperature $\mathcal{T}$ is
        {k_B N_{\mathrm{df}}}
   \mathcal{K},
 \end{equation}
-then the average temperature $<\mathcal{T}>$ is identical to the macroscopic temperature $T$.  Since the velocity $\bm{v}_i$ of each particle $i$ is obtained from Verlet integration, the instantaneous kinetic energy $mathcal{K}$ can be replaced by the particles' momenta $\bm{p}_i$,
+then the average temperature $\langle\mathcal{T}\rangle$ is identical to the macroscopic temperature $T$.  Since the velocity $\bm{v}_i$ of each particle $i$ is obtained from Verlet integration, the instantaneous kinetic energy $\mathcal{K}$ can be replaced by the particles' momenta $\bm{p}_i$,
 \begin{equation}
   \label{eq:T_kinetic_energy}
-  T
-  = \mathcal{T}
+  \mathcal{T}
   = \frac{2}
          {k_B N_{\mathrm{df}}}
-    \sum_{i=1}^N \frac{|\bm{p}_i|^2}{2 qm_i}
+    \sum_{i=1}^N
+		  \frac{1}{2}
+		  \frac{|\bm{p}_i|^2}{m_i}
   = \frac{2}
          {k_B N_{\mathrm{df}}}
-         \sum_{i=1}^N {1}{2}m|\bm{v}|^2
+    \sum_{i=1}^N
+		     \frac{1}{2} m_i |\bm{v}_i|^2
 \end{equation}
 
 \begin{equation}
-  E_k = <K> = \sum_{i=1}^N {1}{2}m|\bm{v}|^2
+  E_k
+	= \langle K \rangle = \sum_{i=1}^N
+	=
+	\frac{1}{2} m_i |\bm{v}_i|^2
 \end{equation}
 
 \subsubsection{Velocity Rescaling}
 An obvious way to regulate the temperature is velocity scaling\cite{tadmor2011_md}.  Denote the temperature at time $t$ as $T(t)$ and combine with Equation \ref{eq:T_kinetic_energy}
 \begin{align}
   \Delta T(t)
-  &= T(t) - T(t-1)
-  &= {1}{2}
+  &= T(t) - T(t-1) \\
+  &= \frac{1}{2}
      \sum_{i=1}^N 2 \frac{m_i (\lambda \bm{v}_i)^2}
                          {N_{\mathrm{df}} k_B}
      -
-     {1}{2}
+     \frac{1}{2}
      \sum_{i=1}^N 2 \frac{m_i \bm{v}_i^2}
-                         {N_{\mathrm{df}} k_B}
+                         {N_{\mathrm{df}} k_B} \\
   &= (\lambda^2 - 1) T(t)
 \end{align}
-where $\lambda = \sqrt{T_0/T_0}$.  Thus, the simplest way to control the temperature is to multiply the velocities at each time step by $\lambda$.
+where $\lambda = \sqrt{T/T_0}$.  Thus, the simplest way to control the temperature is to multiply the velocities at each time step by $\lambda$.
 
 This algorithm keeps the instantaneous temperature set to exactly $T_0$.  Since this approach does not allow fluctuations in temperature, it is inconsistent with the statistical mechanics of the canonical ensemble, where we know that the kinetic energy is not constant even when a system is at thermal equilbrium with its heat bath.
 
@@ -312,60 +254,72 @@ This thermostat suppresses fluctuations in the kinetic energy of the system and 
 \subsubsection{Langevin thermostat}
 
 In the Langevin thermostat\cite{allen1987_md}, the regulation of the temperature is maintained by transforming Newton's equation of motion into a stochastic differential equation.
-The Langevin thermostat incorporates random forces into the equations of motion.  These random forces models the effect of the heat bath.
+The Langevin thermostat incorporates random forces into the equations of motion.  These random forces model the effect of the heat bath.
 
 The original Langevin equation\cite{langevin1908_equation} described Brownian motion,
 \begin{equation}
   \label{eq:langevin}
-  m_i \frac{d^2\bm{r}_i}{dt^2}
+  m_i \frac{\mathrm{d}^2 \bm{r}_i}
+	         {\mathrm{d} t^2}
   =
-  -\lambda \frac{d\bm{r}}{dt} + \bm{\nu}(t).
+  - \lambda
+	  \frac{\mathrm{d} \bm{r}}
+	       {\mathrm{d} t}
+	+ \bm{\eta}(t).
 \end{equation}
-The force acting on the article is written as a sum of a viscous force proportional to the particle's velocity (from Stokes' law), and a stochastic term $\bm{\nu}(t)$, which has a Gaussian probability distribution is correlation function usually expressed as
+The force acting on the article is written as a sum of a viscous force proportional to the particle's velocity (from Stokes' law), and a stochastic term $\bm{\eta}(t)$, which has a Gaussian probability distribution is correlation function usually expressed as
 \begin{equation}
-  \label{eq:langevin_nu}
-  <\nu_i(t) \nu_j(t')> = 2 \lambda k_B T_0 \delta_{ij} \delta(t-t'),
+  \label{eq:langevin_eta}
+  <\eta_i(t) \eta_j(t')> = 2 \lambda k_B T_0 \delta_{ij} \delta(t-t'),
 \end{equation}
-where $\nu_i$ is the $i$th component on the vector $\nu_i(t)$.  Equation \ref{eq:langevin_nu} is described in terms of an autocorrelation properties to mathemtically describe Brownian motion.
+where $\eta_i$ is the $i$th component on the vector $\eta_i(t)$.  Equation \ref{eq:langevin_eta} is described in terms of an autocorrelation properties to mathemtically describe Brownian motion.
 
-A description from Brownian motion from probability theory notation\cite{karatzas1991_sde} of Brownian motion is more clear than Equation \ref{eq:langevin_nu}.Denote $B(t)$ as a standard brownian motion, then $B(t)$ as independent increments with respect to time $t$.  For every $t > 0$, the future increments $B(t+\Delta t) - B(t)$, for $u \geq 0$, are independent of the past values $W_s$, $s < t$.  Brownian motion has Gaussian increments $B_{t+\delta t}-B_{t}$ with mean $0$ and variance $\delta t$; $B_{t+\delta t}-B_{t}~N(0,\delta t)$.
+A description from Brownian motion using probability theory notation\cite{karatzas1991_sde} is clearer than Equation \ref{eq:langevin_eta}. Denote $B(t)$ as a standard Brownian motion, then $B(t)$ has independent increments with respect to time $t$.  For every $t > 0$, the future increments $B(t+\Delta t) - B(t)$, for $u \geq 0$, are independent of the past values $B(s)$, $s < t$.  Brownian motion has Gaussian increments $B_{t+\delta t}-B_{t}$ with mean $0$ and variance $\delta t$; $B_{t+\delta t}-B_{t}~N(0,\delta t)$.
 Finally, $B(t)$ has continuous paths and is continuous in $t$.
-Since $B(t)$ is nowhere differentiable, the stochastic differential $dB(t)$ informally denotes the corresponding It\^{o} integral
+Since $B(t)$ is nowhere differentiable, the stochastic differential $\mathrm{d}B(t)$ informally denotes the corresponding It\^{o} integral
 \begin{equation}
-  B(t+\delta t) - B(t) = \int_t^{t+\delta{t}} dB(\tau),
+  B(t+\delta t) - B(t)
+	=
+	\int_t^{t+\delta{t}} \!\!\! \mathrm{d}B(\tau),
 \end{equation}
-and then $d\bm{B}(t)/dt$ denotes a white noise process.
+and then $\mathrm{d} B(t)/\mathrm{d}t$ denotes a white noise process.
 
-With this description, $\bm{nu}(t)$ is based on the evolution of a standard Brownian motion,
+With this description, $\bm{\eta}(t)$ is based on the evolution of a standard Brownian motion,
 \begin{equation}
-  \bm{\nu}(t) = \sigma_i \frac{d\bm{B}(t)}{dt}
-\end{equation} rescaled by
-$\sigma_i^2 = 2 m_i \lambda_i k_B T_0$, and $\bm{B}(t) \in \mathbb{3}$ with $B_i$ independent from $B_j$ for $i \neq j$.  Then $\bm{nu}(t)$ models the heat flow from a solvent at a constant temperature $T_0$.  The necessary properties implied by \ref{eq:langevin_nu} follow immediately from the definition of standard Brownian motion.
+  \bm{\nu}(t) = \sigma \frac{d\bm{B}(t)}{dt}
+\end{equation}
+rescaled by $\sigma^2 = 2 m_i \lambda_i k_B T_0$, and $\bm{B}(t) \in \mathbb{R}^3$ with $B_i(t)$ independent from $B_j(t)$ for $i \neq j$.  Then $\bm{eta}(t)$ models the heat flow from a solvent at a constant temperature $T_0$.  The necessary properties implied by Equation \ref{eq:langevin_eta} follow immediately from the definition of standard Brownian motion.
 
-The Langevin thermostat\cite{grest1986_langevin} was originally developed to explain the the interaction of the solvent (i.e. the heat bath) on the solute (i.e. the simulated system) and has two levels of interaction.  First, the atoms interact with each other through the interatomic potential.  Second, the atoms are in constant collision with some medium that constitutes the heat bath with the assumption that interaction with the heat bath is more frequent exert smaller forces than the interatomic iteraction.  This allows to decouple interatomic interactions from the interaction from the heat bath.  Adding the terms from Equation \ref{eq:langevin} to the Newton's equation of motion, we get the new governing equation for atom $i$.
+The Langevin thermostat\cite{grest1986_langevin} was originally developed to explain the interaction of the solvent (i.e. the heat bath) on the solute (i.e. the simulated system) and has two levels of interaction.  First, the atoms interact with each other through the interatomic potential.  Second, the atoms are in constant collision with some medium that constitutes the heat bath with the assumption that interactions with the heat bath are more frequent and exert smaller forces than the interatomic iteraction.  This allows the  interatomic interactions to be decoupled from the interactions from the heat bath.  Adding the terms from Equation \ref{eq:langevin} to the Newton's equation of motion, we get the new governing equation for atom $i$.
 \begin{equation}
   \label{eq:langevin_eos}
-  \frac{d^2\bm{r}_i}{dt^2}
+  \frac{\mathrm{d}^2 \bm{r}_i}
+	     {\mathrm{d} t^2}
   =
-  \frac{1}{m_i} F_i
-  - \frac{\gamma_i}{m_i} \frac{d \bm{r}_i}{dt}
-  + \frac{1}{m_i} \bm{\nu}_i(t)
+  \frac{1}{m_i} \bm{f}_i
+  - \frac{\gamma}
+	       {m_i}
+	  \frac{\mathrm{d} \bm{r}_i}
+		     {\mathrm{d} t}
+  + \frac{1}{m_i} \bm{\eta}_i(t)
 \end{equation}
-where $\gamma_i$ is now dampening constant associated with atom $i$.
+where $\gamma$ is now dampening constant associated with atom $i$.
 
 In the Langevin thermostat, the choice $\gamma$ becomes arbitrary.  The choice of too small of $\gamma$ leads to slow equilbrium, while a large value of the dampening constant leads to the stochastic term dominating the equations of motion.
 
 \section{Nos\'e-Hoover thermostat}
 % https://www2.mpip-mainz.mpg.de/~andrienk/journal_club/thermostats.pdf
-The method to specify the temperature in a molecular dynamics simulation was proposed by Nos\'e\cite{nose1984_npt_1,nose1984_npt_2}.  In this approach, Nose proposed an extended form of the Hamiltonian which introduces a fictitious particle, which couples the system to the heath bath.  The Nose equations of motion are smooth, deterministic, and time-reversible, but stretched the timescale making them impractical for simulation purposes.  These equations were refined by Hoover\cite{hoover1985_npt} to reformulate Nos\'e equations in term of real system variables.  This formulation is known as as the Nose-Hoover thermostat.
+The method to specify the temperature in a molecular dynamics simulation was proposed by Nos\'e\cite{nose1984_npt_1,nose1984_npt_2}.  In this approach, Nos\'e proposed an extended form of the Hamiltonian which introduces a fictitious particle, which couples the system to the heath bath.  The Nos\'e equations of motion are smooth, deterministic, and time-reversible, but stretched the timescale making them impractical for simulation purposes.  These equations were refined by Hoover\cite{hoover1985_npt} to reformulate Nos\'e equations in term of real system variables.  This formulation is known as as the Nose-Hoover thermostat.
 
 The Langrangian equations of motion for the Nos\'e-Hoover thermostat are
 \begin{equation}
   \label{eq:nose_hoover_1}
-  \frac{d^2\bm{r]}}
-       {dt^2}
+  \frac{\mathrm{d}^2 \bm{r} }
+       {\mathrm{d} t^2 }
   =
-  \frac{\bm{F}_i}{m_i} - \gamma \bm{r_i},
+  \frac{\bm{f}_i}
+	     {m_i}
+	- \gamma \bm{r_i},
 \end{equation}
 with
 \begin{equation}
@@ -380,9 +334,9 @@ with
 
 Equation \ref{eq:nose_hoover_1} is similar to the Langevin thermostat but without the stochastic term.  Since the time-evolution is described by a second order differential equation, the heat may flow to and from the system causing oscillations in the system. Equation \ref{eq:nose_hoover_2} provides the feedback between the $\mathcal{T}$ and $T_0$.
 
-The Nose-Hoover thermostat has one free parameter $M$ which is the mass of the ficticious particle.  This mass serves as mechanism to control the oscillations in the system as a large $M$ will provide a large inertia and make heat flow between the heat bath and the simulated system sluggish.  If the mass is too small, the thermostat will not control the temperature adequately.
+The Nose-Hoover thermostat has one free parameter $M$ which is the mass of the ficticious particle.  This mass serves as mechanism to control the oscillations in the system, as a large $M$ will provide a large inertia and make heat flow between the heat bath and the simulated system sluggish.  If the mass is too small, the thermostat will not control the temperature adequately.
 
-Since the equations of motion have changed, the Verlet integration scheme needs to be modified
+Since the equations of motion have changed, the Verlet integration scheme needs to be modified.
 
 \subsection{NPT and Barostats}
 \label{sec:npt_ensemble}
@@ -405,28 +359,36 @@ The usual approach for the evaluation of pressure $P$ in an MD simulation involv
 For a system with interactions, the pressure can be written as virial equation\cite{tadmor2011_md}
 \begin{equation}
   \label{eq:virial_equation}
-  P = \langle \frac{N k_B T}{\mathcal{V}}  \rangle
-      + \langle \frac{1}{3\mathcal{V}}
-        \sum_{i=1}^N
-        \langle \bm{r}_i \cdot \bm{F}_{i} \rangle
+  P
+	=
+	\left\langle
+	  \frac{N k_B T}{\mathcal{V}}
+  \right\rangle
+  +
+	\left\langle
+	  \frac{1}
+		     {3\mathcal{V}}
+    \sum_{i=1}^N
+        \bm{r}_i \cdot \bm{F}_{i}
+	\right\rangle
 \end{equation}
 The first term of the right hand side of Equation \ref{eq:virial_equation} is the kinetic contribution and the second term is the Clausias virial function modeling residual contribution arising from atoms interacting through the potential $V$.  Since all quantities to calculate pressure are easily acessible in an MD simulation, Equation \ref{eq:virial_equation} can be used to calculate pressure.  The macroscopic pressure $P$ is simply obtained as $P=\langle \mathcal{P} \rangle$.
 
 The Parrinello-Rahman barostat\cite{parrinello1980_barostat,parrinello1981_barostat} allows the simulation cell to vary in time as a result of the difference between varying the internal microscopic stress tensor and the constant external stress tensor $\bm{\omega}$.  The simulation cell is characterized by the tensor $\bm{H}=(\bm{a}_1,\bm{a}_2,\bm{a}_3) \in \mathbb{R}^{3 \times 3}$, where $\bm{a}_1$, $\bm{a}_2$, and $\bm{a}_3$, are the lattice vectors of the simulation cell.
 
-The discussion provided here follows the exposition by Ray and Rahman\cite{ray1984_npt}.  The Parrinello-Rahman equations of motion can be derived from the Hamiltonian from the coordinate system $(\bm{r},\bm{p})$ to the canonical variables $\hat{\bm{r}},\hat{\bm{p}}$, which incorporates $H$,
+The discussion provided here follows the exposition by Ray and Rahman\cite{ray1984_npt}.  The Parrinello-Rahman equations of motion can be derived from the Hamiltonian from the coordinate system $(\bm{r},\bm{p})$ to the canonical variables $\hat{\bm{r}},\hat{\bm{p}}$, which incorporates $\bm{H}$,
 \begin{equation}
-  \hat{\bm{r}}_i = \bm{H}^-1 \bm{r}.
+  \hat{\bm{r}}_i = \bm{H}^{-1} \bm{r}.
 \end{equation}
 $\hat{\bm{r}}_i$ is a position vector in fractional coordinates defined by $\bm{H}$.
 \begin{equation}
   \hat{\bm{p}}_i = \bm{H}^T \bm{p}_i
 \end{equation}
 
-This allows the box to deform in response to an applied stress, so that the equilibrium shape of the box corresponds to the state where the internal stress is equal to the imposed stress.  Then an extended form of the Hamiltonian which adds the potential energy and kinetic energy associated with the shape of the simulation cell $H$, which adds the potential energy due to deformation of the simulation cell and kinetic energy of the box.  The kinetic energy of the box is a ficticious construct which allows the modification of $H$ so that simulation cell is in equilibrium with the external stress tensor.
+This allows the box to deform in response to an applied stress, so that the equilibrium shape of the box corresponds to the state where the internal stress is equal to the imposed stress.  Then an extended form of the Hamiltonian which adds the potential energy and kinetic energy associated with the shape of the simulation cell $\bm{H}$, which adds the potential energy due to deformation of the simulation cell and kinetic energy of the box.  The kinetic energy of the box is a ficticious construct which allows the modification of $\bm{H}$ so that simulation cell is in equilibrium with the external stress tensor.
 
 Since the pressure includes a kinetic component due to particle velocities, barostatting requires regulation of both temperature and pressure.
-The Parrinello-Rahman equations can be combined with thermostats to then generate the NPT ensemble\cite{shinoda2004_nosehoover} and then integrated\cite{tuckerman2006_timeintegrator}.
+The Parrinello-Rahman equations can be combined with thermostats to then generate the NPT ensemble\cite{shinoda2004_nosehoover} and can then be integrated\cite{tuckerman2006_timeintegrator}.
 
 %Which produces the following Lagrangian from which the equations of motion can be derived.
 

@@ -1,96 +1,68 @@
 \chapter{INTRODUCTION}\label{intro}
 
-As compututational power has increased so has the size and complexity of the simulations.
-The use of analytical empirical potentials has been part of computational materials science from the start, including problems with lattice dynamics, molecular dynamics, and other charges.
-The accuracy of a simulation depends on many factors, some involving the simulation method itself (e.g. numerical accuracy in solving sets of equations).
-Despite the promise of molecular dynamics, the difficulty in developing interatomic potentials leads to long developments when developing empirical potentials due to problems in determining an optimal parameterization.
-This work presents an emergent framework for the automated development of potentials based upon sampling from a distribution and evolution of that distribution so that the final distribution represents the set of parameterizations which can be described in a way as efficient.
-We present an novel framework for the automated development of potentials.
+As compututational power has increased so has the size and complexity of simulations.  The use of analytical empirical potentials has been part of computational materials science from the start, and they are instrumental in simulations utilizing lattice dynamics and molecular dynamics.
 
-Our potential development approach takes a probabilistic approach, treating the vector of parameters as a random variable, where the variation in the values of the parameters represents the epistemic uncertainty associated with with the choice of parameter values.
+Instead of conducting electronic structure calculations typical of quantum mechanical simulation methods to get the energies and forces necessary to evolve a system, analytical potential consist of a formalism which captures the relevant physics of a system with formulas which are a function of relative atomic positions.  The avoidance of expensive electronic structure calculations makes analytical potentials a computational inexpensive surrogate, which enables dynamic simulations of materials systems several orders of magnitude larger the quantum mechanical techniques in both the number of atoms in a simulation and the simulated time length.
 
-However, the biggest errors in a simulation, as least with respect to how well it describes a real system, are the inadequacies of the models upon which the simulation is based.
+One of the limiting factors for molecular dynamics is the availability of interatomic potentials for materials systems of interest.  The development of interatomic potentials is a human work intensive process that largely dependent upon the skill and experience of a potential developer.  For many computational material scientsts, the ability to conduct molecular dynamics simulations is largely dependent upon a current analytical potential already existing for their system of interest.
 
-\section{Machine Learning Frameworks}
-
-In potential development,
-Despite promising work with the development of machine learning potentials, which promises to provide \emph{ab initio} levels of fidelity, these approaches require large amounts of computational resources to development the requisite fitting datasets.
-Machine learning potential development is a data hungry approach as to ensure that the problem is not functionally underdetermine due to the large number of degrees of freedom associated with the functional form.
-Moreover, neural networks models themselves are NP-hard problems which maps the current configuration of the neural net onto potential configuration space, requiring an extraordinary computational effort to determine the most effective parameter optimization.
-It should not be confused that neural networks are not an optimization solution, but actually an optimization problem, which are aided by different machine learning techniques which are dependent upon sampling
-
-Instead, this work focuses on applying machine learning concepts to analytical interatomic potentials.  These models have a functional form described by equations which attempt to capture the relevant physics associated with a material system.  To adapt a functional form to a specific material system, a potential development process
+This work presents an emergent framework for the automated development of analytical potentials.
 
 \section{Modernizing Analytical Potential Development}
 
-The modernization of analytical potential development needs to achieve the following goals: 
-(1) clearly define the problem in its most general terms in what maybe, at times, a more rigorous mathematical exposition than that which is normally presented, 
-(2) identify the problems with existing methodologies by bringing in terminology and notation from different fields to provide a more general framework for the problem of potential development, 
-(3) provide a baseline implementation of this framework, which provides results which are analytical, transparent, and robust, and 
+The modernization of analytical potential development needs to achieve the following goals:
+(1) clearly define the problem in its most general terms in what maybe, at times, a more rigorous mathematical exposition than that which is normally presented,
+(2) identify the problems with existing methodologies by bringing in terminology and notation from different fields to provide a more general framework for the problem of potential development,
+(3) provide a baseline implementation of this framework that provides results which are analytical, transparent, and robust, and
 (4) provide an automation framework upon which to do the work.
 
-\section{Objectives and Outline}
+\section{The Difficulty of Potential Development}
+
+%Despite promising work with the development of machine learning potentials, which promises to provide \emph{ab initio} levels of fidelity, these approaches require large amounts of computational resources to develop the requisite fitting datasets.
+%Machine learning potential development is a data hungry approach as to ensure that the problem is not underdetermined due to the large number of degrees of freedom associated with the functional form.  Instead, this work focuses on applying machine learning concepts to analytical interatomic potentials.  These models have a functional form described by equations which attempt to capture the relevant physics associated with a material system.
+
+An interatomic potential has a set of free parameters, which can be used to tailor the potential for a specific material system.  To adapt a functional form to a specific material system, potential development undergoes a process of fitting.  Here, parameters are optimized to minimize the difference between the predicted values and the target values of various material properties.
+
+The fundamental feature of fitting is the inability to minimize the errors for each targeted material property of interest simultaneously; improving the predictive performance of a potential with respect to one material property may degrade the predictive performance of one or more other properties.
+
+The typical process for potential development involves cardinal optimization.  That is the developer's preference are encoded at the beginning of the optimization process into a single objective function, known as the cost function.  Typically, the cost function is the weighted square difference between predicted and target material property values, where a vector of weights express the preferences of the potential developer.  Optimization of this cost function leads to a unique parameterization.
+
+If the performance is unacceptable, it can be caused by a multitude of issues.  The cost function may have minimized to the closest local minima based upon the choice of the initial condition, the encoded weighting vector might need to be adjusted to give priority to different material properties, or the optimization algorithm ignored desireable parameterizations that exist in a convex region of prediction space.
+
+All these problems are consequences of introducing the artificial heuristic of a cost function.  The cost function is dependent upon an \emph{a priori} expression of performance preferences before knowing what tradeoffs exist.  The cost function is typically minimized with local optimization techniques when a global solution is desireable, leading to the problem with local minima and a solution dependence upon initial conditions.  The construction of the cost function makes the technique unable to resolve possible parameterization that exist within convex regions.
+
+Despite the promise of molecular dynamics, the lack of availability of interatomic potentials for many systems limits the applicability of this simulation method.  Potential development is a human intensive process due to current appproaches to parameterization.
+
+This work presents an emergent framework for the automated development of potentials based upon sampling from a probability distribution and evolving that distribution so that the final distribution represents the set of parameterizations which can be described in a way as efficient.
+
+Our potential development approach takes a probabilistic approach, treating the vector of parameters as a random variable, where the variation in the values of the parameters represents the epistemic uncertainty associated with with the choice of parameter values.
+
+\section{Outline}
 %% CHAPTER 2 SUMMARY
-Chapter 2 provides an appropriate level of introduction to the major toolsets in computational materails science.
-Starting with quantum mechanical approaches to solutions to the potential energy surface, a function which maps the configuration space of atomic descriptors onto energies.
-Particular focus is placed on density functional theory (DFT), which is often used as the computational calculator to calculate difficult to observe experimentally.
-From here, we look to two tools where analytical potentials are most often used:  molecular dynamic simulations and lattice dynamics simulations.  
+Chapter \ref{ch:md} provides an appropriate level of introduction to molecular dynamics, the predominant tool where analytical potentials are used.
 
-%% CHAPTER 3 SUMMARY
-Chapter 3 describes which to is referred to the the traditional approach to potential development.  Potential development is normally described as a quadratic programming optimization problem, applied to a description of a problem which it is not normally suited for.  However, this problem has never really been discussed clearly and explains why more recently many potential developers have moved from potential development
+Chapter \ref{ch:potential_development} discusses the  conventional approach to potential development.  Typically, a cost function defined as the weighted sum of square differences between the predicted potential values and their respective target values is used as an objective function which is minimized using local minimization techniques.
 
-In the third chapter, begins with a discussion of the empirical interatomic potential is described as approximation as the potential energy surface.
-The process of potential development starts with the selection of a fitting database, a finite set of material properties and the target values.
-The traditional approach to potential development uses a scalar optimization approach by minimizing an objective function which is referred to in literature as the cost function.
-The cost function is typically a weight sum of square differences between the predicted potential values and their respective target values.
-This objective function in minimized usually through either constrained or unconstrained optimization techniques dependent upon a quadratic programming algorithm dependent upon first-order derivatives for optimization.  
-As a result, quadratic programming techniques are likely unsuitable, except when an initial guess to the target parameterization is already known.
-This problem is hinted at in discussions in literature in discussions in a move from local optimization vs global optimization algorithms.
-In this chapter, we show that this method for even identifying the global minimum due to issues with (1) regularization, (2) necessary conditions for a solution are likely not satisfied (Karush-Kuhn-Tucker conditions), and at the very least impossible to prove.
+An alternative representation to the potential development process is multi-objective optimization (MOO) where more than one objective function to be minimized simultaneously.  In MOO approach to potential development, the choice of an optimal model choice must be made in the presence of trade-offs between the choice of sacrificing the fidelity in predicting on material property at the expense of an another.
 
-To generalize the potential optimization process, we introduce the concept of multi-objective optimization (MOO) which is concerned with mathematical optimization problems involving more than one objective function to be minimized simultaneously.  Each material property is assigned a loss function, a measure of how good a prediction model does in terms of being able to predict an expected outcome.
-In MOO approach to potential development, the choice of an optimal model choice must be aken in the presence of trade-offs between the choice of sacrificing the fidelity in predicting on material property at the expense of an another.
-We accept that the development of an potential largely involves a decision of tradeoffs determined by the potential developer, these expression of preferences is inherently subjective.
+We accept that the development of a potential largely involves a decision of tradeoffs determined by the potential developer, and these expression of preferences is inherently subjective.  Instead, we search for the set of Pareto optimal parameterizations, from which any optimal parameterization must come.  This transforms potential development from an interactive process requiring the intervention of a potential developer to an automatable process, where potential selection is done after candidate potentials  have been identified and the performance tradeoffs are known.
 
-
-We introduce the concept of a loss function as the primary mechanism for measuring the fidelity between the predictions of an empirical potential and the target reference value.
- and Pareto optimality as the more general problem of potential development.
-
-However, more damning is that even when these conditions are met, the optimal paramaterization is dependent upon a vector of weights, which uniquely determines the parameterization.
-That is, potential development is inherently a subjective process dependent upon the preferences of the user, which largely cannot be determine with certainty at the beginning of the process.
-
-The ramification of chapter 3 is that potential optimization is NP-hard when preferences are fixed is that probing acceptable potentials by a mechanism of varying weights is computationally brutal, and reevaluates areas in parameter space which have already been solved.
+The computational diffiulties of the conventional approach to potential development is discussed, and compared to a proposed Monte Carlo sampling techniques using test problem to elucidate the computational costs and numerical efficieny of the diffent approaches.
 
 %% CHAPTER 4 SUMMARY
-Chapter 4 introduces a probability framework for representing the uncertainty associated with the parameterization.   After introducing an appropriate level of probability theory and notation, we connect the measure theoretic approach to probability to continuous probability distributions, generation of random variables, non-parametric probability distributions.  In addition, we review the Bayesian framework for parameter estimation, and adapt that framework to solve MOO problems.
+Chapter \ref{ch:methodology}  introduces a probability framework for representing the uncertainty associated with the parameterization.   After introducing an appropriate level of probability theory and notation, we connect the measure theoretic approach to probability to continuous probability distributions, generation of random variables, non-parametric probability distributions.  In addition, we review the Bayesian framework for parameter estimation, and adapt that framework to solve MOO problems.
 
-Chapter 4 starts a framework for sampling in parameter space beginning with statistical concepts and links it to approaches in machine learning with genetic algorithms.
+Chapter \ref{ch:methodology} also describes an evolutionary framework which combines the concepts implements a methodology to attain the solution to the MOO problem described in Chapter \ref{ch:potential_development}.  Here, we treat potential optimization as a VVUQ process with the epistemic uncertainty associated with choosing a parameter expressed as a probability distribution.  To evolve the probability distribution, we describe an interative Monte Carlo method which adapts Bayesian inference concepts to a multi-objective context to estimate the probability density of the location of Pareto optimal parameterizations.
 
-This work first starts with what is hoped an appropriate level of theory required to understand the necessities for automating the problem.
-In much of the literature, there is rather extensive discussion of techniques and applications of techniques, but the supporting justification and rationalization of these techniques is necessarily short due to the format of publications.
-Even when discussing older approaches, appropriate review articles have been identified from different fields into order to provide insight to the problem of potential development.
-
-
-In the development of a solid methodology and a description of potential development automation, it is necessary first describe the major computational tools used within the framework of machine learning.  Specifically, the tools of Density Functional Theory, Molecular Dynamics, and Lattice Dynamics are briefly discussed to provide a sense of what is common and what is different between these computational approaches.  This is covered in chapter 2.
-
-%% CHAPTER 5 SUMMARY
-Chapter 5 describes an evolutionary framework which combines the concepts from Chapter 3 and Chapter 4 as an optimization framework.  
-A monte carlo approach is used for parallelization.
 %% CHAPTER 6 SUMMMARY
-Chapter 6 describes the implementation of the evolutionary framework in \verb|pypospack|.  Instead of developing a large monolithic application, which is difficult to extend, modify, and implement.  
-\verb|pypospak|Pypospack is conceived largely as software library which defines structure property relationships, how the structure property relationships are calculated, the process management of molecular dynamic simulations, parallel sampling, and potential selection.
-%% CHAPTER 7,8,9
-The next three chapters provides application of this framework for three different types of material systems.  Chapter 7 goes through the development of a Buckingham style potential on a prototypical oxide, magnesium oxide.  Chapter 8 goes through the development of a Stillinger-Weber potential for silicon.  Finally, Chapter 9 provides results for the developmen of an embedded atom method (EAM) potential for Nickel.
+Chapter \ref{ch:software} describes the implementation of the evolutionary framework in software package \verb|pypospack|.  Here we decompose the parameterization process into general base classes.  For example, calculating a material property requires (1) defining a potential, (2) an atomic configuration, (3) a process for calculating the material property, and (4) the individual simulations necessary to calculate these properties.  \verb|pypospack| implements a base class for each of these components.  This provides a consistent, reuseable, and extendable modeling framework for potential developers to define the performance variables for the potential parameter optimization process.
 
-%% CHAPTER 10
+\verb|pypospack| is integrated to work with popular external simulation codes, which alleviates the problems with implementing new software routines, such as structural relaxation and the implementation of an existing potential formalism.  A variety of parameter optimization algorithms are already implemented.
 
-Chapter 7,8,9 provide application of the framework for three different types of material systems.
-ather than being competitive, \emph{ab initio} computational techniques are often integrated into potential development
+\verb|pypospack| is conceived largely as software library to model structure property relationships from constituent simulations, and a framework to automate the workflows.  This software is licensed under a permissive open-source license to encourage potential developers to extend and integrate this library into their own potential development schemes.
 
-This work takes a contrary, but complimentary approach by addressing the concerns readily brought force by this new avenue of study.
-The promise of machine learning potentials is provide \emph{ab initio} level accuracy at a fraction of the cost of \emph{ab initio} techniques.
+Chapters \ref{ch:ionic_MgO} goes through the development of a Buckingham style potential on a prototypical oxide, magnesium oxide.
 
-It is the opinion of the author, that the development of analytical empirical potentials has largely been retarded by the lack of standard tools and analytical frameworks.
-Despite the ubiquity of molecular dynamics
-Instead of looking to develop the optimal parameterization which is expected to replicate a large range of values.
+Chapter \ref{ch:pareto_si} goes through the Pareto optimization process for Stillinger-Weber potential for silicon.  Instead of the selection of potentials.  This chapter discusses clustering method to reduce the number of potentials analyzed.
 
+Chapter \ref{ch:summary} summaries the work, and speculates on the possible direction new research.
