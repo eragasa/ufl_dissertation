@@ -199,7 +199,7 @@ potential_formalism['symbols'] = ['Mg','O']
 
 The \verb|PairPotential| implements a standard parameter naming scheme.  As a result, it is necessary only to define the \verb|pair_parameter_names| attribute in implemented potential classes.  For example, for a pair potential with a parameter, $A_{Mg,O}$, satifies the $A$ parameter of the Mg-O pair potential term, and would have the name \verb|MgO_A|.  The recommended convention for naming parameters is to prefer the same variable naming convention scheme listed in LAMMPS documentation, then the variable naming scheme listed in original literature.
 
-To evaluate a specific potential the parameter set must be defined as a dictionary object.  All units in \emph{pypospack} are specified in `metal` style defined in LAMMPS\cite{lammps_units}.  For example, as part of a collection of reference potentials, the dictionary object containing the original parameterization is
+To evaluate a specific potential the parameter set must be defined as a dictionary object.  All units in \emph{pypospack} are specified in `metal` style defined in LAMMPS\cite	{lammps_units}.  For example, as part of a collection of reference potentials, the dictionary object containing the original parameterization is
 
 \begin{lstlisting}[language=Python]
 reference_potentials['SW'] = OrderedDict([

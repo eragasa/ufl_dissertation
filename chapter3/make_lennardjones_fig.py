@@ -62,5 +62,5 @@ plt.margins(0,0)
 fig.tight_layout()
 plt.show()
 
-fig.savefig('lj.eps',dpi=1200)
+fig.savefig('lj.png',dpi=1200)
 #,bbox_inches='tight',pad_inches=0)
