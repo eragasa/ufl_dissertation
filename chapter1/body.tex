@@ -4,9 +4,9 @@ As compututational power has increased so has the size and complexity of simulat
 
 Instead of conducting electronic structure calculations typical of quantum mechanical simulation methods to get the energies and forces necessary to evolve a system, an analytical potential consists of a formalism which captures the relevant physics of a system with formulas which are a function of relative atomic positions.  The avoidance of expensive electronic structure calculations makes analytical potentials a computational inexpensive surrogate, which enables dynamic simulations of materials systems several orders of magnitude larger than quantum mechanical techniques in both the number of atoms in a simulation and the simulated time length.
 
-One of the limiting factors for molecular dynamics is the availability of interatomic potentials for materials systems of interest.  The development of interatomic potentials is a human work intensive process that is largely dependent upon the skill and experience of a potential developer.  For many computational material scientsts, the ability to conduct molecular dynamics simulations is largely dependent upon an analytical potential already existing for their system of interest.
+One of the limiting factors for molecular dynamics is the availability of interatomic potentials for materials systems of interest.  The development of interatomic potentials is a human work intensive process that is largely dependent upon the skill and experience of a potential developer.  For many computational material scientsts, the ability to conduct molecular dynamics simulations is contingent upon an analytical potential already existing for their system of interest.
 
-This work presents an emergent framework for the automated development of analytical potentials.
+This work presents an emergent framework for automating the development of analytical potentials.
 
 \section{Modernizing Analytical Potential Development}
 
@@ -33,9 +33,9 @@ All these problems are consequences of introducing the artificial heuristic of a
 
 Despite the promise of molecular dynamics, the lack of availability of interatomic potentials for many systems limits the applicability of this simulation method.  Potential development is a human intensive process due to current appproaches to parameterization.
 
-This work presents an emergent framework for the automated development of potentials based upon sampling from a probability distribution and evolving that distribution so that the final distribution represents the set of parameterizations which can be described in a way as efficient.
+This work presents an nascent framework for the automated development of potentials based upon sampling from a probability distribution and evolving that distribution so that the final distribution represents the set of parameterizations which can be described in a way as efficient.
 
-Our potential development approach takes a probabilistic approach, treating the vector of parameters as a random variable, where the variation in the values of the parameters represents the epistemic uncertainty associated with the choice of parameter values.
+Our potential development approach takes a probabilistic approach, treating the vector of parameters as a random variable, where the variation in the values of the parameters represents the epistemic uncertainty associated with the choice of parameter values.  Epistemic uncertainty is systematic and is representative of unknowns which could be known in principle, but currently does not.  Our algorithm procedurally reduces the epistemic uncertainty, leaving a probability distribution where uncertainty is a function
 
 \section{Outline}
 %% CHAPTER 2 SUMMARY
