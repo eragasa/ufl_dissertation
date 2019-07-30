@@ -19,7 +19,7 @@ $\bm{F} = (\bm{f}_1,...,\bm{f}_{N_\alpha})$ are forces $\bm{f}_\alpha$ acting on
 and $\bm{M}$ is the diagonal mass matrix with the mass of each atom $\alpha$.
 The total energy is conserved, even though the kinetic energy and potential energy can change dynamically.
 
-The potential $V$ maps interatomic configurations $\bm{R}$ to provide the potential energy of a system $E_P$.  To evolve a system of atoms, the force $\bm{F}$ is given by the gradient of the potential for each atom $\alpha$,
+The potential $V$ maps interatomic configurations $\bm{R}$ to provide the potential energy of a system $E_P$.  To evolve a system of atoms, the forces $\bm{F}$ are given by the gradient of the potential for each atom $\alpha$,
 \begin{equation}
 	\label{eq:calc_forces_from_potential}
 	 \bm{f}_\alpha
@@ -29,7 +29,7 @@ The potential $V$ maps interatomic configurations $\bm{R}$ to provide the potent
  which can then be substituted into Equation \ref{eq:newton_eom}.
 
 \section{Numerical Integration}
-A dynamical simulation computes the trajectory $\bm{r}_\alpha(t)$ of each atom $\alpha$ as a function of time, given the initial position $\bm{r}_\alpha(t=0)$ and velocity $\bm{v}_\alpha(t=0)$.  Since Newton's equation of motion is a 2nd order differential equation, an initial condition needs to specify both positions and velocities of all atoms at the initial time.
+A dynamical simulation computes the trajectory $\bm{r}_\alpha(t)$ of each atom $\alpha$ as a function of time, given the initial position $\bm{r}_\alpha(t=0)$ and velocity $\bm{v}_\alpha(t=0)$.  Since Newton's equation of motion is a 2nd order differential equation, an initial condition specifies both positions and velocities of all atoms at the initial time.
 
 To evolve the equation of motion numerically, time is typically descretized uniformly by incrementing $t$ by the time step $\Delta t$.  A naive implementation of an integration scheme would use the forward Euler algorithm, which is a truncated Taylor series expansion,
 \begin{equation}
@@ -90,7 +90,7 @@ Thus,
 Equation
 \section{Empirical Interatomic Potentials}
 %The interatomic potential $U(\bm{R}_i)$ derived from the Born-Oppenheimer approximation is derived from a quantum-mechanical perspective.
-The computational cost of \emph{ab initio} techniques such as density functional theory (DFT)\cite{hohenberg1964_dft,kohn1965_dft} can provide accurate structural energies and forces.    \emph{Ab initio} methods are numerical methods to solve the electronic Schr\"odinger equation given the position of the nuclei $\bm{R}$ and the number of electrons.  These calculations provide useful information such as electron densities, energies, and other properties. However, the computational cost to compute $V(\bm{R}_i)$  limits DFT to either static calculations or short simulation times on systems containing a small number of atoms.
+\emph{Ab initio} techniques such as density functional theory (DFT)\cite{hohenberg1964_dft,kohn1965_dft} can provide accurate structural energies and forces.    \emph{Ab initio} methods are numerical methods to solve the electronic Schr\"odinger equation given the position of the nuclei $\bm{R}$ and the number of electrons.  These calculations provide useful information such as electron densities, energies, and other properties. However, the computational cost to compute $V(\bm{R}_i)$  limits DFT to either static calculations or short simulation times on systems containing a small number of atoms.
 An empirical interatomic potential $\hat{V}(\bm{R}_i;\bm{\theta})$ is an analytical function parameterized by $\bm{\theta}=(\theta_1,...,\theta_n)$ which is meant to approximate $V(\bm{R}_i)$, and provide computational efficiency by eliminating electronic structure calculations.
 
 Over the last few decades, a large number of potentials have been developed to descibe various bonding types and environments.
@@ -170,7 +170,7 @@ The microcanonical ensemble where the energy is kept constant is not often used 
 
 A canonical ensemble (NVT) is the statistical ensemble that represents the possible states of a mechanical system in thermal equilibrium with a heat bath at a fixed temperature.  The principal thermodynamic variable of the canonical ensemble is temperature.  The ensemble also depends on the number of particles in the system, and the system's volume.
 
-A modification of the Newtonian equations of motion to generate a thermodynamic ensemble at a constant temperature is a thermostat.  Thermostats in molecular dynamics provide a mechanism of regulating the simulation temperature $T_0$.  In NVT simulations, themostating modifies the translation velocity of the particles.
+A thermostat modifies the Newtonian equations of motion to generate a thermodynamic ensemble at a constant temperature.  Thermostats in molecular dynamics provide a mechanism of regulating the simulation temperature $T_0$.  In NVT simulations, themostating modifies the translation velocity of the particles.
 
 A short discussion of thermostats is provided here.  For a more detailed description, see H\"{u}nenberger\cite{hunenberger2005_thermostat}, Allen and Tildesley \cite{allen1987_md}, and Tadmor and Miller \cite{tadmor2011_md}
 
@@ -187,8 +187,8 @@ The equipartition theorem provides the quantitative prediction, for the average 
   k_B N_{\mathrm{df}} T
 \end{equation}
 where $N_{\mathrm{df}}$ is the internal degrees of freedom in the system, $\mathcal{K}$ is the instantaneous internal kinetic energy, and the angular brackets indicate either a time or statistical average over the entire ensemble.
-The number of internal degrees of freedom is calculated as $N_{\mathrm{df}} = 3 N - N_c$, for a system with $N$ number of atoms and $N_c$ geometrical constraints on the system.
-The instanteous temperature $\mathcal{T}$ is
+The number of internal degrees of freedom is calculated as $N_{\mathrm{df}} = 3 N - N_c$, for a system with $N$ number of atoms and $N_c$ geometrical constraints on the system.  Typically, molecular dynamics methods work in Cartesian coordinates, allowing the maximum degrees of freedom for each atom. As a result, each particle has three Cartesian degrees of freedom.  These degrees of freedom are uncoupled: forces, velocities, and accelerations are determined independently.  In this work, $N_{\mathrm{df}} = 3N -3$, accounting for the three global degrees of freedom, which are eliminated for momentum convservation.
+The instantaneous temperature $\mathcal{T}$ is
 \begin{equation}
   \mathcal{T}
   =
@@ -214,11 +214,10 @@ then the average temperature $\langle\mathcal{T}\rangle$ is identical to the mac
 \begin{equation}
   E_k
 	= \langle K \rangle = \sum_{i=1}^N
-	=
 	\frac{1}{2} m_i |\bm{v}_i|^2
 \end{equation}
 
-\subsubsection{Velocity Rescaling}
+\subsubsection{Velocity rescaling}
 An obvious way to regulate the temperature is velocity scaling\cite{tadmor2011_md}.  Denote the temperature at time $t$ as $T(t)$ and combine with Equation \ref{eq:T_kinetic_energy}
 \begin{align}
   \Delta T(t)
@@ -268,7 +267,7 @@ The original Langevin equation\cite{langevin1908_equation} described Brownian mo
 	       {\mathrm{d} t}
 	+ \bm{\eta}(t).
 \end{equation}
-The force acting on the article is written as a sum of a viscous force proportional to the particle's velocity (from Stokes' law), and a stochastic term $\bm{\eta}(t)$, which has a Gaussian probability distribution is correlation function usually expressed as
+The force acting on the article is written as a sum of a viscous force proportional to the particle's velocity (from Stokes' law), and a stochastic force term $\bm{\eta}(t)$, which has a Gaussian probability distribution is correlation function usually expressed as
 \begin{equation}
   \label{eq:langevin_eta}
   \langle \eta_i(t) \eta_j(t') \rangle = 2 \lambda k_B T_0 \delta_{ij} \delta(t-t'),

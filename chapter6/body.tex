@@ -20,7 +20,7 @@ As an alternate to electronic structure methods, empirical potentials describe t
 In this chapter, a software toolkit for the reproducible, algorithmic development of interatomic potentials for atomic-level simulations using autonomous machine-learning techniques is described.
 The Python Potential Optimization Software Package {(\emph{pypospack})} is open-access software for the automation of potential development workflows, which leverages the richness of machine learning codes of the python language with the ubiquitous molecular dynamics software code, LAMMPS\cite{plimpton1995_lammps}, and the lattice statics and dynamics code, GULP\cite{gale2003_gulp}.
 
-\subsection{Current state of Potential Development Software}
+\subsection{Current State of Potential Development Software}
 
 Classical atomistic simulation methods, of which molecular dynamics (MD) simulation\cite{allen1987_md,haile1992_md,lesar2013_md,frenkel2002_md} is the most common, are a vital tool in the analysis of solid state and materials systems.
 The description of the interactions of the atoms is encoded in the interatomic potential, many of which have been developed to describe specific materials systems.
@@ -57,7 +57,7 @@ As a result, this knowledge is largely proprietary, remains concentrated in pote
 
 In addition, parameter optimization is dependent upon numerical optimization techniques indicated in Figure \ref{fig:potdev_monolithic}.  As described by Ghosh and Chakraborty \cite{ghosh2014_potdev_pareto}, the general problem of parameter optimization is an application of black box function optimization.  Cost function optimization techniques are unable to obtain compromise solutions which are Pareto efficient if they are occluded within a convex region of performance space.
 
-\subsection{Goals of this Software}
+\subsection{Goals of This Software}
 
 Potential software development is by necessity a complicated process, drawing expertise from many disciplines including materials science, numerical analysis, and software development.
 
@@ -187,7 +187,7 @@ Likewise, some implemented \verb|Potential| classes are not implemented in LAMMP
 
 In \emph{pypospack}, the \verb|potential| package contains classs objects, which inherit from methods from the appropriate base class.  The following base classes have been implemented in \verb|potential|: (1) \verb|PairPotential|, (2) \verb|ThreeBodyPotential|, (3) \verb|EamDensityFunction|, and (4) \verb|EamEmbeddingFunction|.
 
-\subsubsection{PairPotential}
+\subsubsection{Pair potentials}
 
 In \emph{pypospack} applications, a potential formalism is defined by specifying the \verb|potential_type| and the \verb|symbols| as an dictionary object.  For example, a Buckingham potential for MgO is considered in Chapter \ref{ch:ionic_MgO}, the dictionary object using this formalism is
 
@@ -242,7 +242,7 @@ Implemented pair potentials are indicated in Table \ref{tbl:pypospack_pair_poten
     \end{tabular}
 \end{table}
 
-\subsubsection{Three Body Potentials}
+\subsubsection{Three body potentials}
 Three body potentials are implemented in with the base class \verb|ThreeBodyPotential|, and listed in Table \ref{tbl:pypospack_threebody_potentials}.  Unlike pair-potentials, the parameter naming schemes are not equivalent.
 
 In the Stillinger-Weber potential\cite{stillinger1985_sw}, a pair potential term $V_2(r_{ij})$ is dependent upon the interatomic separation distance between atoms $r_{ij}$ between atoms $i$ and $j$.
@@ -267,7 +267,7 @@ As a result, \verb|_init_parameter_names| has different implementations for thre
 	\end{tabular}
 \end{table}
 
-\subsubsection{EAM Potentials}
+\subsubsection{EAM potentials}
 
 The formalism of the EAM potential is composed of three functions: (1) a pair potential, (2) an electron density function, and (3) an embedding energy function which is dependent upon individual contributions defined by the electron density function.
 The implementation of the \verb|EamPotential| class encasulates a \verb|PairPotential|, a \verb|EamEmbeddingFunction|, and a \verb|EamDensityFunction|.
@@ -443,7 +443,7 @@ Next, the potential developer implements the necessary simulation tasks that do 
 
 The final step is to define the QOI by subclassing the \verb|Qoi| base class.  This process consists of defining which simulation tasks are necessary to do the calculation, defining the formula to make the calculation, and assigning the variables from the formula to the results from each simulation.
 
-\subsubsection{Simulation Tasks}
+\subsection{Simulation Tasks}
 \label{sec:pypospack_tasks}
 
 In \emph{pypospack}, the execution of simulation tasks are subclasses of \verb|Task| class.  The derived base classes \verb|LammpsTask| and \verb|GulpTask| provide the necessary methods for implementing LAMMPS and GULP simulations. \verb|Task| objects are primarily responsible for managing the input and output files for simulation against an external code.  In the expected use of these classes for parameter optimization, an external simulation code is run as a  subprocess to the  \emph{pypospack} application, and derived base classes are reponsible implementing the code for managing these subprocesses.
@@ -527,7 +527,7 @@ The \verb|on_POST| method instructs the task to parse the output files from the 
 
 This approach to software development minimizes the software development expertise required to contribute to \emph{pypospack}'s capabilities by developing new simulation tasks and calculation of material properties by by providing a well-defined process to convert an existing LAMMPS script into an automatable simulation task.
 
-\subsubsection{Material Properties}
+\subsection{Material Properties}
 
 The material properties are referred to more generally in the software by the term quantity of interest (QOI), a term coming from  from verification, validation, and uncertainty quantification (VVUQ) literature.
 The calculation of material properties is implemented as subclasses of the \verb|Qoi| base class.
@@ -916,7 +916,7 @@ The \verb|ThermalExpansion| class to calculate thermal expansion from a series o
 	\end{tabular}
 \end{table}
 
-\subsubsection{Coordination Framework}
+\subsection{Coordination Framework}
 
 In parameter optimization, a potential developer is likely interested in evaluating a large number material properties, from which an even larger number of simulation tasks are generated.
 
@@ -924,7 +924,7 @@ Up to this point, classes have been segregated in functionality.  The \verb|Pote
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=5in]{chapter6/img/pypospack_coordination}
-	\caption{Schematic of for the calculation of point defect calculations.}
+	\caption{Swimlane diagram for the calculation of point defect calculations.}
 	\label{fig:pypospack_coordination}
 \end{figure}
 

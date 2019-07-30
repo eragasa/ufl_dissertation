@@ -4,7 +4,7 @@
 In this chapter, we expand the methdology presented in Chapters \ref{ch:ionic_MgO} and \ref{ch:methodology}.  Here the application of the methodology is applied to develop the Pareto set for the Stillinger-Weber formalism\cite{stillinger1985_sw} for silicon, an archetype for a covalently bonded material system.
 
 \section{Potential Formalism}
-Silicon has the electron configuration [Ne]3s2 3p2, which needs four atoms to fill the outer p-orbital and obtain a stable electron configuration.  This is done by forming four sp3-hybridized orbitals which forms strong covalent bonds.  As a result, silicon forms a tetrahedral arrangement with its neighbors, with a strong angular dependency.  To model the angular dependency, the Stillinger-Weber potential\cite{stillinger1985_sw} is a combination of a two-body ($\phi_2$) and three-body ($\phi_3$) terms, which is a function of the interatomic distances ($r_{ij}$,$r_{ik}$) from a central atom $i$ and the angle ($\theta_{ijk}$).
+Silicon has the electron configuration [Ne]$\text{3s}^2$ $\text{3p}^2$, which needs four atoms to fill the outer p-orbital and obtain a stable electron configuration.  This is done by forming four $\text{sp}^3$-hybridized orbitals which forms strong covalent bonds.  As a result, silicon forms a tetrahedral arrangement with its neighbors, with a strong angular dependency.  To model the angular dependency, the Stillinger-Weber potential\cite{stillinger1985_sw} is a combination of a two-body ($\phi_2$) and three-body ($\phi_3$) terms, which is a function of the interatomic distances ($r_{ij}$,$r_{ik}$) from a central atom $i$ and the angle ($\theta_{ijk}$).
 \begin{equation}
     E = \sum_{i<j}\varepsilon \phi_2 (r_{ij})
         +\sum_{j<k}\varepsilon \phi_3 (r_{ij},r_{ik},\theta_{ijk})
@@ -36,7 +36,7 @@ where
 
 The $A$, $B$, $p$, and $q$ parameters only apply to the two-body interactions.
 The $\lambda$, $\theta_0$ parameters are used only for three-body interactions.
-The $\varepsilon$,$\sigma$, and $a$ parameters areshared between the terms.
+The $\varepsilon$, $\sigma$, and $a$ parameters are shared between the terms.
 
 In order to compare the performance of the potentials, we use the original parameterization of Stillinger and Weber (SW)\cite{stillinger1985_sw}, Vink \emph{et al} (VMWM)\cite{vink2001_sw_Si}, and Pizzagalli \emph{et al} (PG) \cite{pizzagalli2013_sw_Si}.  This information is contained in Table \ref{tbl:sw_parameters_ref}.
 
@@ -132,7 +132,7 @@ Incorporating the ranges of parameterizations from Table \ref{tbl:sw_parameters_
 
 \subsection{Evolutionary Optimization Strategy}
 
-An iterative strategy is evolve the random variable $\bm{\Theta}_0(\Omega)$ using the recursive algorithm, defined in Chapter \ref{ch:methodology} and used in Chapter \ref{ch:ionic_MgO} to develop an Buckingham potential for the MgO system.  Since the topics contained this chapter has more probability topics than the previous chapter, we define the process and notation which simplify discussion later in this chapter.
+An iterative strategy is evolve the random variable $\bm{\Theta}_0(\Omega)$ using the recursive algorithm, defined in Chapter \ref{ch:methodology} and used in Chapter \ref{ch:ionic_MgO} to develop an Buckingham potential for the MgO system.  We define the process and notation which simplify discussion later in this chapter.
 
 The beginning of each iteration $N$ starts with the definition of a prior distribution $p_{\Theta}(\bm{\theta})$ to define the random variable $\bm{\Theta}_{N}(\Omega)$.  In the first iteration ($N=1$), the prior distribution is defined by a uniform distribution for each of the free parameters (see Table \ref{tbl:sw_parameters_initial}).  For iterations $N>1$, the prior distribution
 $p_{\Theta}(\bm{\theta})$ is updated using the optimal parameters set from the previous iteration, $\hat{\bm{\Theta}}_{t-1}^*$ in the kernel density estimate (KDE)\cite{rosenblatt1956_kde,parzen1962_kde}.  The updated prior distribution is
@@ -166,7 +166,7 @@ In the next step, we define the conditions for optimality by constraining $\hat{
 $\hat{ \bm{q} }(\bm{\theta}) \in \hat{\bm{Q}}(\bm{\Theta})$
 which satisfies the inequality constraints defined in $\mathcal{F}$.  The surviving candidate potentials after the filtration by $\mathcal{F}$ is denoted
 $\mathcal{F}(\hat{\bm{Q}}(\bm{\Theta}))$ with
-$\mathcal{F}(\hat{\bm{Q}}(\bm{\Theta})) \subseteq \hat{\bm{Q}}(\bm{\Theta})$.  The filters are mutually independent so
+$\mathcal{F}(\hat{\bm{Q}}(\bm{\Theta})) \subseteq \hat{\bm{Q}}(\bm{\Theta})$.  The filters are mutually independent so $\mathcal{F}_i(\hat{\bm{Q}}(\bm{\Theta}))$ for any filter $i$.
 
 The first filter $\mathcal{F}_1$ filters out points which are not Pareto optimal, by removing the dominated points.  The second filter $\mathcal{F}_2$ removes pathological parameterizations.  To identify outliers, we score each potential according to the absolute errors rescaled by the QOI target value, and calculate the scaled distance to the origin
 \begin{equation}
@@ -214,7 +214,7 @@ To speed convergence of $p_{\Theta}(\bm{\theta})$, we add $\bm{\Theta}_{N-1}^*$ 
 
 The Pareto optimization process produces four components at the end of each iteration, $N$.
 
-\subsection{Univariate analysis}
+\subsection{Univariate Analysis}
 To analyze the performance of our ensemble of potentials, a univariate inspection of the probability density functions for each of the QOIs can provide insight on the performance of the potential formalism.
 Figure \ref{fig:Si_qoi_B} shows the evolution of the predicted values of the bulk modulus for Silicon, $B$.  Each curve is a probability distribution for a specific iteration, estimated using a KDE with the bandwidth determined by the Silverman method\cite{silverman1986_kde}.
 In early iterations, the uncertainty reduction in predictions is quite large, but in later iterations the estimates for the Pareto optimal ensemble improves, and the probability density function increases around the target value.
@@ -237,8 +237,8 @@ Figure \ref{fig:Si_qoi_a0}, shows a the probability density plot for the predict
 	\label{fig:Si_qoi_a0}
 \end{figure}
 
-Prediction for the cohesive energy $E_c$ of the system shows an atypical distribution; Figure \ref{fig:Si_qoi_E_coh} shows the evolution of those predictions.  In early iterations ($i=1$ and $i=2$), the probability density functiosn resemble a normal distribution with peaks approximately $-4.0$ eV/atom, which is significantly higher than the target value of $-4.63$ eV/atom.  The candidate parameterizations continue to concentrate their probability density into a smaller region, but does so in an unexpected way.  The tail end probabilities continue to reduce markedly, but by the fifth iteration ($i=5$), a probability density function takes a significantly different shape.  Instead of having a peak, there is a region of elevated probability that is relatively constant over the range $-4.5 < E_c < -3.6 $ eV/atom.  At the final iteration ($i=20$), a clear mode develops at $E_c=-4.3$ eV/atom with a shoulder at $E_c=-3.6$ eV/atom.
-The distribution of potentials conveys important information to the potential developer; the most likely region to find Pareto optimal parameterization does not correspond with qoi target value.  Choosing high fidelity with respect to cohesive energy means that less candidate potentials are available.
+Prediction for the cohesive energy $E_c$ of the system shows an atypical distribution; Figure \ref{fig:Si_qoi_E_coh} shows the evolution of those predictions.  In early iterations ($i=1$ and $i=2$), the probability density functions resemble a normal distribution with peaks at approximately $-4.0$ eV/atom, which is significantly higher than the target value of $-4.63$ eV/atom.  The candidate parameterizations continue to concentrate their probability density into a smaller region, but does so in an unexpected way.  The tail end probabilities continue to reduce markedly, but by the fifth iteration ($i=5$), a probability density function takes a significantly different shape.  Instead of having a peak, there is a region of elevated probability that is relatively constant over the range $-4.5 < E_c < -3.6 $ eV/atom.  At the final iteration ($i=20$), a clear mode develops at $E_c=-4.3$ eV/atom with a shoulder at $E_c=-3.6$ eV/atom.
+The distribution of potentials conveys important information to the potential developer; the most likely region to find Pareto optimal parameterization does not correspond with QOI target value.  Choosing high fidelity with respect to cohesive energy means that fewer candidate potentials are available.
 
 \begin{figure}
 	\centering
@@ -247,12 +247,12 @@ The distribution of potentials conveys important information to the potential de
 	\label{fig:Si_qoi_E_coh}
 \end{figure}
 
-\subsubsection{Analysis of Correlation Matrices}
+\subsection{Analysis of Correlation Matrices}
 
 Since we are interested in tradeoffs, an analysis of the correlation for simulated potentials can detect relationships between parameters and QOIs.
 Figure \ref{fig:Si_correlation_plots} displays the correlation data for the last iteration of the potential optimization process.
 The top row contains the correlation matrices for the parameters produced by the kernel density estimate and estimates of the QOI.
-The bottom row contains the correlation matrices for same components after the dominated points are removed.
+The bottom row contains the correlation matrices for the same components after the dominated points are removed.
 In this plots, a red shader is used for positively correlated points and blue shader used for negatively correlated components.  As the correlated components becomes stronger, the color becomes more intense.  This allows the quick identification of components which might be of interest.
 
 Correlations are calculated using the Pearson correlation coefficient.\cite{devore2012_probability}
@@ -263,23 +263,23 @@ Although loss functions are used for Pareto optimization, the loss of the sign i
 
 An examination of the parameter correlation matrices show the general trend of tradeoffs in parameters to produce Pareto optimal results as a single scalar value.  As the correlation matrix plot shows, most parameters are weakly uncorrelated with each other.
 There is moderate negative correlation ($\sigma_{A,a}=-0.48$) between the $A$ parameter of the pair components and the $a$ parameter of the 3-body term.
-There is a strong negative correlation between the $\sigma$ and both $a$ ($\sigma_{\sigma,a}=-0.74$) and $B$ ($\sigma_{\sigma,B}=-.85$).  Increases in $\sigma$ can be compensated by decreases in $B$ and $a$ to keep a potential Pareto optimal.
+There is a strong negative correlation between the $\sigma$ and both $a$ ($\sigma_{\sigma,a}=-0.74$) and $B$ ($\sigma_{\sigma,B}=-0.85$).  Increases in $\sigma$ can be compensated by decreases in $B$ and $a$ to keep a potential Pareto optimal.
 This leads to $B$ and $a$ being strongly correlated to each other ($\sigma_{B,a}=0.71$), despite the parameters belonging to the pair and 3-body components, respectively.
 The removal of dominated points yields the bottom left correlation matrix plot of Figure \ref{fig:Si_correlation_plots}.
-Visual inspection of the figure immediately verifies that the relationships are qualitative similar.
+Visual inspection of the figure immediately verifies that the relationships are qualitatively similar.
 The magnitudes of the correlations are quantitatively stable, indicating that the optimization process is converged.
 
 The right columns of Figure \ref{fig:Si_correlation_plots} are the correlation matrix plots for the QOIs.
-The top figure is the unfiltered results of the QOIs produced by the KDE of the last iteration, (i.e. $\hat{\bm{q}}(\bm{\theta} \in \bm{\Theta}_{N=20})$).
-The bottom figure being the same predictions filtered to remove dominated points and outliers (i.e. $\hat{\bm{q}}(\bm{\theta} \in \bm{\Theta}_{N=20}^*)$).
+The top figure is the unfiltered results of the QOIs produced by the KDE of the last iteration, i.e. $\hat{\bm{q}}(\bm{\theta} \in \bm{\Theta}_{N=20})$.
+The bottom figure contains the same predictions filtered to remove dominated points and outliers, i.e. $\hat{\bm{q}}(\bm{\theta} \in \bm{\Theta}_{N=20}^*)$.
 The visualization of the two figures shows that the underlying structure between the two figures is qualitative different.
 
 The top-right correlation plot in Figure \ref{fig:Si_correlation_plots} illustrates problems with the Pearson correlation coefficient.
-Some parameters produced by the PDF, $p_{\bm{\Theta}}(\bm{\theta})$ produce extremely large prediction errors, $\epsilon_i(\bm{\theta})$ to which Pearson’s correlation coefficient is sensitive; the correlation coefficent is also affected by the magnitude of the slope around which points are clustered, by curvature, by the restriction in the range, and by heteroscedasticty (where the variability of one variable is unequal across the range of values of the second).\cite{wilcox2011_estimation_1,wilcox2011_estimation_2}
-Igorance of these data points obscures the "true" correlation coeffient ultimate creates misleading results when inferring relationships when analyzing the correlation matrix.  Here, the correlation matrix infers a linear relationship ($rho=1$ or $\rho=-1$) between $C_{11}$ and $C_{12}$, $C_{11}$ and $B$, and $C_{12}$ and $B$.
+Some parameters produced by the PDF, $p_{\bm{\Theta}}(\bm{\theta})$ produce extremely large prediction errors, $\epsilon_i(\bm{\theta})$ to which Pearson’s correlation coefficient is sensitive; the correlation coefficent is also affected by the magnitude of the slope around which points are clustered, by curvature, by the restriction in the range, and by heteroscedasticity (where the variability of one variable is unequal across the range of values of the second).\cite{wilcox2011_estimation_1,wilcox2011_estimation_2}
+Ignorance of these data points obscures the "true" correlation coefficient ultimately creates misleading results when inferring relationships from the analysis of the correlation matrix.  Here, the correlation matrix infers a linear relationship ($\rho=1$ or $\rho=-1$) between $C_{11}$ and $C_{12}$, $C_{11}$ and $B$, and $C_{12}$ and $B$.
 Since $B$ is calculated from elements in the elastic tensor, the extreme values of $\rho_{C_{11},B}$ and $\rho_{C_{12},B}$ are likely caused by outliers in the prediction in either $C_{11}$, $C_{12}$, or the bivariate predictions of $C_{11}$ and $C_{12}$.
 
-Filtering outliers to remove both non-Pareto optimal points and outliers results in the bottom right correlation plot in Figure \ref{fig:Si_correlation_plots}.  From visual inspection reveals the correlation plots are qualitative different.  This indicates that convergence of the distribution in parameter space does not converge to Pareto optimal predictions in the performance space, and filtering elements of $\bm{q}(\bm{\theta}(\omega) \in \bm{\Theta}(\Omega))$ still contains information which is uncaptured by a kernel density estimate of Pareto optimal components.
+Filtering outliers to remove both non-Pareto optimal points and outliers result in the bottom right correlation plot in Figure \ref{fig:Si_correlation_plots}.  Visual inspection reveals the correlation plots are qualitatively different.  This indicates that convergence of the distribution in parameter space does not converge to Pareto optimal predictions in the performance space, and filtering elements of $\bm{q}(\bm{\theta}(\omega) \in \bm{\Theta}(\Omega))$ still contain information which is uncaptured by a kernel density estimate of Pareto optimal components.
 
 Predictions for the cohesive energy $E_c$ and the vacancy formation energy $E_v$ are highly negatively correlated with each other ($\sigma_{E_c,E_v}=-0.96$), but not with any of the other components.  Predictions of the other QOIs are moderately correlated with each other with the exception of two components.  The $C_{11}$ and $C_{12}$ components are uncorrelated ($\sigma_{C_{11},C_{12}}=0.05$).  The predictions of $B$ and $C_{12}$ are highly correlated ($\sigma_{C_{12},B}=0.89$).
 
@@ -292,7 +292,7 @@ Predictions for the cohesive energy $E_c$ and the vacancy formation energy $E_v$
 
 \subsection{Bivariate Analysis}
 
-A non-linear association between may exist between components would not be described by the Pearson correlation coefficient; a property which should evident in this application since each $\hat{q}_i(\bm{\theta})$ is a function of the same realization of the random variable $\bm{\Theta}$.  However, the Pearson correlation coeffient fails to identify anything but linear relationships.  One mechanism to overcome this problem is through the visual inspection of bivariate plots.  In this application, the typical representation of the scattter plot is augmented with a gradient shader to reflect areas of higher density indicated by the kernel density estimate.  The bivariate plot projects the high dimensional space ($N_Q$ for QOI space, and $N_P$ for Parameter space) into the 2-dimensional subspace with basis vectors in the direction of the variables under analysis.  The bivariate scatterplots provide a visual mechanism to identify salient features of the bivariate distribution between two variables, such as curvilinear or multimodal behavior which cannot be captured by correlation statistics.
+A non-linear association between components would not be described by the Pearson correlation coefficient, a property which should evident in this application since each $\hat{q}_i(\bm{\theta})$ is a function of the same realization of the random variable $\bm{\Theta}$.  However, the Pearson correlation coeffient fails to identify anything but linear relationships.  One mechanism to overcome this problem is through the visual inspection of bivariate plots.  In this application, the typical representation of the scattter plot is augmented with a gradient shader to reflect areas of higher density indicated by the kernel density estimate.  The bivariate plot projects the high dimensional space ($N_Q$ for QOI space, and $N_P$ for Parameter space) into the 2-dimensional subspace with basis vectors in the direction of the variables under analysis.  The bivariate scatterplots provide a visual mechanism to identify salient features of the bivariate distribution between two variables, such as curvilinear or multimodal behavior which cannot be captured by correlation statistics.
 
 \begin{figure}[ht]
   \centering
@@ -301,24 +301,24 @@ A non-linear association between may exist between components would not be descr
   \label{fig:Si_Ec_a0_scatterplot}
 \end{figure}
 
-In the development of binary potentials, the predictive performance of the cohesive energy $E_c$ and the lattice $a_0$ are often prioritized.  Unless these material properties are correct, the predictions of material properties for binary system will likely underperform.  For example, poor predictions of lattice paramter leads to artificial strains in the interface of a simulation material, leading to erroneous predictions of surface energies.  In Figure \ref{fig:Si_Ec_a0_scatterplot}, a bivariate plot of the predicted values for the cohesive energy $E_c$ is plotted against the lattice parameter $a_0$ for silicon in diamond phase.
-For reference, the target values for each QOI are also indicated on the plot.  Analysis of the bivariate plot indicates a multi modal population with three regions of elevated probability density.
-The primary region where of highest density located at $E_c=-3.86$ eV/atom and $a_0=5.22$ \AA, which is the region where most of the Pareto optimal potentials are located.  Two additional regions of elevated density closer to our QOI target values exist.  One closer to the target cohesive energy at $E_c=-4.5$ ev/atom and $a_0=5.05$ \AA.  The other region is closer to the target lattice parameter value at $E_c=-4.1$ eV/atom and $a_0=5.45$ \AA.
+In the development of binary potentials, the predictive performance of the cohesive energy $E_c$ and the lattice $a_0$ are often prioritized.  Unless these material properties are correct, the predictions of material properties for binary system will likely underperform.  For example, poor predictions of the lattice parameter lead to artificial strains in the interface of a simulation material, leading to erroneous predictions of surface energies.  In Figure \ref{fig:Si_Ec_a0_scatterplot}, a bivariate plot of the predicted values for the cohesive energy $E_c$ is plotted against the lattice parameter $a_0$ for silicon in diamond phase.
+For reference, the target values for each QOI are also indicated on the plot.  Analysis of the bivariate plot indicates a multi-modal population with three regions of elevated probability density.
+The primary region of highest density located at $E_c=-3.86$ eV/atom and $a_0=5.22$ \AA, which is the region where most of the Pareto optimal potentials are located.  Two additional regions of elevated density closer to our QOI target values exist.  One is closer to the target cohesive energy at $E_c=-4.5$ ev/atom and $a_0=5.05$ \AA.  The other region is closer to the target lattice parameter value at $E_c=-4.1$ eV/atom and $a_0=5.45$ \AA.
 
 This approach is not without drawbacks.  As the number of parameters and the number of QOIs increases, the number of bivariate plots increases expoentially, making the visual inspection of the possible combinations tedious for a complicated potential formalism, which require more QOIs to ensure that the system is not underdetermined.  Adding more elements to system, likewise increases the workload markedly.
 
-In addition, by projecting high dimensional data onto a low dimenstional subspace a causes information loss.  Although we know more parameterizations at a region of elevated density, but we are unable to infer the quality of the simulation with respect to other mmaterial properties.
+In addition, by projecting high dimensional data onto a low dimenstional subspace causes information loss.  Although we know more parameterizations at a region of elevated density, but we are unable to infer the quality of the simulation with respect to other mmaterial properties.
 
 Finally, this approach is subjective, imprecise, and requires the potential developer to invest a significant amount of time in analysis to partition parameter space to refine the search to a specific area of interest.
 
 \subsection{Gaussian Mixture Models in Two Dimensions}
 
-Now we outline a technique for partitioning the Pareto optimal potentials, into subsets described by a normal distribution using Gaussian mixture models (GMM).  A GMM is a probabilistic model that assumes that all data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters.  Here we will partition the biobjective space formed by $a_0$ and $E_c$, for GMM analysis.
+Now we outline a technique for partitioning the Pareto optimal potentials, into subsets described by a normal distribution using Gaussian mixture models (GMM).\cite{reynolds2009_gmm_def}  A GMM is a probabilistic model that assumes that all data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters.  Here we will partition the biobjective space formed by $a_0$ and $E_c$, for GMM analysis.
 
 Before outlining the procedure for Gaussian Mixture Model in the general case, we motivate the use of the algorithm in the 2D case of two QOI variables based upon the previous example of $E_c$ and $a_0$ before moving to a general approach for partitioning the ensemble of Pareto optimal potentials.
 
-A Gaussian mixture model (GMM) is part of the family of a Dirichlet processes, which are a probability distributions whose range are itself a set of probability distributions.\cite{west1994_mixturemodel}
-Dirichlet processes are frequently used in Bayesian nonparameteric statistics, where nonparametric does not mean a parameter-less distribution, but rather a model in which the representations grow as more data is observed.  As an example the kernel density estimator is a Dirichlet process; each point has a normal probability density function centered over it.
+A Gaussian mixture model (GMM) is part of the family of a Dirichlet processes, which are probability distributions whose ranges are itself a set of probability distributions.\cite{west1994_mixturemodel}
+Dirichlet processes are frequently used in Bayesian nonparameteric statistics, where nonparametric does not mean a parameter-less distribution, but rather a model in which the representations grow as more data is observed.  As an example the kernel density estimator is a Dirichlet process: each point has a normal probability density function centered over it.
 A GMM with with $K$ components can be written for the random variable $\bm{x}(\omega) \in \bm{X}(\Omega)$ with $\bm{x} \in \mathbb{R}^d$ as the sum of Gaussian distributions,
 \begin{equation}
 \label{eq:gmm}
@@ -331,7 +331,7 @@ A GMM with with $K$ components can be written for the random variable $\bm{x}(\o
 \end{equation}
 where $\bm{\mu}_k$ are the means, $\bm{\Sigma}_k$ is the covariance matrix, $\phi_k$ is the mixing proportion ($0<\phi_k<1$ and $\sum_k \phi_k = 1$), and $N$ is a normal multivariate distribution function with the speciified mean and covariance matrix for the $k$th component of the GMM.
 
-To choose the number of components which should be included in a Gaussian mixture model, we use a method described by Celeux and Soromenho\cite{celeux1996_gmm_components} which selects the number of components through calculation of information criteria (IC).  ICs estimate of the relative quality of statistical models for a given set of data, by penalizing potentials for using a more complicated model.
+To choose the number of components which should be included in a Gaussian mixture model, we use a method described by Celeux and Soromenho\cite{celeux1996_gmm_components} which selects the number of components through calculation of information criteria (ICs).  ICs estimate of the relative quality of statistical models for a given set of data by penalizing potentials for using a more complicated model.
 Here we base the number of clusters based upon the Akaike information criterion (AIC)\cite{akaike1998_aic} and the Bayesian information criterion (BIC) \cite{schwarz1978_bic}.
 The AIC or BIC of a model is written in the form $[2\log(\hat{L}+kp]$, where $\hat{L}$ is a likelihood function, $p$ is the number of parameters in the model, and $k$ is $2$ for AIC and $\log(n)$ for BIC.
 Given a collection of models for data, both the AIC and BIC estimate the quality of each model relative to the other models, providing a mechanism for model selection.
@@ -341,7 +341,7 @@ In a more thorough analysis, GMM models utilizing a number of components from a 
 \begin{figure}[ht]
 	\centering
 	\includegraphics{chapter8/aic_bic_plot}
-	\caption{Identification of the number of Gaussian components recommmended for a Gaussian mixture model for the biobjective space formed by the lattice parameter $a_0$ and the lattice parameter $a_0$.  Here, the BIC criteria indicates a smaller number of components, while AIC indicates that a larger number of components should be used.}
+	\caption{Identification of the number of Gaussian components recommmended for a Gaussian mixture model for the biobjective space formed by the cohesive energy $E_c$ and the lattice parameter $a_0$.  Here, the BIC criteria indicates a smaller number of components, while AIC indicates that a larger number of components should be used.}
 	\label{fig:Si_Ec_a0_aic_bic}
 \end{figure}
 
@@ -376,11 +376,11 @@ The centroid of the elipses for cluster $k$ is specificed by $\bm{\mu}_k$.  The 
 	\centering
 	\captionsetup{justification=centering,margin=1in}
 	\includegraphics[width=5in]{chapter8/gmm_parallel_plot}
-	\caption{Parallel plot}
+	\caption{Parallel plot of relative performance of different parameterizations of the Stillinger-Weber potential.}
 	\label{fig:Si_gmm_parallel_plot_2_qoi}
 \end{figure}
 
-\subsubsection{A general approach to Gaussian mixture models}
+\subsection{A General Approach to Gaussian Mixture Models}
 
 We now generalize the approach from 2D case to an application more generally applicable to the potential development process.  As the size of the Pareto set grows, the selection of a potential becomes more difficult.  A GMM process can help partition the set into subsets each defined by a normal distribution.
 
@@ -445,7 +445,7 @@ Table \ref{tbl:sw_all_gmm_parameters} contains the mean ($\mu$) and standard dev
 	\centering
 	\captionsetup{justification=centering,margin=1in}
 	\includegraphics[width=5in]{chapter8/aic_bic_all}
-	\caption{AIC and BIC}
+	\caption{Identification of the number of Gaussian components recommended for the general Gaussian mixture model.}
 	\label{fig:Si_aic_bic_all}
 \end{figure}
 
@@ -538,7 +538,7 @@ Table \ref{tbl:sw_all_gmm_parameters} contains the mean ($\mu$) and standard dev
 
 \subsection{Possible Applications}
 
-\subsubsection{More Efficient KDE Sampling}
+\subsubsection{More efficient KDE sampling}
 In the Pareto optimization process, the Pareto surface is estimated by evolving a kernel density esimate (KDE).  Since the KDE is non-parametric, it overcomes the problems with the strong assumptions with the parametric distribution.  Particularly the assumption that underlying distribution should be unimodal distribution.  The KDE is not without its limiations. the KDE assumes that variance and covaraince are homoskedastic since the same bandwidth matrix is applied across the range of possible parameterizations.
 
 The GMM models partitions the parameter space into populations, which are defined by location and the direction and magnitude of a dispersion.  As a result, each cluster $K$ can be defined by a single bandwidth matrix, since the population $k$ is dispersed by $\bm{\Sigma}_{k,\Theta,\Theta}$ by construction.
@@ -547,7 +547,7 @@ After convergence is met, the potential developer may want to identify more pote
 
 If $k$ is chosen to be sufficiently high, the variance of the parameters as well as the predicted QOI values becomes reduced, and the Normal distribution specified in parameter space could be used for feed forward Bayesian UQ methodologies since the calculation of the analytical form of likelihood function for the Normal distribution known.
 
-\subsubsection{Algorithmic Subselection of Potentials}
+\subsubsection{Algorithmic subselection of potentials}
 
 Unlike Chapter \ref{ch:ionic_MgO}, our options here are no longer individual potentials but described by a normal probability distribution for each constituitive options.  For an empirical interatomic potentials where the mean $\mu_{k,\hat{\bm{q}}}$ is sufficently close to the the target QOI values.  A one sample Hotelling's $t$-squared  ($T^2$)\cite{hotelling1931_t2} could be used. However, since none of the components are likely to contain the vector $\bm{q}$, having $p$-values near to $1$.
 
@@ -595,3 +595,5 @@ Minimizing Equation \ref{eq:aggregate_t_test} maximizes the probability that $\b
 Inspection of the aggregate performance of each potential shows high values which infers what we already know; it is not possible to minimize $|epsilon_i|$ for all $i$ simultaneously due to the performance tradeoffs in the formalism of our interatomic potential.  Prediction for elements of the elastic tensor $c_{11}$, $c_{12}$, and $c_{44}$ is generally poor; the same analysis applies to the bulk modulus $B$.  For elastic properties and aggregate performance, the performance metric is of the same order of magnitude, and we should not use the metric as a discriminating factor.
 
   However, the $t$-test does allow us to descriminate performance of the of the remaining QOIs.  Let us use $p > 0.01$ as a discriminating inequality.  For the cohesive energy, $E_c$, clusters $5$ and $7$ have poor performance.  For predictions of the lattice parameter $a_0$, clusters $0$ and $8$ have poor performance.  For the vacancy formation energy $E_v$, clusters $5$, $7$, and $9$ have poor performance.  Our remaining clusters then become $k = \{1,2,3,4,6,8\}$.
+
+The application of GMM to the Pareto optimization is a useful analysis tool which reduces the large number of potential candidates to representative clusters.  These clusters not only allow the classification of each candidate, but provides summmary probability descriptions as multivariate normal distributions.  Standard hypothesis testing techniques can then be adapted to evaluate each cluster.
